@@ -1,0 +1,32 @@
+[gd_scene format=2]
+
+[node name="WindowPanel" type="Control"]
+visible = false
+anchor_left = 0.342305
+anchor_top = 0.167
+anchor_right = 0.657695
+anchor_bottom = 0.833
+margin_left = 0.47998
+margin_top = -0.200012
+margin_right = -0.480042
+margin_bottom = 0.199982
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Border2" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.254902, 0.243137, 0.286275, 1 )
+
+[node name="BG" type="ColorRect" parent="Border2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = -0.999329
+margin_bottom = -1.0
+color = Color( 0.145098, 0.137255, 0.145098, 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}

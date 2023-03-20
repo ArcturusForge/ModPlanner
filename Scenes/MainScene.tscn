@@ -1,0 +1,408 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Assets/Graphics/Backgrounds/garden forest.jpg" type="Texture" id=1]
+[ext_resource path="res://Assets/Prefabs/ModTabParent.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/Managers/ModTreeManager.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/Managers/MainManager.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/Managers/PopupManager.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/Managers/WindowManager.gd" type="Script" id=6]
+[ext_resource path="res://Scripts/Windows/OpeningSelectDriver.gd" type="Script" id=7]
+[ext_resource path="res://Assets/Prefabs/WindowPanel.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scripts/Windows/GameSelectorDriver.gd" type="Script" id=9]
+[ext_resource path="res://Scripts/SearchManager.gd" type="Script" id=10]
+[ext_resource path="res://Scripts/Managers/ConsoleManager.gd" type="Script" id=11]
+[ext_resource path="res://Scripts/Windows/ModAddDriver.gd" type="Script" id=12]
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+
+[node name="Managers" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ModTreeManager" type="Control" parent="Managers"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 3 )
+
+[node name="PopupManager" type="Control" parent="Managers"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 5 )
+
+[node name="WindowManager" type="Control" parent="Managers"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 6 )
+
+[node name="SearchManager" type="Control" parent="Managers"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 10 )
+
+[node name="ConsoleManager" type="Control" parent="Managers"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 11 )
+
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 1 )
+expand = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Topbar Container" type="HBoxContainer" parent="Background/VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="FileMenuButton" type="MenuButton" parent="Background/VBoxContainer/Topbar Container"]
+margin_right = 50.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 0 )
+text = "File"
+switch_on_hover = true
+
+[node name="EditMenuButton" type="MenuButton" parent="Background/VBoxContainer/Topbar Container"]
+margin_left = 54.0
+margin_right = 104.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 0 )
+focus_mode = 2
+text = "Edit"
+switch_on_hover = true
+
+[node name="VSplitContainer" type="VSplitContainer" parent="Background/VBoxContainer"]
+margin_top = 34.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+split_offset = 150
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Background/VBoxContainer/VSplitContainer"]
+margin_right = 1024.0
+margin_bottom = 424.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+split_offset = 200
+
+[node name="LeftContainer" type="ScrollContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer"]
+margin_right = 706.0
+margin_bottom = 424.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ModTree" type="Tree" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer"]
+margin_right = 706.0
+margin_bottom = 424.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+column_titles_visible = true
+hide_folding = true
+hide_root = true
+select_mode = 1
+
+[node name="RightContainer" type="ScrollContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer"]
+margin_left = 718.0
+margin_right = 1024.0
+margin_bottom = 424.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ModDetailContainer" type="TabContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/RightContainer"]
+margin_right = 306.0
+margin_bottom = 424.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tab_align = 0
+
+[node name="Overview" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/RightContainer/ModDetailContainer" instance=ExtResource( 2 )]
+
+[node name="ConsoleBGBorder" type="ColorRect" parent="Background/VBoxContainer/VSplitContainer"]
+margin_top = 436.0
+margin_right = 1024.0
+margin_bottom = 566.0
+rect_min_size = Vector2( 0, 130 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0.141176, 0.137255, 0.156863, 1 )
+
+[node name="ConsoleBG" type="ColorRect" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder"]
+anchor_left = 0.000976563
+anchor_top = 0.00769231
+anchor_right = 0.999023
+anchor_bottom = 1.0
+color = Color( 0.172549, 0.164706, 0.196078, 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG"]
+margin_left = 10.0
+margin_top = 8.0
+margin_right = 65.0
+margin_bottom = 22.0
+text = "Console:"
+valign = 1
+
+[node name="TextBG" type="ColorRect" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 30.0
+margin_right = -10.0
+margin_bottom = -10.0
+color = Color( 0.145098, 0.137255, 0.145098, 1 )
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/TextBG"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/TextBG/ScrollContainer"]
+margin_right = 1002.0
+margin_bottom = 89.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+
+[node name="ClearButton" type="Button" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -56.0
+margin_top = 5.0
+margin_right = -12.0
+margin_bottom = 25.0
+text = "Clear"
+
+[node name="Windows" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="InputBlock" type="ColorRect" parent="Windows"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0666667, 0.0666667, 0.0666667, 0.333333 )
+
+[node name="OpeningSelectWindow" type="Control" parent="Windows"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -108.0
+margin_top = -84.9998
+margin_right = 108.0
+margin_bottom = 84.9998
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Border" type="ColorRect" parent="Windows/OpeningSelectWindow"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.254902, 0.243137, 0.286275, 1 )
+
+[node name="BG" type="ColorRect" parent="Windows/OpeningSelectWindow/Border"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 0.999997
+margin_right = -1.00009
+margin_bottom = -0.999939
+color = Color( 0.145098, 0.137255, 0.145098, 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Windows/OpeningSelectWindow/Border/BG"]
+anchor_right = 0.998515
+anchor_bottom = 0.998217
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Label" type="Label" parent="Windows/OpeningSelectWindow/Border/BG/VBoxContainer"]
+margin_right = 213.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+text = "Welcome to Mod Planner!"
+align = 1
+valign = 2
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="NewSessionButton" type="Button" parent="Windows/OpeningSelectWindow/Border/BG/VBoxContainer"]
+margin_left = 31.0
+margin_top = 40.0
+margin_right = 181.0
+margin_bottom = 90.0
+rect_min_size = Vector2( 150, 50 )
+size_flags_horizontal = 4
+text = "New Session"
+
+[node name="LoadSessionButton" type="Button" parent="Windows/OpeningSelectWindow/Border/BG/VBoxContainer"]
+margin_left = 31.0
+margin_top = 100.0
+margin_right = 181.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 150, 50 )
+size_flags_horizontal = 4
+text = "Load Session"
+
+[node name="GameSelectorWindow" parent="Windows" instance=ExtResource( 8 )]
+script = ExtResource( 9 )
+
+[node name="Label" type="Label" parent="Windows/GameSelectorWindow/Border2/BG" index="0"]
+anchor_top = 0.0276382
+anchor_right = 1.0
+anchor_bottom = 0.117915
+margin_bottom = 0.0699997
+text = "Select a supported game to plan for!"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Windows/GameSelectorWindow/Border2/BG" index="1"]
+anchor_left = 0.01875
+anchor_top = 0.128141
+anchor_right = 0.98125
+anchor_bottom = 0.896985
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="GameTree" type="Tree" parent="Windows/GameSelectorWindow/Border2/BG/ScrollContainer"]
+margin_right = 308.0
+margin_bottom = 306.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+hide_root = true
+
+[node name="SelectButton" type="Button" parent="Windows/GameSelectorWindow/Border2/BG" index="2"]
+anchor_left = 0.749999
+anchor_top = 0.919849
+anchor_right = 0.974999
+anchor_bottom = 0.969849
+margin_top = -0.100006
+text = "Select"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="CancelButton" type="Button" parent="Windows/GameSelectorWindow/Border2/BG" index="3"]
+anchor_left = 0.024999
+anchor_top = 0.919849
+anchor_right = 0.249999
+anchor_bottom = 0.969849
+margin_top = -0.100006
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ModAddWindow" parent="Windows" instance=ExtResource( 8 )]
+visible = true
+script = ExtResource( 12 )
+
+[node name="Label" type="Label" parent="Windows/ModAddWindow/Border2/BG" index="0"]
+anchor_right = 1.0
+margin_bottom = 29.0
+text = "Add a mod to the list"
+align = 1
+valign = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Windows/ModAddWindow/Border2/BG" index="1"]
+anchor_top = 0.0728643
+anchor_right = 1.0
+anchor_bottom = 0.939699
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ModConfigContainer" type="VBoxContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer"]
+margin_right = 320.0
+margin_bottom = 345.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AddButton" type="Button" parent="Windows/ModAddWindow/Border2/BG" index="2"]
+anchor_left = 0.849999
+anchor_top = 0.994975
+anchor_right = 0.984374
+anchor_bottom = 0.994975
+margin_top = -20.0
+text = "Add"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="CancelButton" type="Button" parent="Windows/ModAddWindow/Border2/BG" index="3"]
+anchor_left = 0.016
+anchor_top = 0.994975
+anchor_right = 0.184374
+anchor_bottom = 0.994975
+margin_left = -0.120306
+margin_top = -20.0
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="FileSearchWindows" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="FileDialog" type="FileDialog" parent="FileSearchWindows"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -157.0
+margin_top = -194.0
+margin_right = 158.0
+margin_bottom = 194.0
+window_title = "Open a File"
+dialog_text = "Select a .mplan session to load..."
+mode = 0
+access = 2
+filters = PoolStringArray( "*.mplan" )
+
+[connection signal="pressed" from="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/ClearButton" to="Managers/ConsoleManager" method="_on_ClearButton_pressed"]
+[connection signal="pressed" from="Windows/OpeningSelectWindow/Border/BG/VBoxContainer/NewSessionButton" to="Windows/OpeningSelectWindow" method="_on_NewSessionButton_pressed"]
+[connection signal="pressed" from="Windows/OpeningSelectWindow/Border/BG/VBoxContainer/LoadSessionButton" to="Windows/OpeningSelectWindow" method="_on_LoadSessionButton_pressed"]
+[connection signal="item_activated" from="Windows/GameSelectorWindow/Border2/BG/ScrollContainer/GameTree" to="Windows/GameSelectorWindow" method="_on_GameTree_item_activated"]
+[connection signal="item_selected" from="Windows/GameSelectorWindow/Border2/BG/ScrollContainer/GameTree" to="Windows/GameSelectorWindow" method="_on_GameTree_item_selected"]
+[connection signal="pressed" from="Windows/GameSelectorWindow/Border2/BG/SelectButton" to="Windows/GameSelectorWindow" method="_on_SelectButton_pressed"]
+[connection signal="pressed" from="Windows/GameSelectorWindow/Border2/BG/CancelButton" to="Windows/GameSelectorWindow" method="_on_CancelButton_pressed"]
+[connection signal="pressed" from="Windows/ModAddWindow/Border2/BG/AddButton" to="Windows/ModAddWindow" method="_on_AddButton_pressed"]
+[connection signal="pressed" from="Windows/ModAddWindow/Border2/BG/CancelButton" to="Windows/ModAddWindow" method="_on_CancelButton_pressed"]
+
+[editable path="Windows/GameSelectorWindow"]
+[editable path="Windows/ModAddWindow"]
