@@ -12,13 +12,50 @@ var resDataPath = "res://Assets/"
 var userDataPath = "user://"
 var gameExtenDir = "Game Extensions"
 
+#-- Color Hexes
+var clear = "#00000000"
+var grey = "#b2b5bb"
+var red = "#a25062"
+var yellow = "#b7ab7c"
+
 #-- Generic Scripts
-const columnConfigScript = preload("res://Scripts/Generics/ColumnConfig.gd")
 const popupDataScript = preload("res://Scripts/Generics/PopupData.gd")
 const managedGameScript = preload("res://Scripts/Generics/ManagedGame.gd")
+const modData = preload("res://Scripts/Generics/ModData.gd")
 
 #-- Globalizer
 var managers = {}
+
+#-- Example Mod
+var exampleMod = {
+		"color":"#b2b5bb",
+		"fields":{
+			"Mods":"Hello Word",
+			"Type":"Other",
+			"Version":"1.0.0",
+			"Source":"Nexus",
+			"Priority Order":"0",
+			"Load Order":"0"
+		},
+		"extras":{
+			"Link":"www.nexusmods.com/skyrim_se/hello_world_mod",
+			"Required":[
+				{
+					"Name":"World in Space",
+					"Link":"www.nexusmods.com/skyrim_se/world_in_space_mod"
+				}
+			],
+			"Incompatible":[
+				{
+					"Patchable":true,
+					"Name":"Goodbye World",
+					"Link":"www.nexusmods.com/skyrim_se/goodbye_world_mod",
+					"Patch":"www.nexusmods.com/skyrim_se/hello-goodbye_world_patch"
+				}
+			]
+		}
+		
+	}
 
 func _ready():
 	#- Makes sure the game extensions folder exists.

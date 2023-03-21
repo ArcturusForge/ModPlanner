@@ -11,8 +11,8 @@ onready var search_manager = $Managers/SearchManager
 onready var console_manager = $Managers/ConsoleManager
 
 #-- Dynamic Vals
-var columnData = []
 var managedGames = []
+var activeGame
 
 func _ready():
 	wipe_slate()
@@ -41,8 +41,12 @@ func _ready():
 #--- Starts a fresh session
 func start_new_session(extensionPath:String):
 	wipe_slate(true)
+	
+	#TEMP
+	Session.data.Mods.append(Globals.exampleMod)
+	
 	read_game_extension(extensionPath)
-	mod_tree_manager.draw_tree(columnData, Session.data["Mods"])
+	mod_tree_manager.draw_tree(activeGame, Session.data["Mods"])
 	console_manager.post("Started New Session")
 	pass
 
@@ -50,24 +54,27 @@ func start_new_session(extensionPath:String):
 func open_loaded_session(filePath:String):
 	wipe_slate(true)
 	Session.load_data(filePath)
+	var found = false
 	for game in managedGames:
 		if game.gameName == Session.data["Game"]:
-			var dir = Directory.new()
-			if not dir.file_exists(game.filePath):
-				console_manager.posterr("ERR1001 Cannot locate game extension: " + game.gameName)
-				return
+			found = true
 			read_game_extension(game.filePath)
 			break
-	mod_tree_manager.draw_tree(columnData, Session.data["Mods"])
+	
+	if not found:
+		console_manager.posterr("ERR1001 Cannot locate game extension: " + Session.data["Game"])
+		return
+	
+	mod_tree_manager.draw_tree(activeGame, Session.data["Mods"])
 	var sessionName = filePath.get_file()
 	console_manager.post("Loaded Session: " + sessionName)
 	pass
 
 #--- Resets the managers to a fresh state
 func wipe_slate(skipGames=false):
-	columnData.clear()
 	if not skipGames:
 		managedGames.clear()
+	activeGame = null
 	Session.reset_data()
 	Session.data["Game"] = ""
 	Session.data["Mods"] = []
@@ -76,11 +83,7 @@ func wipe_slate(skipGames=false):
 #--- Reads the setup data from the game compatibility plugin
 func read_game_extension(extensionPath:String):
 	var data = Functions.read_file(extensionPath)
-	for cat in data.Categories:
-		var catConfig = data[cat]
-		var tempConf = Globals.columnConfigScript.new()
-		tempConf.construct(cat, int(catConfig.Size))
-		columnData.append(tempConf)
+	activeGame = data
 	pass
 
 #--- Assigns options to all of the popups that MainManager interacts with.
@@ -108,6 +111,10 @@ func handle_file_menu(selectedOption):
 func handle_edit_menu(selectedOption):
 	match selectedOption:
 		"Add Mod":
-			print ("tryna add")
-			#TODO: Open a dialogue window for writing the mod info
+			window_manager.activate_window("modAdd")
+	pass
+
+func add_mod(modData):
+	Session.data.Mods.append(modData)
+	mod_tree_manager.draw_tree(activeGame, Session.data["Mods"])
 	pass

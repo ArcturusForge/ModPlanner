@@ -323,7 +323,6 @@ __meta__ = {
 }
 
 [node name="ModAddWindow" parent="Windows" instance=ExtResource( 8 )]
-visible = true
 script = ExtResource( 12 )
 
 [node name="Label" type="Label" parent="Windows/ModAddWindow/Border2/BG" index="0"]
@@ -337,22 +336,26 @@ valign = 1
 anchor_top = 0.0728643
 anchor_right = 1.0
 anchor_bottom = 0.939699
+margin_left = 10.0
+margin_right = -10.0
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
 [node name="ModConfigContainer" type="VBoxContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer"]
-margin_right = 320.0
+margin_right = 300.0
 margin_bottom = 345.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="AddButton" type="Button" parent="Windows/ModAddWindow/Border2/BG" index="2"]
-anchor_left = 0.849999
+anchor_left = 0.815624
 anchor_top = 0.994975
-anchor_right = 0.984374
-anchor_bottom = 0.994975
+anchor_right = 0.984
+anchor_bottom = 0.995
 margin_top = -20.0
+margin_right = 0.11969
+margin_bottom = -0.0100098
 text = "Add"
 __meta__ = {
 "_edit_use_anchors_": true

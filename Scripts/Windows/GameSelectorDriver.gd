@@ -48,7 +48,10 @@ func _on_SelectButton_pressed():
 	pass
 
 func _on_CancelButton_pressed():
-	window_manager.activate_window("openSelect")
+	if mainManager.activeGame == null:
+		window_manager.activate_window("openSelect")
+	else:
+		window_manager.disable_window()
 	pass
 
 func _on_GameTree_item_selected():

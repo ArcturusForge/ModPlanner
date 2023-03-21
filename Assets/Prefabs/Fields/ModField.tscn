@@ -1,0 +1,32 @@
+[gd_scene format=2]
+
+[node name="ModField" type="VBoxContainer"]
+margin_right = 300.0
+margin_bottom = 58.0
+custom_constants/separation = 5
+
+[node name="HeaderLabel" type="Label" parent="."]
+margin_right = 300.0
+margin_bottom = 14.0
+text = "Header:"
+valign = 1
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_top = 19.0
+margin_right = 300.0
+margin_bottom = 43.0
+
+[node name="Divider" type="Control" parent="."]
+margin_top = 48.0
+margin_right = 300.0
+margin_bottom = 58.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="DividerColor" type="ColorRect" parent="Divider"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -150.0
+margin_right = 150.0
+margin_bottom = 1.0
+rect_min_size = Vector2( 0, 1 )
+color = Color( 0.278431, 0.278431, 0.278431, 1 )

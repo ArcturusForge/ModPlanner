@@ -20,6 +20,11 @@ Globals="*res://Scripts/Globals/Globals.gd"
 Session="*res://Scripts/Globals/Session.gd"
 Functions="*res://Scripts/Globals/Functions.gd"
 
+[global]
+
+icon=false
+iconkjhk=false
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
