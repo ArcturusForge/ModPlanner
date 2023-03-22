@@ -30,7 +30,7 @@ var managers = {}
 var exampleMod = {
 		"color":"#b2b5bb",
 		"fields":{
-			"Mods":"Hello Word",
+			"Mods":"Hello World",
 			"Type":"Other",
 			"Version":"1.0.0",
 			"Source":"Nexus",

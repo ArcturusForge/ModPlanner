@@ -15,8 +15,9 @@ func set_focus():
 func get_value():
 	return field.text
 
-func set_label(text:String):
-	label.text = text
+func set_data(labelText:String, _data = null):
+	label.text = labelText
+	pass
 
 func _on_LineEdit_text_entered(_new_text):
 	if not nextField == null:

@@ -9,7 +9,7 @@
 [ext_resource path="res://Scripts/Windows/OpeningSelectDriver.gd" type="Script" id=7]
 [ext_resource path="res://Assets/Prefabs/WindowPanel.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scripts/Windows/GameSelectorDriver.gd" type="Script" id=9]
-[ext_resource path="res://Scripts/SearchManager.gd" type="Script" id=10]
+[ext_resource path="res://Scripts/Managers/SearchManager.gd" type="Script" id=10]
 [ext_resource path="res://Scripts/Managers/ConsoleManager.gd" type="Script" id=11]
 [ext_resource path="res://Scripts/Windows/ModAddDriver.gd" type="Script" id=12]
 
@@ -167,12 +167,14 @@ color = Color( 0.145098, 0.137255, 0.145098, 1 )
 [node name="ScrollContainer" type="ScrollContainer" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/TextBG"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/TextBG/ScrollContainer"]
-margin_right = 1002.0
-margin_bottom = 89.0
+margin_right = 992.0
+margin_bottom = 79.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
@@ -323,32 +325,202 @@ __meta__ = {
 }
 
 [node name="ModAddWindow" parent="Windows" instance=ExtResource( 8 )]
+visible = true
+anchor_left = 0.190938
+anchor_top = 0.107
+anchor_right = 0.809063
+anchor_bottom = 0.893
 script = ExtResource( 12 )
 
 [node name="Label" type="Label" parent="Windows/ModAddWindow/Border2/BG" index="0"]
 anchor_right = 1.0
-margin_bottom = 29.0
-text = "Add a mod to the list"
+anchor_bottom = 0.062
+margin_bottom = -0.140001
+text = "Mod Window"
 align = 1
 valign = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Windows/ModAddWindow/Border2/BG" index="1"]
-anchor_top = 0.0728643
-anchor_right = 1.0
-anchor_bottom = 0.939699
+anchor_top = 0.072
+anchor_right = 0.479
+anchor_bottom = 0.938
 margin_left = 10.0
-margin_right = -10.0
+margin_top = 0.16
+margin_right = 0.229645
+margin_bottom = 0.139984
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
 [node name="ModConfigContainer" type="VBoxContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer"]
-margin_right = 300.0
-margin_bottom = 345.0
+margin_right = 292.0
+margin_bottom = 407.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="AddButton" type="Button" parent="Windows/ModAddWindow/Border2/BG" index="2"]
+[node name="ScrollContainer2" type="ScrollContainer" parent="Windows/ModAddWindow/Border2/BG" index="2"]
+anchor_left = 0.513
+anchor_top = 0.072
+anchor_right = 1.0
+anchor_bottom = 0.938
+margin_left = -0.18396
+margin_top = 0.16
+margin_right = -10.0
+margin_bottom = 0.139984
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ModConfigContainer" type="VBoxContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2"]
+margin_right = 296.994
+margin_bottom = 407.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ModExtrasField" type="VBoxContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer"]
+margin_right = 296.0
+margin_bottom = 148.0
+custom_constants/separation = 5
+
+[node name="HeaderLabel" type="Label" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
+margin_right = 296.0
+margin_bottom = 14.0
+text = "Mod Link:"
+valign = 1
+
+[node name="ModLinkText" type="LineEdit" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
+margin_top = 19.0
+margin_right = 296.0
+margin_bottom = 43.0
+
+[node name="Divider" type="Control" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
+margin_top = 48.0
+margin_right = 296.0
+margin_bottom = 58.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="DividerColor" type="ColorRect" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/Divider"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -150.0
+margin_right = 150.0
+margin_bottom = 1.0
+rect_min_size = Vector2( 0, 1 )
+color = Color( 0.278431, 0.278431, 0.278431, 1 )
+
+[node name="RequireModsMenu" type="HBoxContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
+margin_top = 63.0
+margin_right = 296.0
+margin_bottom = 83.0
+
+[node name="HeaderLabel2" type="Label" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequireModsMenu"]
+margin_top = 3.0
+margin_right = 100.0
+margin_bottom = 17.0
+text = "Required Mods:"
+valign = 1
+
+[node name="Spacer" type="Control" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequireModsMenu"]
+margin_left = 104.0
+margin_right = 223.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="AddReqButton" type="Button" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequireModsMenu"]
+margin_left = 227.0
+margin_right = 296.0
+margin_bottom = 20.0
+text = "Add Mod"
+
+[node name="RequiredModsList" type="MarginContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
+margin_top = 88.0
+margin_right = 296.0
+margin_bottom = 88.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="BG" type="ColorRect" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequiredModsList"]
+margin_right = 296.0
+color = Color( 0, 0, 0, 0.109804 )
+
+[node name="ReqContainer" type="VBoxContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequiredModsList"]
+margin_right = 296.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 20
+
+[node name="Divider2" type="Control" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
+margin_top = 93.0
+margin_right = 296.0
+margin_bottom = 103.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="DividerColor" type="ColorRect" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/Divider2"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -150.0
+margin_right = 150.0
+margin_bottom = 1.0
+rect_min_size = Vector2( 0, 1 )
+color = Color( 0.278431, 0.278431, 0.278431, 1 )
+
+[node name="IncompatibleModsMenu" type="HBoxContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
+margin_top = 108.0
+margin_right = 296.0
+margin_bottom = 128.0
+
+[node name="HeaderLabel2" type="Label" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsMenu"]
+margin_top = 3.0
+margin_right = 128.0
+margin_bottom = 17.0
+text = "Incompatible Mods:"
+valign = 1
+
+[node name="Spacer" type="Control" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsMenu"]
+margin_left = 132.0
+margin_right = 223.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="AddIncButton" type="Button" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsMenu"]
+margin_left = 227.0
+margin_right = 296.0
+margin_bottom = 20.0
+text = "Add Mod"
+
+[node name="IncompatibleModsList" type="MarginContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
+margin_top = 133.0
+margin_right = 296.0
+margin_bottom = 133.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="BG" type="ColorRect" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsList"]
+margin_right = 296.0
+color = Color( 0, 0, 0, 0.109804 )
+
+[node name="IncompatibleContainer" type="VBoxContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsList"]
+margin_right = 296.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 20
+
+[node name="Divider3" type="Control" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
+margin_top = 138.0
+margin_right = 296.0
+margin_bottom = 148.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="DividerColor" type="ColorRect" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/Divider3"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -150.0
+margin_right = 150.0
+margin_bottom = 1.0
+rect_min_size = Vector2( 0, 1 )
+color = Color( 0.278431, 0.278431, 0.278431, 1 )
+
+[node name="AddButton" type="Button" parent="Windows/ModAddWindow/Border2/BG" index="3"]
 anchor_left = 0.815624
 anchor_top = 0.994975
 anchor_right = 0.984
@@ -361,7 +533,7 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="CancelButton" type="Button" parent="Windows/ModAddWindow/Border2/BG" index="3"]
+[node name="CancelButton" type="Button" parent="Windows/ModAddWindow/Border2/BG" index="4"]
 anchor_left = 0.016
 anchor_top = 0.994975
 anchor_right = 0.184374
@@ -404,6 +576,8 @@ filters = PoolStringArray( "*.mplan" )
 [connection signal="item_selected" from="Windows/GameSelectorWindow/Border2/BG/ScrollContainer/GameTree" to="Windows/GameSelectorWindow" method="_on_GameTree_item_selected"]
 [connection signal="pressed" from="Windows/GameSelectorWindow/Border2/BG/SelectButton" to="Windows/GameSelectorWindow" method="_on_SelectButton_pressed"]
 [connection signal="pressed" from="Windows/GameSelectorWindow/Border2/BG/CancelButton" to="Windows/GameSelectorWindow" method="_on_CancelButton_pressed"]
+[connection signal="pressed" from="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequireModsMenu/AddReqButton" to="Windows/ModAddWindow" method="_on_AddReqButton_pressed"]
+[connection signal="pressed" from="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsMenu/AddIncButton" to="Windows/ModAddWindow" method="_on_AddIncButton_pressed"]
 [connection signal="pressed" from="Windows/ModAddWindow/Border2/BG/AddButton" to="Windows/ModAddWindow" method="_on_AddButton_pressed"]
 [connection signal="pressed" from="Windows/ModAddWindow/Border2/BG/CancelButton" to="Windows/ModAddWindow" method="_on_CancelButton_pressed"]
 

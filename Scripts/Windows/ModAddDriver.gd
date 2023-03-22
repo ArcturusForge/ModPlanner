@@ -8,13 +8,21 @@ var mainManager
 
 #-- Scene Refs
 onready var mod_config_container = $Border2/BG/ScrollContainer/ModConfigContainer
+onready var req_container = $Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequiredModsList/ReqContainer
+onready var inc_container = $Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsList/IncompatibleContainer
+onready var mod_link_text = $Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/ModLinkText
 
 #-- Prefabs
-var one_line_field = "res://Assets/Prefabs/Fields/OneLineField.tscn"
-var integer_field = "res://Assets/Prefabs/Fields/IntegerField.tscn"
+var one_line_field = "res://Assets/Prefabs/Fields/Modular/OneLineField.tscn"
+var integer_field = "res://Assets/Prefabs/Fields/Modular/IntegerField.tscn"
+var selector_field = "res://Assets/Prefabs/Fields/Modular/SelectorField.tscn"
+var incom_mod = "res://Assets/Prefabs/Fields/Extras/IncompatibleMod.tscn"
+var requi_mod = "res://Assets/Prefabs/Fields/Extras/RequiredMod.tscn"
 
 #-- Dynamic Vars
 var fields = []
+var required = []
+var incompatible = []
 
 #--- Called when the window is added to the scene.
 func _create():
@@ -40,17 +48,22 @@ func _destroy():
 func generate_window():
 	var activeGame = mainManager.activeGame
 	var previousField = null
+	
 	for category in activeGame.Categories:
 		#- Match the field's type to a prefab
 		var inst
+		var data = []
 		match category.Field.to_lower():
 			"string":
 				inst = Functions.get_from_prefab(one_line_field)
 			"integer":
 				inst = Functions.get_from_prefab(integer_field)
 			"select":
-				#TODO: Read from choice array in game data.
-				continue
+				inst = Functions.get_from_prefab(selector_field)
+				
+				#- Read from choice array in game data.
+				for option in category.Select:
+					data.append(option)
 		
 		#- Safety check
 		if inst == null:
@@ -69,11 +82,8 @@ func generate_window():
 		
 		#- Configure the current field
 		previousField = inst
-		inst.set_label(category.Prompt)
+		inst.set_data(category.Prompt, data)
 		inst.fieldData = category
-	
-	#TODO: Generate extra's fields
-	
 	
 	#- Set focus to the first field
 	fields[0].set_focus()
@@ -92,7 +102,17 @@ func _on_CancelButton_pressed():
 	window_manager.disable_window()
 	pass
 
-#--- Called by the last input field. Named this way on purpose.
+#--- Called by the last modular input field. Named this way on purpose.
 func set_focus():
-	_on_AddButton_pressed()
+	mod_link_text.grab_focus()
+	pass
+
+
+func _on_AddReqButton_pressed():
+	#TODO: Instantiate a required mod inside the requi_mod parent
+	pass
+
+
+func _on_AddIncButton_pressed():
+	#TODO: Instantiate a incompatible mod inside the incom_mod parent
 	pass

@@ -41,13 +41,12 @@ func _ready():
 #--- Starts a fresh session
 func start_new_session(extensionPath:String):
 	wipe_slate(true)
-	
-	#TEMP
-	Session.data.Mods.append(Globals.exampleMod)
-	
 	read_game_extension(extensionPath)
 	mod_tree_manager.draw_tree(activeGame, Session.data["Mods"])
 	console_manager.post("Started New Session")
+	
+	#TEMP:
+	add_mod(Globals.exampleMod)
 	pass
 
 #--- Loads an existing session
@@ -117,4 +116,6 @@ func handle_edit_menu(selectedOption):
 func add_mod(modData):
 	Session.data.Mods.append(modData)
 	mod_tree_manager.draw_tree(activeGame, Session.data["Mods"])
+	console_manager.post("Added new mod: " + modData.fields.Mods)
+	Globals.repaint_app_name(true)
 	pass
