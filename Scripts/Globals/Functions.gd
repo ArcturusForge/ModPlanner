@@ -140,3 +140,7 @@ func ensure_directory(path:String):
 	var d = Directory.new()
 	if not d.dir_exists(path):
 		d.make_dir_recursive(path)
+
+func wait_frame():
+	yield(get_tree().create_timer(0.001),"timeout")
+	pass

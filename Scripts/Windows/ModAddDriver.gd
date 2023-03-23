@@ -74,7 +74,7 @@ func generate_window():
 		fields.append(inst)
 		
 		#- Wait a frame for the current field's scene refs to connect
-		yield(get_tree().create_timer(0.001), "timeout")
+		Functions.wait_frame()
 		
 		#- Link the previous field to the current one
 		if not previousField == null:
@@ -107,12 +107,38 @@ func set_focus():
 	mod_link_text.grab_focus()
 	pass
 
-
+#--- Creates a new required mod field.
 func _on_AddReqButton_pressed():
-	#TODO: Instantiate a required mod inside the requi_mod parent
+	var inst = Functions.get_from_prefab(requi_mod)
+	req_container.add_child(inst)
+	Functions.wait_frame()
+	inst.construct(self, required.size())
+	required.append(inst)
 	pass
 
-
+#--- Creates a new incompatible mod field.
 func _on_AddIncButton_pressed():
-	#TODO: Instantiate a incompatible mod inside the incom_mod parent
+	var inst = Functions.get_from_prefab(incom_mod)
+	inc_container.add_child(inst)
+	Functions.wait_frame()
+	inst.construct(self, incompatible.size())
+	incompatible.append(inst)
+	pass
+
+#--- Removes a required mod from the tracked list.
+func remove_required(listIndex):
+	required.remove(listIndex)
+	if not required.size() > 0:
+		return
+	for i in range(listIndex, required.size()):
+		required[i].drop_index()
+	pass
+
+#--- Removes a incompatible mod from the tracked list.
+func remove_incompatible(listIndex):
+	incompatible.remove(listIndex)
+	if not incompatible.size() > 0:
+		return
+	for i in range(listIndex, incompatible.size()):
+		incompatible[i].drop_index()
 	pass

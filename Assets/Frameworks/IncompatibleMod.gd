@@ -11,6 +11,11 @@ onready var patch_link_text = $Fields/PatchLinkText
 var modADriver
 var listIndex
 
+func construct(driver, index):
+	modADriver = driver
+	listIndex = index
+	pass
+
 func get_data():
 	if not patchable_check_box.pressed:
 		patch_link_text.text = ""
@@ -29,6 +34,7 @@ func drop_index():
 
 func _on_DeleteButton_pressed():
 	modADriver.remove_incompatible(listIndex)
+	self.queue_free()
 	pass
 
 func _on_PatchableCheckBox_toggled(button_pressed):

@@ -8,6 +8,11 @@ onready var mod_link_text = $Fields/ModLinkText
 var modADriver
 var listIndex
 
+func construct(driver, index):
+	modADriver = driver
+	listIndex = index
+	pass
+
 func get_data():
 	var data = {
 		"Name":mod_name_text.text,
@@ -21,4 +26,5 @@ func drop_index():
 
 func _on_DeleteButton_pressed():
 	modADriver.remove_required(listIndex)
+	self.queue_free()
 	pass

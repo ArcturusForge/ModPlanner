@@ -10,13 +10,13 @@ script = ExtResource( 1 )
 
 [node name="Spacer" type="Control" parent="."]
 margin_right = 5.0
-margin_bottom = 113.0
+margin_bottom = 117.0
 rect_min_size = Vector2( 5, 0 )
 
 [node name="Fields" type="VBoxContainer" parent="."]
 margin_left = 9.0
 margin_right = 258.0
-margin_bottom = 113.0
+margin_bottom = 117.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 5
@@ -36,30 +36,32 @@ valign = 1
 [node name="ModNameText" type="LineEdit" parent="Fields"]
 margin_top = 27.0
 margin_right = 249.0
-margin_bottom = 51.0
+margin_bottom = 53.0
+clear_button_enabled = true
 
 [node name="Control2" type="Control" parent="Fields"]
-margin_top = 56.0
+margin_top = 58.0
 margin_right = 249.0
-margin_bottom = 59.0
+margin_bottom = 61.0
 rect_min_size = Vector2( 0, 3 )
 
 [node name="HeaderLabel2" type="Label" parent="Fields"]
-margin_top = 64.0
+margin_top = 66.0
 margin_right = 249.0
-margin_bottom = 78.0
+margin_bottom = 80.0
 text = "Mod Link:"
 valign = 1
 
 [node name="ModLinkText" type="LineEdit" parent="Fields"]
-margin_top = 83.0
+margin_top = 85.0
 margin_right = 249.0
-margin_bottom = 107.0
+margin_bottom = 111.0
+clear_button_enabled = true
 
 [node name="Divider" type="Control" parent="Fields"]
-margin_top = 112.0
+margin_top = 116.0
 margin_right = 249.0
-margin_bottom = 113.0
+margin_bottom = 117.0
 rect_min_size = Vector2( 0, 1 )
 size_flags_horizontal = 3
 
@@ -72,14 +74,14 @@ color = Color( 0.278431, 0.278431, 0.278431, 1 )
 [node name="Spacer4" type="Control" parent="."]
 margin_left = 262.0
 margin_right = 263.0
-margin_bottom = 113.0
+margin_bottom = 117.0
 rect_min_size = Vector2( 1, 0 )
 size_flags_vertical = 3
 
 [node name="Delete" type="VBoxContainer" parent="."]
 margin_left = 267.0
 margin_right = 287.0
-margin_bottom = 113.0
+margin_bottom = 117.0
 
 [node name="Spacer2" type="Control" parent="Delete"]
 margin_right = 20.0
@@ -89,21 +91,21 @@ rect_min_size = Vector2( 10, 30 )
 [node name="DeleteButton" type="Button" parent="Delete"]
 margin_top = 34.0
 margin_right = 20.0
-margin_bottom = 79.0
+margin_bottom = 83.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "X"
 
 [node name="Spacer3" type="Control" parent="Delete"]
-margin_top = 83.0
+margin_top = 87.0
 margin_right = 20.0
-margin_bottom = 113.0
+margin_bottom = 117.0
 rect_min_size = Vector2( 10, 30 )
 
 [node name="Spacer5" type="Control" parent="."]
 margin_left = 291.0
 margin_right = 296.0
-margin_bottom = 113.0
+margin_bottom = 117.0
 rect_min_size = Vector2( 5, 0 )
 size_flags_vertical = 3
 

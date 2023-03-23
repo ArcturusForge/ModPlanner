@@ -325,7 +325,6 @@ __meta__ = {
 }
 
 [node name="ModAddWindow" parent="Windows" instance=ExtResource( 8 )]
-visible = true
 anchor_left = 0.190938
 anchor_top = 0.107
 anchor_right = 0.809063
@@ -379,7 +378,7 @@ size_flags_vertical = 3
 
 [node name="ModExtrasField" type="VBoxContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer"]
 margin_right = 296.0
-margin_bottom = 148.0
+margin_bottom = 150.0
 custom_constants/separation = 5
 
 [node name="HeaderLabel" type="Label" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
@@ -391,12 +390,13 @@ valign = 1
 [node name="ModLinkText" type="LineEdit" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
 margin_top = 19.0
 margin_right = 296.0
-margin_bottom = 43.0
+margin_bottom = 45.0
+clear_button_enabled = true
 
 [node name="Divider" type="Control" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
-margin_top = 48.0
+margin_top = 50.0
 margin_right = 296.0
-margin_bottom = 58.0
+margin_bottom = 60.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="DividerColor" type="ColorRect" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/Divider"]
@@ -409,9 +409,9 @@ rect_min_size = Vector2( 0, 1 )
 color = Color( 0.278431, 0.278431, 0.278431, 1 )
 
 [node name="RequireModsMenu" type="HBoxContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
-margin_top = 63.0
+margin_top = 65.0
 margin_right = 296.0
-margin_bottom = 83.0
+margin_bottom = 85.0
 
 [node name="HeaderLabel2" type="Label" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequireModsMenu"]
 margin_top = 3.0
@@ -433,9 +433,9 @@ margin_bottom = 20.0
 text = "Add Mod"
 
 [node name="RequiredModsList" type="MarginContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
-margin_top = 88.0
+margin_top = 90.0
 margin_right = 296.0
-margin_bottom = 88.0
+margin_bottom = 90.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -450,9 +450,9 @@ size_flags_vertical = 3
 custom_constants/separation = 20
 
 [node name="Divider2" type="Control" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
-margin_top = 93.0
+margin_top = 95.0
 margin_right = 296.0
-margin_bottom = 103.0
+margin_bottom = 105.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="DividerColor" type="ColorRect" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/Divider2"]
@@ -465,9 +465,9 @@ rect_min_size = Vector2( 0, 1 )
 color = Color( 0.278431, 0.278431, 0.278431, 1 )
 
 [node name="IncompatibleModsMenu" type="HBoxContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
-margin_top = 108.0
+margin_top = 110.0
 margin_right = 296.0
-margin_bottom = 128.0
+margin_bottom = 130.0
 
 [node name="HeaderLabel2" type="Label" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsMenu"]
 margin_top = 3.0
@@ -489,9 +489,9 @@ margin_bottom = 20.0
 text = "Add Mod"
 
 [node name="IncompatibleModsList" type="MarginContainer" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
-margin_top = 133.0
+margin_top = 135.0
 margin_right = 296.0
-margin_bottom = 133.0
+margin_bottom = 135.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -506,9 +506,9 @@ size_flags_vertical = 3
 custom_constants/separation = 20
 
 [node name="Divider3" type="Control" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
-margin_top = 138.0
+margin_top = 140.0
 margin_right = 296.0
-margin_bottom = 148.0
+margin_bottom = 150.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="DividerColor" type="ColorRect" parent="Windows/ModAddWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/Divider3"]

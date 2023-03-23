@@ -2,8 +2,8 @@
 
 # -/ Fix bug for cancel on the game select window directly activating the opening menu.
 # -/ Create the choice field prefab.
-# - Design extra's field script template.
-# - Generate the extra's fields in ModAddDriver.
+# -/ Design extra's field script template.
+# -/ Generate the extra's fields in ModAddDriver.
 # - Design game extension plugin script template.
 # - Display mod data in the preview panel.
 # - Save popup
