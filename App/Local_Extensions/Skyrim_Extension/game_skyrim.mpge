@@ -1,0 +1,51 @@
+{
+	"Name":"Skyrim",
+	"Script":"SkyrimExtensionDriver.gd",
+	"Categories":
+	[
+		{
+			"Title":"Mods",
+			"Tooltip":"The name of a mod included inside the mod-list.",
+			"Prompt":"Mod Name:",
+			"Size":200,
+			"Field":"String"
+		},
+		{
+			"Title":"Type",
+			"Tooltip":"The type of a mod included inside the mod-list.",
+			"Prompt":"Mod Type:",
+			"Size":100,
+			"Field":"Select",
+			"Select":["Master", "Plugin", "Patch", "Other"]
+		},
+		{
+			"Title":"Version",
+			"Tooltip":"The version number of a mod to install within the mod-list.",
+			"Prompt":"Mod Version:",
+			"Size":100,
+			"Field":"String"
+		},
+		{
+			"Title":"Source",
+			"Tooltip":"The origin of where you can find a mod included inside the mod list.",
+			"Prompt":"Mod Origin:",
+			"Size":100,
+			"Field":"Select",
+			"Select":["Nexus", "LoversLab", "Mod DB", "Patreon", "Discord", "Other"]
+		},
+		{
+			"Title":"Priority Order",
+			"Tooltip":"The order in which mod files, like meshes, should be loaded in.",
+			"Prompt":"Mod Files Priority Order:",
+			"Size":100,
+			"Field":"Integer"
+		},
+		{
+			"Title":"Load Order",
+			"Tooltip":"The order in which mod plugins, like .esp/.esm files, should be loaded in.",
+			"Prompt":"Mod Plugin Load Order:",
+			"Size":100,
+			"Field":"Integer"
+		}
+	]
+}

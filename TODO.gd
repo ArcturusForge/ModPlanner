@@ -5,17 +5,22 @@
 # -/ Design extra's field script template.
 # -/ Generate the extra's fields in ModAddDriver.
 # -/ Save popup
-# - Edit a mod. Rewrite the modEditDriver script to handle pre-existing data.
-# - Design game extension plugin script template.
-# - Display mod data in the preview panel.
+# -/ Edit a mod. Rewrite the modEditDriver script to handle pre-existing data.
+# -/ Rework mod names into an extra's field instead. ->OR convert scan function into plugin script.
+# -/ Design game extension plugin script template.
+# -/ Have a hyperlink feature to link to mod download locations.
+# -/ Create a mod list scan feature that checks for compatibility/required mods.
+# -/ Create an "open all links" button to rapidly open all linked mods in a browser.
+# -/ Track when mod list needs to be scanned for compatibility due to edits.
+# -/ Sorting options based on which column header is clicked.
+# - ModTreeManager: open tooltip with options.
+# - ModTreeManager: Add delete mod tooltip option.
+# - ModTreeManager: Add open mod link tooltip option.
+# - ModTreeManager: Add separator support.
 # - Track game version for session.
-# - Have a hyperlink feature to link to mod download locations.
 # - Add a copy link shortcut button to mod dl hyperlink.
-# - Create a mod list scan feature that checks for compatibility/required mods.
-# - Track when mod list needs to be scanned for compatibility due to edits.
-# - Create an "open all links" button to rapidly open all linked mods in a browser.
-# - Sorting options based on which column header is clicked.
 # - When scanning the mod list and detecting duplicated load order positions 
 #	activate a prompt that asks for which mod should be placed below the other 
 #	and then iteratively adjust proceeding placements in the load order. 
 #	The same can be done for priority order.
+# - Display mod data in the preview panel.

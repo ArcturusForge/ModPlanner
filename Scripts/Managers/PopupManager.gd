@@ -6,6 +6,7 @@ const my_id = "popups"
 #-- Scene Refs
 onready var file_menu_button = $"../../Background/VBoxContainer/Topbar Container/FileMenuButton"
 onready var edit_menu_button = $"../../Background/VBoxContainer/Topbar Container/EditMenuButton"
+onready var scan_menu_button = $"../../Background/VBoxContainer/Topbar Container/ScanMenuButton"
 
 #-- Dynamic Vars
 var popupRegistries = {}
@@ -15,6 +16,7 @@ func jump_start():
 	Globals.set_manager(my_id, self)
 	register_popup("FileMenu", file_menu_button.get_popup())
 	register_popup("EditMenu", edit_menu_button.get_popup())
+	register_popup("ScanMenu", scan_menu_button.get_popup())
 	pass
 
 func register_popup(name, popup):

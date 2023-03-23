@@ -11,8 +11,12 @@ onready var search_manager = $Managers/SearchManager
 onready var console_manager = $Managers/ConsoleManager
 
 #-- Dynamic Vals
+var scanData
 var managedGames = []
-var activeGame
+var activeGame = {
+	"script":null,
+	"data":null
+}
 
 func _ready():
 	wipe_slate()
@@ -21,6 +25,7 @@ func _ready():
 	
 	#- Read from the game extensions folder to get a list of the supported games.
 	var gameExtensions = Functions.get_all_files(Globals.userDataPath + Globals.gameExtenDir, Globals.gameExtension)
+	gameExtensions = Functions.get_all_files(Globals.localExtenPath, Globals.gameExtension, true, gameExtensions)
 	for extension in gameExtensions:
 		var game = Globals.managedGameScript.new()
 		game.construct(extension)
@@ -42,11 +47,13 @@ func _ready():
 func start_new_session(extensionPath:String):
 	wipe_slate(true)
 	read_game_extension(extensionPath)
-	mod_tree_manager.draw_tree(activeGame, Session.data["Mods"])
+	repaint_mods()
 	console_manager.post("Started New Session")
 	
 	#TEMP:
-	add_mod(Globals.exampleMod)
+	add_mod(Globals.exampleMod1)
+	add_mod(Globals.exampleMod2)
+	add_mod(Globals.exampleMod3)
 	pass
 
 #--- Loads an existing session
@@ -61,10 +68,10 @@ func open_loaded_session(filePath:String):
 			break
 	
 	if not found:
-		console_manager.posterr("ERR1001 Cannot locate game extension: " + Session.data["Game"])
+		console_manager.posterr("ERR1001: Cannot locate game extension " + Session.data["Game"])
 		return
 	
-	mod_tree_manager.draw_tree(activeGame, Session.data["Mods"])
+	repaint_mods()
 	var sessionName = filePath.get_file()
 	console_manager.post("Loaded Session: " + sessionName)
 	pass
@@ -73,7 +80,11 @@ func open_loaded_session(filePath:String):
 func wipe_slate(skipGames=false):
 	if not skipGames:
 		managedGames.clear()
-	activeGame = null
+	activeGame = {
+		"script":null,
+		"data":null
+	}
+	scanData = null
 	Session.reset_data()
 	Session.data["Game"] = ""
 	Session.data["Mods"] = []
@@ -82,13 +93,15 @@ func wipe_slate(skipGames=false):
 #--- Reads the setup data from the game compatibility plugin
 func read_game_extension(extensionPath:String):
 	var data = Functions.read_file(extensionPath)
-	activeGame = data
+	var dir = extensionPath.get_base_dir()
+	activeGame.script = load(Functions.os_path_convert(dir+"/"+data.Script)).new()
+	activeGame.data = data
 	Session.data["Game"] = extensionPath.get_file()
 	pass
 
 #--- Assigns options to all of the popups that MainManager interacts with.
 func assign_options():
-	#- Assign options to the FileMenuButton popup
+	#- Assign options to the FileMenuButton popup.
 	var filePData = popup_manager.get_popup_data("FileMenu")
 	filePData.register_entity(my_id, self, "handle_file_menu")
 	filePData.add_option(my_id, "Open Session", KEY_O)
@@ -97,10 +110,18 @@ func assign_options():
 	filePData.add_option(my_id, "Save", KEY_S)
 	filePData.add_option(my_id, "Save As", KEY_S, true)
 	
-	#- Assign Options to the EditMenuButton popup
+	#- Assign Options to the EditMenuButton popup.
 	var editPData = popup_manager.get_popup_data("EditMenu")
 	editPData.register_entity(my_id, self, "handle_edit_menu")
 	editPData.add_option(my_id, "Add Mod", KEY_A, true)
+	
+	#- Assign options to the ScanMenuButton popup.
+	var scanPData = popup_manager.get_popup_data("ScanMenu")
+	scanPData.register_entity(my_id, self, "handle_scan_menu")
+	scanPData.add_option(my_id, "Run Scan", KEY_R)
+	scanPData.add_separator(my_id, "After Scan")
+	scanPData.add_option(my_id, "Post Results", null, false, true)
+	scanPData.add_option(my_id, "Open Links", null, false, true)
 	pass
 
 func handle_file_menu(selectedOption):
@@ -126,6 +147,20 @@ func handle_edit_menu(selectedOption):
 			window_manager.activate_window("modAdd")
 	pass
 
+func handle_scan_menu(selectedOption):
+	match selectedOption:
+		"Run Scan":
+			console_manager.post("Scanning mod list for compatibility...")
+			scan_mods()
+		"Post Results":
+			console_manager.post("Posting scan results...")
+			scanData.post_result()
+		"Open Links":
+			console_manager.post("Opening links to all missing mods...")
+			for link in scanData.compile_links():
+				Functions.open_link(link)
+	pass
+
 func handle_save(filePath):
 	Session.sessionName = filePath.get_file()
 	Session.save_data(filePath)
@@ -135,15 +170,49 @@ func handle_save(filePath):
 func add_mod(modData):
 	modData["index"] = Session.data.Mods.size()
 	Session.data.Mods.append(modData)
-	mod_tree_manager.draw_tree(activeGame, Session.data["Mods"])
+	repaint_mods()
 	console_manager.post("Added new mod: " + modData.fields.Mods)
 	Globals.repaint_app_name(true)
+	reset_scan()
 	pass
 
 func edit_mod(modData, modIndex):
 	modData["index"] = modIndex
 	Session.data.Mods[modIndex] = modData
-	mod_tree_manager.draw_tree(activeGame, Session.data["Mods"])
+	repaint_mods()
 	console_manager.post("Edited mod: " + modData.fields.Mods)
 	Globals.repaint_app_name(true)
+	reset_scan()
 	pass
+
+func reset_scan():
+	scanData = null
+	var p = popup_manager.get_popup_data("ScanMenu")
+	p.lock_option(my_id, "Post Results")
+	p.lock_option(my_id, "Open Links")
+	pass
+
+func scan_mods():
+	if activeGame.data == null:
+		console_manager.posterr("ERR1002: No Session is active. Please start a session first!")
+		return
+	
+	if activeGame.script == null:
+		console_manager.posterr("ERR1003: Game Extension does not have a script included!!")
+		return
+	
+	scanData = activeGame.script.scan_mods(Session.data.Mods)
+	scanData.post_result()
+	
+	if scanData.has_links():
+		var p = popup_manager.get_popup_data("ScanMenu")
+		p.unlock_option(my_id, "Post Results")
+		p.unlock_option(my_id, "Open Links")
+	pass
+
+func repaint_mods():
+	mod_tree_manager.draw_tree(activeGame.data)
+	pass
+
+func sort_mods(category:String, orientation:int):
+	return activeGame.script.sort_mod_list(category, orientation, Session.data.Mods)

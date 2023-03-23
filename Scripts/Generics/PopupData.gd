@@ -11,6 +11,7 @@ var generatedData = {}
 # > > text
 # > > shortcut
 # > > isSeparator
+# > > isLocked
 
 # Popup data layout:
 # popupId
@@ -18,6 +19,7 @@ var generatedData = {}
 # > entityId
 # > shortcut
 # > isSeparator
+# > isLocked
 
 func construct(popupRef):
 	self.popup = popupRef
@@ -42,7 +44,8 @@ func _generate_popup():
 				"option" : option.text,
 				"entityId" : entId,
 				"shortcut" : option.shortcut,
-				"isSeparator" : option.isSeparator
+				"isSeparator" : option.isSeparator,
+				"isLocked" : option.isLocked
 			}
 			popupId += 1
 	
@@ -50,6 +53,7 @@ func _generate_popup():
 		var data = generatedData[int(popData)]
 		if data.isSeparator == false:
 			popup.add_item(data.option, popData)
+			popup.set_item_disabled(popup.get_item_count()-1, data.isLocked)
 			if not data.shortcut == null:
 				popup.set_item_shortcut(popup.get_item_count()-1, data.shortcut, true)
 		elif data.isSeparator == true:
@@ -92,7 +96,7 @@ func remove_entity(id:String):
 	pass
 
 #--- Adds an option to a specific entry.
-func add_option(id:String, option:String, shortcutKey = null, useShift:bool = false):
+func add_option(id:String, option:String, shortcutKey = null, useShift:bool = false, locked:bool = false):
 	if not entries.has(id):
 		printerr("The id belongs to an entity that has not been defined!!")
 		return
@@ -100,7 +104,8 @@ func add_option(id:String, option:String, shortcutKey = null, useShift:bool = fa
 	var data = {
 		"text" : option,
 		"shortcut" : null,
-		"isSeparator" : false
+		"isSeparator" : false,
+		"isLocked":locked
 	}
 	
 	if not shortcutKey == null:
@@ -133,7 +138,8 @@ func add_separator(id:String, text:String = ""):
 	var data = {
 		"text" : text,
 		"shortcut" : null,
-		"isSeparator" : true
+		"isSeparator" : true,
+		"isLocked":false
 	}
 	entries[id].options.append(data)
 	self._generate_popup()
@@ -162,4 +168,30 @@ func remove_all_separators(id:String):
 		if entry.isSeparator:
 			entries[id].options.remove(i)
 			self._generate_popup()
+	pass
+
+#--- Locks an option for the user.
+func lock_option(id:String, text:String):
+	if not entries.has(id):
+		return
+	
+	for i in range (entries[id].options.size()-1,-1,-1) :
+		var entry = entries[id].options[i]
+		if entry.text == text:
+			entry.isLocked = true
+			self._generate_popup()
+			return
+	pass
+
+#--- Unlocks an option for the user.
+func unlock_option(id:String, text:String):
+	if not entries.has(id):
+		return
+	
+	for i in range (entries[id].options.size()-1,-1,-1) :
+		var entry = entries[id].options[i]
+		if entry.text == text:
+			entry.isLocked = false
+			self._generate_popup()
+			return
 	pass

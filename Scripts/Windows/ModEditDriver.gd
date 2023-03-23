@@ -63,7 +63,7 @@ func generate_window(modData):
 	else:
 		confirm_button.connect("pressed", self, "_on_add_mod")
 	
-	for category in activeGame.Categories:
+	for category in activeGame.data.Categories:
 		#- Match the field's type to a prefab
 		var inst
 		var dynamicData = {}

@@ -33,3 +33,7 @@ func postwrn(msg:String):
 func _on_ClearButton_pressed():
 	rich_text_label.bbcode_text = ""
 	pass
+
+func _on_RichTextLabel_meta_clicked(meta):
+	Functions.open_link(meta)
+	pass

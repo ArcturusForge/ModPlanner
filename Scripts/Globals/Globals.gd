@@ -8,9 +8,10 @@ const saveExtension = "mplan"
 const gameExtension = "mpge"
 
 #-- Paths
-var resDataPath = "res://Assets/"
+var resDataPath = "res://App/"
 var userDataPath = "user://"
 var gameExtenDir = "Game Extensions"
+var localExtenPath = resDataPath+"Local_Extensions"
 
 #-- Color Hexes
 var clear = "#00000000"
@@ -22,12 +23,13 @@ var yellow = "#b7ab7c"
 const popupDataScript = preload("res://Scripts/Generics/PopupData.gd")
 const managedGameScript = preload("res://Scripts/Generics/ManagedGame.gd")
 const modData = preload("res://Scripts/Generics/ModData.gd")
+const scanData = preload("res://Scripts/Generics/ScanData.gd")
 
 #-- Globalizer
 var managers = {}
 
 #-- Example Mod
-var exampleMod = {
+var exampleMod1 = {
 		"color":"#b2b5bb",
 		"fields":{
 			"Mods":"Hello World",
@@ -51,8 +53,60 @@ var exampleMod = {
 					"Name":"Goodbye World",
 					"Link":"www.nexusmods.com/skyrim_se/goodbye_world_mod",
 					"Patch":"www.nexusmods.com/skyrim_se/hello-goodbye_world_patch"
+				},
+				{
+					"Patchable":false,
+					"Name":"Hola World",
+					"Link":"www.nexusmods.com/skyrim_se/hola_world_mod",
+					"Patch":""
 				}
 			]
+		}
+		
+	}
+
+var exampleMod2 = {
+		"color":"#b2b5bb",
+		"fields":{
+			"Mods":"Goodbye World",
+			"Type":"Other",
+			"Version":"1.0.0",
+			"Source":"Nexus",
+			"Priority Order":"0",
+			"Load Order":"0"
+		},
+		"extras":{
+			"Link":"www.nexusmods.com/skyrim_se/goodbye_world_mod",
+			"Required":[
+				{
+					"Name":"World in Space",
+					"Link":"www.nexusmods.com/skyrim_se/world_in_space_mod"
+				}
+			],
+			"Incompatible":[]
+		}
+		
+	}
+
+var exampleMod3 = {
+		"color":"#b2b5bb",
+		"fields":{
+			"Mods":"Hola World",
+			"Type":"Other",
+			"Version":"1.0.0",
+			"Source":"Nexus",
+			"Priority Order":"0",
+			"Load Order":"0"
+		},
+		"extras":{
+			"Link":"www.nexusmods.com/skyrim_se/hola_world_mod",
+			"Required":[
+				{
+					"Name":"World in Space",
+					"Link":"www.nexusmods.com/skyrim_se/world_in_space_mod"
+				}
+			],
+			"Incompatible":[]
 		}
 		
 	}

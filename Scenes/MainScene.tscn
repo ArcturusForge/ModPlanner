@@ -57,9 +57,16 @@ expand = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="Topbar Container" type="HBoxContainer" parent="Background/VBoxContainer"]
+[node name="Spacer" type="Control" parent="Background/VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 30.0
+margin_bottom = 2.0
+rect_min_size = Vector2( 0, 2 )
+size_flags_horizontal = 3
+
+[node name="Topbar Container" type="HBoxContainer" parent="Background/VBoxContainer"]
+margin_top = 6.0
+margin_right = 1024.0
+margin_bottom = 36.0
 rect_min_size = Vector2( 0, 30 )
 
 [node name="FileMenuButton" type="MenuButton" parent="Background/VBoxContainer/Topbar Container"]
@@ -78,8 +85,17 @@ focus_mode = 2
 text = "Edit"
 switch_on_hover = true
 
+[node name="ScanMenuButton" type="MenuButton" parent="Background/VBoxContainer/Topbar Container"]
+margin_left = 108.0
+margin_right = 158.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 0 )
+focus_mode = 2
+text = "Scan"
+switch_on_hover = true
+
 [node name="VSplitContainer" type="VSplitContainer" parent="Background/VBoxContainer"]
-margin_top = 34.0
+margin_top = 40.0
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
@@ -91,20 +107,20 @@ __meta__ = {
 
 [node name="HSplitContainer" type="HSplitContainer" parent="Background/VBoxContainer/VSplitContainer"]
 margin_right = 1024.0
-margin_bottom = 424.0
+margin_bottom = 418.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 split_offset = 200
 
 [node name="LeftContainer" type="ScrollContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer"]
 margin_right = 1024.0
-margin_bottom = 424.0
+margin_bottom = 418.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ModTree" type="Tree" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer"]
 margin_right = 1024.0
-margin_bottom = 424.0
+margin_bottom = 418.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 column_titles_visible = true
@@ -131,9 +147,9 @@ tab_align = 0
 [node name="Overview" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/RightContainer/ModDetailContainer" instance=ExtResource( 2 )]
 
 [node name="ConsoleBGBorder" type="ColorRect" parent="Background/VBoxContainer/VSplitContainer"]
-margin_top = 436.0
+margin_top = 430.0
 margin_right = 1024.0
-margin_bottom = 566.0
+margin_bottom = 560.0
 rect_min_size = Vector2( 0, 130 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -151,11 +167,20 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG"]
 margin_left = 10.0
-margin_top = 8.0
+margin_top = 7.0
 margin_right = 65.0
-margin_bottom = 22.0
+margin_bottom = 21.0
 text = "Console:"
 valign = 1
+
+[node name="ClearButton" type="Button" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -109.0
+margin_top = 3.0
+margin_right = -9.99957
+margin_bottom = 26.0
+text = "Clear Console"
 
 [node name="TextBG" type="ColorRect" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG"]
 anchor_right = 1.0
@@ -180,15 +205,6 @@ margin_bottom = 79.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
-
-[node name="ClearButton" type="Button" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -56.0
-margin_top = 5.0
-margin_right = -12.0
-margin_bottom = 25.0
-text = "Clear"
 
 [node name="Windows" type="Control" parent="."]
 anchor_right = 1.0
@@ -571,8 +587,10 @@ mode = 0
 access = 2
 filters = PoolStringArray( "*.mplan" )
 
+[connection signal="column_title_pressed" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/ModTree" to="Managers/ModTreeManager" method="_on_ModTree_column_title_pressed"]
 [connection signal="item_rmb_selected" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/ModTree" to="Managers/ModTreeManager" method="_on_ModTree_item_rmb_selected"]
 [connection signal="pressed" from="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/ClearButton" to="Managers/ConsoleManager" method="_on_ClearButton_pressed"]
+[connection signal="meta_clicked" from="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/TextBG/ScrollContainer/RichTextLabel" to="Managers/ConsoleManager" method="_on_RichTextLabel_meta_clicked"]
 [connection signal="pressed" from="Windows/OpeningSelectWindow/Border/BG/VBoxContainer/NewSessionButton" to="Windows/OpeningSelectWindow" method="_on_NewSessionButton_pressed"]
 [connection signal="pressed" from="Windows/OpeningSelectWindow/Border/BG/VBoxContainer/LoadSessionButton" to="Windows/OpeningSelectWindow" method="_on_LoadSessionButton_pressed"]
 [connection signal="item_activated" from="Windows/GameSelectorWindow/Border2/BG/ScrollContainer/GameTree" to="Windows/GameSelectorWindow" method="_on_GameTree_item_activated"]
