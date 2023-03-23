@@ -17,6 +17,7 @@ func draw_tree(gameData, modList):
 	#- Create mod entries for the mod tree
 	for mod in modList:
 		#TODO: Add separator support.
+		#TODO: Track the mod index.
 		create_entry(mod, root, gameData)
 	pass
 
@@ -49,3 +50,11 @@ func create_entry(modData, parent, gameData):
 		entry.set_text_align(i, HALIGN_CENTER)
 		entry.set_custom_color(i, modData["color"])
 	return entry
+
+
+func _on_ModTree_item_rmb_selected(position):
+	var mod = mod_tree.get_item_at_position(position)
+	#TODO: open mod edit window.
+	var wman = Globals.get_manager("window")
+	wman.activate_window("modAdd", mod.get_metadata(0))
+	pass

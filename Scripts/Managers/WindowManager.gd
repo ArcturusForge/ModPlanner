@@ -12,7 +12,7 @@ onready var input_block = $"../../Windows/InputBlock"
 #-- Scene Refs
 onready var opening_select_window = $"../../Windows/OpeningSelectWindow"
 onready var game_selector_window = $"../../Windows/GameSelectorWindow"
-onready var mod_add_window = $"../../Windows/ModAddWindow"
+onready var mod_add_window = $"../../Windows/ModEditWindow"
 
 #-- Windows
 var windows = {}
@@ -33,13 +33,13 @@ func jump_start():
 		window.visible = false
 	pass
 
-func activate_window(windowId):
+func activate_window(windowId, data=null):
 	if windows.has(windowId):
 		input_block.visible = true
 		disable_window(false)
 		activeWindow = windows[windowId]
 		activeWindow.visible = true
-		activeWindow._enable()
+		activeWindow._enable(data)
 	pass
 
 func disable_window(disableBlock = true):

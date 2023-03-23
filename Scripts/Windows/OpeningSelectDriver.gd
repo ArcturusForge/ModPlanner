@@ -14,14 +14,11 @@ func _create():
 	pass
 
 #--- Called when the window is activated.
-func _enable():
-	#- Connect to signal
-	searchManager.connect("on_file", self, "open_loaded_session")
+func _enable(_data):
 	pass
 
 #--- Called when the window is deactivated.
 func _disable():
-	searchManager.disconnect("on_file", self, "open_loaded_session")
 	pass
 
 #--- Called when the window is removed from the scene.
@@ -33,7 +30,7 @@ func _on_NewSessionButton_pressed():
 	pass
 
 func _on_LoadSessionButton_pressed():
-	searchManager.search_for_session()
+	searchManager.search_for_session(self, "open_loaded_session")
 	pass
 
 func open_loaded_session(filePath:String):

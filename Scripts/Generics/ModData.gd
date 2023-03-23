@@ -24,18 +24,10 @@ func add_link(url):
 	extras.Link = url
 	pass
 
-func add_required(name, url):
-	extras.Required.append({
-		"Name":name,
-		"Link":url
-	})
+func add_required(data):
+	extras.Required.append(data)
 	pass
 
-func add_incompatible(name, url, patch_url = "", patchable = false):
-	extras.Incompatible.append({
-		"Patchable":patchable,
-		"Name":name,
-		"Link":url,
-		"Patch":patch_url
-	})
+func add_incompatible(data):
+	extras.Incompatible.append(data)
 	pass

@@ -17,6 +17,8 @@ func get_value():
 
 func set_data(labelText:String, _data = null):
 	label.text = labelText
+	if _data.has("info"):
+		field.text = _data.info
 	pass
 
 func _on_LineEdit_text_entered(_new_text):

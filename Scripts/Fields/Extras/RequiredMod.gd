@@ -8,9 +8,16 @@ onready var mod_link_text = $Fields/ModLinkText
 var modADriver
 var listIndex
 
-func construct(driver, index):
+func construct(driver, index, extraData):
 	modADriver = driver
 	listIndex = index
+	
+	if extraData == null:
+		return
+	
+	# Assign existing data
+	mod_name_text.text = extraData.Name
+	mod_link_text.text = extraData.Link
 	pass
 
 func get_data():

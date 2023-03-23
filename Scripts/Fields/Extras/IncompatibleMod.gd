@@ -11,9 +11,18 @@ onready var patch_link_text = $Fields/PatchLinkText
 var modADriver
 var listIndex
 
-func construct(driver, index):
+func construct(driver, index, extraData):
 	modADriver = driver
 	listIndex = index
+	
+	if extraData == null:
+		return
+		
+	# Assign existing data
+	mod_name_text.text = extraData.Name
+	mod_link_text.text = extraData.Link
+	patchable_check_box.pressed = extraData.Patchable
+	patch_link_text.text = extraData.Patch
 	pass
 
 func get_data():
@@ -21,8 +30,8 @@ func get_data():
 		patch_link_text.text = ""
 	
 	var data = {
-		"Name":"Goodbye World",
-		"Link":"www.nexusmods.com/skyrim_se/goodbye_world_mod",
+		"Name":mod_name_text.text,
+		"Link":mod_link_text.text,
 		"Patchable":patchable_check_box.pressed,
 		"Patch":patch_link_text.text
 	}

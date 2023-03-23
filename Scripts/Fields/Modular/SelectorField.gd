@@ -17,10 +17,15 @@ func get_value():
 
 func set_data(labelText:String, data = null):
 	label.text = labelText
-	set_options(data)
+	set_options(data.selector, data)
 	pass
 
-func set_options(options):
-	for option in options:
+func set_options(options, data = null):
+	var preselect = 0
+	for i in range(options.size()):
+		var option = options[i]
+		if not data == null && data.has("info") && data.info == option:
+			preselect = i
 		field.add_item(option)
+	field.select(preselect)
 	pass

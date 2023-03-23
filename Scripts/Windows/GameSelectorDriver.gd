@@ -20,7 +20,7 @@ func _create():
 	pass
 
 #--- Called when the window is activated.
-func _enable():
+func _enable(_data):
 	render_game_tree(mainManager.managedGames)
 	pass
 

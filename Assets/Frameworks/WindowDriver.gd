@@ -8,7 +8,7 @@ func _create():
 	pass
 
 #--- Called when the window is activated.
-func _enable():
+func _enable(_data):
 	pass
 
 #--- Called when the window is deactivated.

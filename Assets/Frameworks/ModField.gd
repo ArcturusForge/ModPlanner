@@ -16,6 +16,6 @@ func get_value():
 	#return field.text/value
 	pass
 
-func set_data(labelText:String, data = null):
+func set_data(labelText:String, _data = null):
 	label.text = labelText
 	pass

@@ -28,15 +28,16 @@ func set_data(labelText:String, _data = null):
 	label.text = labelText
 	
 	var fEdit = field.get_line_edit()
+	if _data.has("info"):
+		fEdit.text = _data.info
+	
 	fEdit.connect("text_entered", self, "_on_value_set")
 	fEdit.connect("focus_entered", self, "alt_focus")
 	pass
 
 func _on_value_set(_text):
-#	var fEdit = field.get_line_edit()
-#	fEdit.text = _text
 	#- Force a frame wait to ensure value is set
-	yield(get_tree().create_timer(0.001), "timeout")
+	Functions.wait_frame()
 	if not nextField == null:
 		nextField.set_focus()
 	pass

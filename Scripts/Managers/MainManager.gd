@@ -83,6 +83,7 @@ func wipe_slate(skipGames=false):
 func read_game_extension(extensionPath:String):
 	var data = Functions.read_file(extensionPath)
 	activeGame = data
+	Session.data["Game"] = extensionPath.get_file()
 	pass
 
 #--- Assigns options to all of the popups that MainManager interacts with.
@@ -92,6 +93,9 @@ func assign_options():
 	filePData.register_entity(my_id, self, "handle_file_menu")
 	filePData.add_option(my_id, "Open Session", KEY_O)
 	filePData.add_option(my_id, "New", KEY_N)
+	filePData.add_separator(my_id)
+	filePData.add_option(my_id, "Save", KEY_S)
+	filePData.add_option(my_id, "Save As", KEY_S, true)
 	
 	#- Assign Options to the EditMenuButton popup
 	var editPData = popup_manager.get_popup_data("EditMenu")
@@ -102,9 +106,18 @@ func assign_options():
 func handle_file_menu(selectedOption):
 	match selectedOption:
 		"Open Session":
-			search_manager.search_for_session()
+			search_manager.search_for_session(self, "open_loaded_session")
 		"New":
 			window_manager.activate_window("gameSelect")
+		"Save":
+			if Session.has_saved():
+				Session.quick_save()
+				console_manager.post("Saved Session")
+			else:
+				search_manager.search_to_save(self, "handle_save")
+		"Save As":
+			search_manager.search_to_save(self, "handle_save")
+			pass
 	pass
 
 func handle_edit_menu(selectedOption):
@@ -113,9 +126,24 @@ func handle_edit_menu(selectedOption):
 			window_manager.activate_window("modAdd")
 	pass
 
+func handle_save(filePath):
+	Session.sessionName = filePath.get_file()
+	Session.save_data(filePath)
+	console_manager.post("Saved Session")
+	pass
+
 func add_mod(modData):
+	modData["index"] = Session.data.Mods.size()
 	Session.data.Mods.append(modData)
 	mod_tree_manager.draw_tree(activeGame, Session.data["Mods"])
 	console_manager.post("Added new mod: " + modData.fields.Mods)
+	Globals.repaint_app_name(true)
+	pass
+
+func edit_mod(modData, modIndex):
+	modData["index"] = modIndex
+	Session.data.Mods[modIndex] = modData
+	mod_tree_manager.draw_tree(activeGame, Session.data["Mods"])
+	console_manager.post("Edited mod: " + modData.fields.Mods)
 	Globals.repaint_app_name(true)
 	pass

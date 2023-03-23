@@ -4,9 +4,10 @@
 # -/ Create the choice field prefab.
 # -/ Design extra's field script template.
 # -/ Generate the extra's fields in ModAddDriver.
+# -/ Save popup
+# - Edit a mod. Rewrite the modEditDriver script to handle pre-existing data.
 # - Design game extension plugin script template.
 # - Display mod data in the preview panel.
-# - Save popup
 # - Track game version for session.
 # - Have a hyperlink feature to link to mod download locations.
 # - Add a copy link shortcut button to mod dl hyperlink.
