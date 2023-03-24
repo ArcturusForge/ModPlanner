@@ -1,0 +1,13 @@
+{
+	"Name":"Pong",
+	"Script":"PongExtensionDriver.gd",
+	"Categories":[
+		{
+			"Title":"Mods",
+			"Tooltip":"The name of a mod included inside the mod-list.",
+			"Prompt":"Mod Name:",
+			"Size":200,
+			"Field":"String"
+		}
+	]
+}

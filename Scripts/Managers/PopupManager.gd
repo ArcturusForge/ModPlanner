@@ -7,6 +7,8 @@ const my_id = "popups"
 onready var file_menu_button = $"../../Background/VBoxContainer/Topbar Container/FileMenuButton"
 onready var edit_menu_button = $"../../Background/VBoxContainer/Topbar Container/EditMenuButton"
 onready var scan_menu_button = $"../../Background/VBoxContainer/Topbar Container/ScanMenuButton"
+onready var extension_menu_button = $"../../Background/VBoxContainer/Topbar Container/ExtensionMenuButton"
+onready var mod_popup = $"../../Popups/ModPopup"
 
 #-- Dynamic Vars
 var popupRegistries = {}
@@ -17,6 +19,8 @@ func jump_start():
 	register_popup("FileMenu", file_menu_button.get_popup())
 	register_popup("EditMenu", edit_menu_button.get_popup())
 	register_popup("ScanMenu", scan_menu_button.get_popup())
+	register_popup("ExtenMenu", extension_menu_button.get_popup())
+	register_popup("ModPop", mod_popup)
 	pass
 
 func register_popup(name, popup):

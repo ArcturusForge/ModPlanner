@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Assets/Graphics/Backgrounds/garden forest.jpg" type="Texture" id=1]
 [ext_resource path="res://Assets/Prefabs/ModTabParent.tscn" type="PackedScene" id=2]
@@ -12,6 +12,8 @@
 [ext_resource path="res://Scripts/Managers/SearchManager.gd" type="Script" id=10]
 [ext_resource path="res://Scripts/Managers/ConsoleManager.gd" type="Script" id=11]
 [ext_resource path="res://Scripts/Windows/ModEditDriver.gd" type="Script" id=12]
+[ext_resource path="res://Assets/Prefabs/Misc/ModImportList.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Scripts/Windows/ImportDriver.gd" type="Script" id=14]
 
 [node name="Main" type="Control"]
 anchor_right = 1.0
@@ -94,6 +96,15 @@ focus_mode = 2
 text = "Scan"
 switch_on_hover = true
 
+[node name="ExtensionMenuButton" type="MenuButton" parent="Background/VBoxContainer/Topbar Container"]
+margin_left = 162.0
+margin_right = 236.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 0 )
+focus_mode = 2
+text = "Extension"
+switch_on_hover = true
+
 [node name="VSplitContainer" type="VSplitContainer" parent="Background/VBoxContainer"]
 margin_top = 40.0
 margin_right = 1024.0
@@ -145,6 +156,7 @@ size_flags_vertical = 3
 tab_align = 0
 
 [node name="Overview" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/RightContainer/ModDetailContainer" instance=ExtResource( 2 )]
+color = Color( 0.172549, 0.164706, 0.196078, 1 )
 
 [node name="ConsoleBGBorder" type="ColorRect" parent="Background/VBoxContainer/VSplitContainer"]
 margin_top = 430.0
@@ -191,20 +203,26 @@ margin_right = -10.0
 margin_bottom = -10.0
 color = Color( 0.145098, 0.137255, 0.145098, 1 )
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/TextBG"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/TextBG"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 10.0
 margin_top = 10.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/TextBG/ScrollContainer"]
-margin_right = 992.0
-margin_bottom = 79.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
 bbcode_enabled = true
+
+[node name="Popups" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ModPopup" type="PopupMenu" parent="Popups"]
+margin_right = 20.0
+margin_bottom = 20.0
 
 [node name="Windows" type="Control" parent="."]
 anchor_right = 1.0
@@ -563,6 +581,70 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="ImportWindow" parent="Windows" instance=ExtResource( 8 )]
+visible = true
+anchor_left = 0.381367
+anchor_right = 0.618633
+script = ExtResource( 14 )
+
+[node name="Label" type="Label" parent="Windows/ImportWindow/Border2/BG" index="0"]
+anchor_right = 0.999996
+anchor_bottom = 0.0726884
+margin_bottom = 0.0700016
+text = "Select Mods to Import:"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ModImportContainer" type="Control" parent="Windows/ImportWindow/Border2/BG" index="1"]
+anchor_left = 0.0290415
+anchor_top = 0.0803869
+anchor_right = 0.975122
+anchor_bottom = 0.924663
+margin_left = 0.0300117
+margin_top = 0.00600052
+margin_right = -0.0299988
+margin_bottom = -0.0160217
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Windows/ImportWindow/Border2/BG/ModImportContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ModImportList" parent="Windows/ImportWindow/Border2/BG/ModImportContainer/ScrollContainer" instance=ExtResource( 13 )]
+
+[node name="CancelButton" type="Button" parent="Windows/ImportWindow/Border2/BG" index="2"]
+anchor_left = 0.021
+anchor_top = 0.94
+anchor_right = 0.302
+anchor_bottom = 0.99
+margin_left = -0.0320144
+margin_top = -0.119995
+margin_right = 0.0157928
+margin_bottom = -0.019989
+text = "Cancel"
+
+[node name="ConfirmButton" type="Button" parent="Windows/ImportWindow/Border2/BG" index="3"]
+anchor_left = 0.645998
+anchor_top = 0.94
+anchor_right = 0.979205
+anchor_bottom = 0.99
+margin_left = -0.0320144
+margin_top = -0.119995
+margin_bottom = -0.019989
+text = "Confirm"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
 [node name="FileSearchWindows" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -590,7 +672,7 @@ filters = PoolStringArray( "*.mplan" )
 [connection signal="column_title_pressed" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/ModTree" to="Managers/ModTreeManager" method="_on_ModTree_column_title_pressed"]
 [connection signal="item_rmb_selected" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/ModTree" to="Managers/ModTreeManager" method="_on_ModTree_item_rmb_selected"]
 [connection signal="pressed" from="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/ClearButton" to="Managers/ConsoleManager" method="_on_ClearButton_pressed"]
-[connection signal="meta_clicked" from="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/TextBG/ScrollContainer/RichTextLabel" to="Managers/ConsoleManager" method="_on_RichTextLabel_meta_clicked"]
+[connection signal="meta_clicked" from="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/TextBG/RichTextLabel" to="Managers/ConsoleManager" method="_on_RichTextLabel_meta_clicked"]
 [connection signal="pressed" from="Windows/OpeningSelectWindow/Border/BG/VBoxContainer/NewSessionButton" to="Windows/OpeningSelectWindow" method="_on_NewSessionButton_pressed"]
 [connection signal="pressed" from="Windows/OpeningSelectWindow/Border/BG/VBoxContainer/LoadSessionButton" to="Windows/OpeningSelectWindow" method="_on_LoadSessionButton_pressed"]
 [connection signal="item_activated" from="Windows/GameSelectorWindow/Border2/BG/ScrollContainer/GameTree" to="Windows/GameSelectorWindow" method="_on_GameTree_item_activated"]
@@ -600,6 +682,9 @@ filters = PoolStringArray( "*.mplan" )
 [connection signal="pressed" from="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequireModsMenu/AddReqButton" to="Windows/ModEditWindow" method="_on_AddReqButton_pressed"]
 [connection signal="pressed" from="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsMenu/AddIncButton" to="Windows/ModEditWindow" method="_on_AddIncButton_pressed"]
 [connection signal="pressed" from="Windows/ModEditWindow/Border2/BG/CancelButton" to="Windows/ModEditWindow" method="_on_CancelButton_pressed"]
+[connection signal="pressed" from="Windows/ImportWindow/Border2/BG/CancelButton" to="Windows/ImportWindow" method="_on_CancelButton_pressed"]
+[connection signal="pressed" from="Windows/ImportWindow/Border2/BG/ConfirmButton" to="Windows/ImportWindow" method="_on_ConfirmButton_pressed"]
 
 [editable path="Windows/GameSelectorWindow"]
 [editable path="Windows/ModEditWindow"]
+[editable path="Windows/ImportWindow"]

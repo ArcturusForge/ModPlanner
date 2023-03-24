@@ -13,14 +13,18 @@
 # -/ Create an "open all links" button to rapidly open all linked mods in a browser.
 # -/ Track when mod list needs to be scanned for compatibility due to edits.
 # -/ Sorting options based on which column header is clicked.
-# - ModTreeManager: open tooltip with options.
-# - ModTreeManager: Add delete mod tooltip option.
-# - ModTreeManager: Add open mod link tooltip option.
-# - ModTreeManager: Add separator support.
-# - Track game version for session.
-# - Add a copy link shortcut button to mod dl hyperlink.
+# -/ ModTreeManager: open tooltip with options.
+# -/ ModTreeManager: Add delete mod tooltip option.
+# -/ ModTreeManager: Add open mod link tooltip option.
+# -/ Add a copy link shortcut button to mod dl hyperlink.
+# -/ Allow for mod importing to skip manual inputing of mod data.
 # - When scanning the mod list and detecting duplicated load order positions 
 #	activate a prompt that asks for which mod should be placed below the other 
 #	and then iteratively adjust proceeding placements in the load order. 
 #	The same can be done for priority order.
+# - Add an auto assign load order feature.
+# - Track game version for session.
+# - Rework popup management system using the metadata field for items. T_T whyyyyy
+# --- Perma Delayed
 # - Display mod data in the preview panel.
+# - ModTreeManager: Add separator support.

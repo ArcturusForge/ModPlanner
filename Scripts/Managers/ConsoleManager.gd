@@ -4,10 +4,20 @@ extends Control
 const my_id = "console"
 
 #-- Scene Refs
-onready var rich_text_label = $"../../Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/TextBG/ScrollContainer/RichTextLabel"
+onready var rich_text_label:RichTextLabel = $"../../Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/TextBG/RichTextLabel"
+
+#-- Dynamic Vars
+var scroller:VScrollBar
 
 func jump_start():
 	Globals.set_manager(my_id, self)
+	scroller = rich_text_label.get_v_scroll()
+	scroller.connect("changed", self, "scroll_to_bottom")
+	pass
+
+func scroll_to_bottom():
+	if scroller.value != scroller.max_value:
+		scroller.value = scroller.max_value
 	pass
 
 func generate(msg:String, colorHex:String):

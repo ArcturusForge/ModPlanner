@@ -18,6 +18,8 @@ var clear = "#00000000"
 var grey = "#b2b5bb"
 var red = "#a25062"
 var yellow = "#b7ab7c"
+var blue = "#6182b6"
+var green = "#a5efac"
 
 #-- Generic Scripts
 const popupDataScript = preload("res://Scripts/Generics/PopupData.gd")
@@ -34,10 +36,10 @@ var exampleMod1 = {
 		"fields":{
 			"Mods":"Hello World",
 			"Type":"Other",
-			"Version":"1.0.0",
+			"Version":"1.1.5",
 			"Source":"Nexus",
 			"Priority Order":"0",
-			"Load Order":"0"
+			"Load Order":"1"
 		},
 		"extras":{
 			"Link":"www.nexusmods.com/skyrim_se/hello_world_mod",
@@ -70,10 +72,10 @@ var exampleMod2 = {
 		"fields":{
 			"Mods":"Goodbye World",
 			"Type":"Other",
-			"Version":"1.0.0",
+			"Version":"1.3.1",
 			"Source":"Nexus",
-			"Priority Order":"0",
-			"Load Order":"0"
+			"Priority Order":"2",
+			"Load Order":"2"
 		},
 		"extras":{
 			"Link":"www.nexusmods.com/skyrim_se/goodbye_world_mod",
@@ -93,10 +95,10 @@ var exampleMod3 = {
 		"fields":{
 			"Mods":"Hola World",
 			"Type":"Other",
-			"Version":"1.0.0",
+			"Version":"3.0.2",
 			"Source":"Nexus",
-			"Priority Order":"0",
-			"Load Order":"0"
+			"Priority Order":"1",
+			"Load Order":"1"
 		},
 		"extras":{
 			"Link":"www.nexusmods.com/skyrim_se/hola_world_mod",
@@ -104,6 +106,33 @@ var exampleMod3 = {
 				{
 					"Name":"World in Space",
 					"Link":"www.nexusmods.com/skyrim_se/world_in_space_mod"
+				}
+			],
+			"Incompatible":[]
+		}
+		
+	}
+
+var exampleMod4 = {
+		"color":"#b2b5bb",
+		"fields":{
+			"Mods":"Hello & Goodbye World Patch",
+			"Type":"Other",
+			"Version":"2.1.6",
+			"Source":"Nexus",
+			"Priority Order":"0",
+			"Load Order":"0"
+		},
+		"extras":{
+			"Link":"www.nexusmods.com/skyrim_se/hello-goodbye_world_patch",
+			"Required":[
+				{
+					"Name":"Hello World",
+					"Link":"www.nexusmods.com/skyrim_se/hello_world_mod"
+				},
+				{
+					"Name":"Goodbye World",
+					"Link":"www.nexusmods.com/skyrim_se/goodbye_world_mod"
 				}
 			],
 			"Incompatible":[]

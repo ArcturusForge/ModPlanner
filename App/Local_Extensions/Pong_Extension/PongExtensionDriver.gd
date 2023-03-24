@@ -8,10 +8,6 @@ func extension_loaded():
 func extension_unloaded():
 	pass
 
-#--- Called by the system to access a mod's name.
-func get_mod_name(mod):
-	return "mod.fields."
-
 #--- Called by the system to scan for mod compatibility
 func scan_mods(modlist):
 	var scanData = Globals.scanData.new()

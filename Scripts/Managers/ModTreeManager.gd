@@ -1,11 +1,48 @@
 extends Control
 
+const my_id = "mtree"
+
 #-- Scene Refs
 onready var mod_tree = $"../../Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/ModTree"
+onready var mod_popup = $"../../Popups/ModPopup"
 
 #-- Dynamic Vars
 var sortOrientation = 1
 var sortCategory = ""
+var modPopData
+var selectedMod
+
+func jump_start():
+	var pMan = Globals.get_manager("popups")
+	modPopData = pMan.get_popup_data("ModPop")
+	modPopData.register_entity(my_id, self, "handle_mod_popup")
+	modPopData.add_option(my_id, "Edit Mod")
+	modPopData.add_separator(my_id)
+	modPopData.add_option(my_id, "Copy Link")
+	modPopData.add_option(my_id, "Open Link")
+	modPopData.add_separator(my_id)
+	modPopData.add_option(my_id, "Delete Mod")
+	pass
+
+func handle_mod_popup(selection):
+	match selection:
+		"Edit Mod":
+			var wman = Globals.get_manager("window")
+			wman.activate_window("modAdd", selectedMod.get_metadata(0))
+		"Open Link":
+			var data = selectedMod.get_metadata(0)
+			var link = data.extras.Link
+			Functions.open_link(link)
+		"Copy Link":
+			var data = selectedMod.get_metadata(0)
+			var link = data.extras.Link
+			OS.set_clipboard(link)
+			Globals.get_manager("console").postwrn("Copied link to clipboard")
+		"Delete Mod":
+			Session.data.Mods.erase(selectedMod.get_metadata(0))
+			var man = Globals.get_manager("main")
+			man.repaint_mods()
+	pass
 
 #--- Draws and populates the mod tree
 func draw_tree(gameData):
@@ -64,9 +101,16 @@ func create_entry(modData, parent, gameData):
 #--- Opens a menu to edit the selected mod.
 func _on_ModTree_item_rmb_selected(position):
 	var mod = mod_tree.get_item_at_position(position)
+	if mod == null:
+		return
 	#TODO: open popup with options.
-	var wman = Globals.get_manager("window")
-	wman.activate_window("modAdd", mod.get_metadata(0))
+	selectedMod = mod
+	if selectedMod.get_metadata(0).extras.Link == "":
+		modPopData.lock_option(my_id, "Open Link")
+	else:
+		modPopData.unlock_option(my_id, "Open Link")
+	mod_popup.set_position(position)
+	mod_popup.popup()
 	pass
 
 func _on_ModTree_column_title_pressed(column:int):

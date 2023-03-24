@@ -142,7 +142,11 @@ func ensure_directory(path:String):
 		d.make_dir_recursive(path)
 
 func wait_frame():
-	yield(get_tree().create_timer(0.001),"timeout")
+	wait(0.001)
+	pass
+
+func wait(time):
+	yield(get_tree().create_timer(time),"timeout")
 	pass
 
 func open_link(url):

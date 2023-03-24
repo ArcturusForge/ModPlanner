@@ -117,8 +117,7 @@ func generate_window(modData):
 	previousField.nextField = self
 	pass
 
-func _on_add_mod():
-	confirm_button.disconnect("pressed", self, "_on_add_mod")
+func compile_mod():
 	var modData = Globals.modData.new()
 	modData.extras.Link = mod_link_text.text
 	for field in fields:
@@ -127,19 +126,18 @@ func _on_add_mod():
 		modData.add_required(req.get_data())
 	for inc in incompatible:
 		modData.add_incompatible(inc.get_data())
+	return modData
+
+func _on_add_mod():
+	confirm_button.disconnect("pressed", self, "_on_add_mod")
+	var modData = compile_mod()
 	mainManager.add_mod(modData.extract())
 	window_manager.disable_window()
 	pass
 
 func _on_edit_mod():
 	confirm_button.disconnect("pressed", self, "_on_edit_mod")
-	var modData = Globals.modData.new()
-	for field in fields:
-		modData.add_field(field.fieldData.Title, field.get_value())
-	for req in required:
-		modData.add_required(req.get_data())
-	for inc in incompatible:
-		modData.add_incompatible(inc.get_data())
+	var modData = compile_mod()
 	mainManager.edit_mod(modData.extract(), modIndex)
 	window_manager.disable_window()
 	pass

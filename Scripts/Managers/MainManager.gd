@@ -35,6 +35,8 @@ func _ready():
 	popup_manager.jump_start()
 	search_manager.jump_start()
 	console_manager.jump_start()
+	mod_tree_manager.jump_start()
+	
 	#- Must always be bottom of manager execution order
 	window_manager.jump_start()
 	
@@ -51,9 +53,10 @@ func start_new_session(extensionPath:String):
 	console_manager.post("Started New Session")
 	
 	#TEMP:
-	add_mod(Globals.exampleMod1)
-	add_mod(Globals.exampleMod2)
-	add_mod(Globals.exampleMod3)
+#	add_mod(Globals.exampleMod1)
+#	add_mod(Globals.exampleMod2)
+#	add_mod(Globals.exampleMod3)
+#	add_mod(Globals.exampleMod4)
 	pass
 
 #--- Loads an existing session
@@ -80,9 +83,12 @@ func open_loaded_session(filePath:String):
 func wipe_slate(skipGames=false):
 	if not skipGames:
 		managedGames.clear()
+	if not activeGame.script == null:
+		activeGame.script.extension_unloaded()
 	activeGame = {
 		"script":null,
-		"data":null
+		"data":null,
+		"name":""
 	}
 	scanData = null
 	Session.reset_data()
@@ -96,6 +102,8 @@ func read_game_extension(extensionPath:String):
 	var dir = extensionPath.get_base_dir()
 	activeGame.script = load(Functions.os_path_convert(dir+"/"+data.Script)).new()
 	activeGame.data = data
+	activeGame.name = extensionPath.get_file()
+	activeGame.script.extension_loaded()
 	Session.data["Game"] = extensionPath.get_file()
 	pass
 
@@ -114,6 +122,9 @@ func assign_options():
 	var editPData = popup_manager.get_popup_data("EditMenu")
 	editPData.register_entity(my_id, self, "handle_edit_menu")
 	editPData.add_option(my_id, "Add Mod", KEY_A, true)
+	editPData.add_option(my_id, "Import Mods", KEY_I, true)
+	editPData.add_separator(my_id, "")
+	editPData.add_option(my_id, "Open Mod Links")
 	
 	#- Assign options to the ScanMenuButton popup.
 	var scanPData = popup_manager.get_popup_data("ScanMenu")
@@ -133,7 +144,7 @@ func handle_file_menu(selectedOption):
 		"Save":
 			if Session.has_saved():
 				Session.quick_save()
-				console_manager.post("Saved Session")
+				console_manager.generate("Saved Session", Globals.green)
 			else:
 				search_manager.search_to_save(self, "handle_save")
 		"Save As":
@@ -145,12 +156,21 @@ func handle_edit_menu(selectedOption):
 	match selectedOption:
 		"Add Mod":
 			window_manager.activate_window("modAdd")
+		"Open Mod Links":
+			console_manager.generate("Opening listed mod links...", Globals.green)
+			for mod in Session.data.Mods:
+				if not mod.extras.Link == "":
+					Functions.open_link(mod.extras.Link)
+			console_manager.post("Links opened.")
+		"Import Mods":
+			search_manager.search_for_session(self, "mod_import")
+			
 	pass
 
 func handle_scan_menu(selectedOption):
 	match selectedOption:
 		"Run Scan":
-			console_manager.post("Scanning mod list for compatibility...")
+			console_manager.generate("Scanning mod list for compatibility...", Globals.green)
 			scan_mods()
 		"Post Results":
 			console_manager.post("Posting scan results...")
@@ -216,3 +236,15 @@ func repaint_mods():
 
 func sort_mods(category:String, orientation:int):
 	return activeGame.script.sort_mod_list(category, orientation, Session.data.Mods)
+
+func mod_import(path:String):
+	var data = Session.export_load_data(path)
+	if not data["Game"] == activeGame.name:
+		console_manager.posterr("ERR800: Cancelled attempt to import mods from a different game!")
+		return
+	
+	window_manager.activate_window("importMod", data.Mods)
+	pass
+
+func get_mod_name(mod):
+	return activeGame.script.get_mod_name(mod)

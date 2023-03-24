@@ -1,11 +1,25 @@
 extends Node
 
-#--- Called by the system to scan for mod compatibility
+#--- Called by the system when the script is first loaded.
+func extension_loaded():
+	Globals.get_manager("console").post("Extension is loaded")
+	pass
+
+#--- Called by the system when the script is being unloaded.
+func extension_unloaded():
+	Globals.get_manager("console").post("Extension is unloaded")
+	pass
+
+#--- Called by the system to access a mod's name.
+func get_mod_name(mod):
+	return mod.fields.Mods
+
+#--- Called by the system to scan for mod compatibility.
 func scan_mods(modlist):
 	var scanData = Globals.scanData.new()
-	var modLinks = []
+	var modLinks = {}
 	for mod in modlist:
-		modLinks.append(mod.extras.Link)
+		modLinks[mod.extras.Link] = mod
 	
 	for mod in modlist:
 		var name = mod.fields["Mods"]
@@ -13,6 +27,10 @@ func scan_mods(modlist):
 		for req in mod.extras.Required:
 			if not modLinks.has(req.Link):
 				missingReq.append(req)
+			elif modLinks[req.Link].fields["Load Order"] >= mod.fields["Load Order"]:
+				var reqName = modLinks[req.Link].fields["Mods"]
+				var msg = "ERR314: [" + name + "] requires [" + reqName + "] as a master however [" + reqName + "] has a higher load order!"
+				scanData.add_custom(msg)
 		
 		for inc in mod.extras.Incompatible:
 			if modLinks.has(inc.Link):
@@ -32,7 +50,7 @@ func scan_mods(modlist):
 	return scanData
 
 #--- Called by the system to sort the mod tree.
-#- orientation: 0 = descending, 1 = ascending
+#- orientation: 0 = descending, 1 = ascending.
 func sort_mod_list(category, orientation, modlist:Array):
 	var copy = modlist.duplicate()
 	match category:

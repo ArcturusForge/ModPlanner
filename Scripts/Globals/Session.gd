@@ -68,3 +68,13 @@ func load_data(path: String):
 	sessionName = path.get_file()
 	savePath = path
 	pass
+
+#--- Loads the file but returns the data instead of caching it.
+func export_load_data(path:String):
+	var file = File.new()
+	file.open(path, File.READ)
+	var text = file.get_as_text()
+	file.close()
+	var compilation = parse_json(text)
+	var exportData = compilation.data
+	return exportData
