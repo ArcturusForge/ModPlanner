@@ -42,6 +42,7 @@ func _disable():
 	required.clear()
 	incompatible.clear()
 	modIndex = null
+	mod_link_text.text = ""
 	for child in mod_config_container.get_children():
 		child.queue_free()
 	for child in req_container.get_children():

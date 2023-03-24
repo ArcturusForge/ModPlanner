@@ -87,7 +87,7 @@ func register_entity(id:String, entity, callback:String):
 	pass
 
 #--- Removes a listed entity and all of its data from the popup.
-func remove_entity(id:String):
+func unregister_entity(id:String):
 	if not entries.has(id):
 		return
 	

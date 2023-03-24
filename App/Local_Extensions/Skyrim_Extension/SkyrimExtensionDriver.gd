@@ -1,13 +1,83 @@
 extends Node
 
+const my_id = "skyrimExtension"
+
 #--- Called by the system when the script is first loaded.
 func extension_loaded():
-	Globals.get_manager("console").post("Extension is loaded")
+	var extensionMenu = Globals.get_manager("popups").get_popup_data("ExtenMenu")
+	extensionMenu.register_entity(my_id, self, "handle_extension_menu")
+	extensionMenu.add_option(my_id, "Auto Assign Load Order")
 	pass
+
+func handle_extension_menu(selection):
+	match selection:
+		"Auto Assign Load Order":
+			Globals.get_manager("console").generate("Assigning load orders...", Globals.green)
+			sort_l_o()
+	pass
+
+func sort_l_o():
+	#TODO:
+	#- Store any errors in scanData.
+	var scanData = Globals.scanData.new()
+	#- Grab the mod list from the current session.
+	var modlist = Session.data.Mods
+	var modLinks = {}
+	for mod in modlist:
+		modLinks[mod.extras.Link] = {
+			"mod":mod,
+			"weight":modlist.size()
+		}
+	
+	# Idea:
+	# Sort through all mods by how many requirements they have.
+	# After that, start with the mod with most requirements and work down to least,
+	# adding weight to each required mod.
+	modlist.sort_custom(self, "required_sort")
+	for sorted in modlist:
+		for req in sorted.extras.Required:
+			if modLinks.has(req.Link):
+				modLinks[req.Link].weight += 1
+			else:
+				scanData.add_custom("Missing Masters Detected! Run a modlist scan!", 2)
+		
+		for inc in sorted.extras.Incompatible:
+			if modLinks.has(inc.Link):
+				if not inc.Patchable:
+					scanData.add_custom("Incompatible Mods Detected! Run a modlist scan!", 2)
+				else:
+					if not modLinks.has(inc.Patch):
+						scanData.add_custom("Unpatched Mods Detected! Run a modlist scan!", 1)
+	
+	#- Loop through the weighted mods and order them from 0 up.
+	var weightedList = modLinks.values()
+	weightedList.sort_custom(self, "weighted_sort")
+	for i in range(weightedList.size()):
+		var mod = weightedList[i].mod
+		mod.fields["Load Order"] = str(i)
+	Globals.get_manager("main").repaint_mods()
+	scanData.add_custom("Auto Sort Completed.", 0)
+	scanData.post_result()
+	pass
+
+#--- Sort by number of required mods
+func required_sort(mod_a, mod_b):
+	var a = mod_a.extras.Required.size()
+	var b = mod_b.extras.Required.size()
+	if a > b:
+		return true
+	return false
+
+func weighted_sort(weight_a, weight_b):
+	var a = weight_a.weight
+	var b = weight_b.weight
+	if a > b:
+		return true
+	return false
 
 #--- Called by the system when the script is being unloaded.
 func extension_unloaded():
-	Globals.get_manager("console").post("Extension is unloaded")
+	Globals.get_manager("popups").get_popup_data("ExtenMenu").unregister_entity(my_id)
 	pass
 
 #--- Called by the system to access a mod's name.
@@ -22,13 +92,13 @@ func scan_mods(modlist):
 		modLinks[mod.extras.Link] = mod
 	
 	for mod in modlist:
-		var name = mod.fields["Mods"]
+		var name = get_mod_name(mod)
 		var missingReq = []
 		for req in mod.extras.Required:
 			if not modLinks.has(req.Link):
 				missingReq.append(req)
 			elif modLinks[req.Link].fields["Load Order"] >= mod.fields["Load Order"]:
-				var reqName = modLinks[req.Link].fields["Mods"]
+				var reqName = get_mod_name(modLinks[req.Link])
 				var msg = "ERR314: [" + name + "] requires [" + reqName + "] as a master however [" + reqName + "] has a higher load order!"
 				scanData.add_custom(msg)
 		

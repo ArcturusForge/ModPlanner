@@ -10,7 +10,7 @@ func extension_unloaded():
 
 #--- Called by the system to access a mod's name.
 func get_mod_name(mod):
-	return "mod.fields."
+	return "mod.fields." # Edit per extension.
 
 #--- Called by the system to scan for mod compatibility
 func scan_mods(modlist):
