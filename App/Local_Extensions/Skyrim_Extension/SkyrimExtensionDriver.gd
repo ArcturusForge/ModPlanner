@@ -17,16 +17,16 @@ func handle_extension_menu(selection):
 	pass
 
 func sort_l_o():
-	#TODO:
 	#- Store any errors in scanData.
 	var scanData = Globals.scanData.new()
 	#- Grab the mod list from the current session.
-	var modlist = Session.data.Mods
+	#- DO NOT APPLY DIRECTLY TO SESSION MODLIST!!!!
+	var modlist = Session.data.Mods.duplicate()
 	var modLinks = {}
 	for mod in modlist:
 		modLinks[mod.extras.Link] = {
 			"mod":mod,
-			"weight":modlist.size()
+			"weight":1
 		}
 	
 	# Idea:
@@ -37,7 +37,7 @@ func sort_l_o():
 	for sorted in modlist:
 		for req in sorted.extras.Required:
 			if modLinks.has(req.Link):
-				modLinks[req.Link].weight += 1
+				modLinks[req.Link].weight += modLinks[sorted.extras.Link].weight
 			else:
 				scanData.add_custom("Missing Masters Detected! Run a modlist scan!", 2)
 		
@@ -55,7 +55,12 @@ func sort_l_o():
 	for i in range(weightedList.size()):
 		var mod = weightedList[i].mod
 		mod.fields["Load Order"] = str(i)
-	Globals.get_manager("main").repaint_mods()
+	
+	#- Apply changes to Session
+	var mainMan = Globals.get_manager("main")
+	for mod in modlist:
+		mainMan.edit_mod(mod, mod.index)
+	
 	scanData.add_custom("Auto Sort Completed.", 0)
 	scanData.post_result()
 	pass
@@ -117,6 +122,8 @@ func scan_mods(modlist):
 				scanData.add_required_error(name, missingReq[i])
 	
 	#- Return the scan results so the system can parse them.
+	if scanData.size() > 0:
+		scanData.add_custom("Scan Complete.", 0)
 	return scanData
 
 #--- Called by the system to sort the mod tree.

@@ -59,6 +59,10 @@ func generate_window(modData):
 	var activeGame = mainManager.activeGame
 	var previousField = null
 	
+	var connections = confirm_button.get_signal_connection_list("pressed")
+	for conn in connections:
+		confirm_button.disconnect(conn.signal, conn.target, conn.method)
+	
 	if not modData == null:
 		confirm_button.connect("pressed", self, "_on_edit_mod")
 	else:
@@ -130,14 +134,12 @@ func compile_mod():
 	return modData
 
 func _on_add_mod():
-	confirm_button.disconnect("pressed", self, "_on_add_mod")
 	var modData = compile_mod()
 	mainManager.add_mod(modData.extract())
 	window_manager.disable_window()
 	pass
 
 func _on_edit_mod():
-	confirm_button.disconnect("pressed", self, "_on_edit_mod")
 	var modData = compile_mod()
 	mainManager.edit_mod(modData.extract(), modIndex)
 	window_manager.disable_window()

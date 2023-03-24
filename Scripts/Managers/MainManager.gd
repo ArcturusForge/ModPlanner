@@ -197,7 +197,7 @@ func add_mod(modData):
 	pass
 
 func edit_mod(modData, modIndex):
-	modData["index"] = modIndex
+	modData["index"] = modIndex # <-- This shit causes nightmares. Rework this please!!
 	Session.data.Mods[modIndex] = modData
 	repaint_mods()
 	console_manager.post("Edited mod: " + modData.fields.Mods)

@@ -2,6 +2,10 @@ extends Node
 
 var errors = []
 
+#--- Returns the amount of errors
+func size():
+	return errors.size()
+
 #--- Creates an missing_master error.
 func add_required_error(mod, req, type=2):
 	errors.append({

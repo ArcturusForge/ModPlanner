@@ -25,6 +25,7 @@
 # - Add an auto assign load order feature.
 # - Track game version for session.
 # - Rework popup management system using the metadata field for items. T_T whyyyyy
+# - MainManager: Rework how mods apply edits to themselves.
 # --- Perma Delayed
 # - Display mod data in the preview panel.
 # - ModTreeManager: Add separator support.

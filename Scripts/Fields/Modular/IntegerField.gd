@@ -27,10 +27,10 @@ func get_value():
 func set_data(labelText:String, _data = null):
 	label.text = labelText
 	
-	var fEdit = field.get_line_edit()
 	if _data.has("info"):
-		fEdit.text = _data.info
+		field.value = int(_data.info)
 	
+	var fEdit = field.get_line_edit()
 	fEdit.connect("text_entered", self, "_on_value_set")
 	fEdit.connect("focus_entered", self, "alt_focus")
 	pass
