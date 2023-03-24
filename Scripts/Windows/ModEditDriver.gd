@@ -74,7 +74,7 @@ func generate_window(modData):
 		var dynamicData = {}
 		if not modData == null:
 			modIndex = modData.index
-			dynamicData["info"] = modData.fields[category.Title]
+			dynamicData["info"] = modData.mod.fields[category.Title]
 		
 		match category.Field.to_lower():
 			"string":
@@ -111,10 +111,10 @@ func generate_window(modData):
 	
 	#TODO: Get the extra's data from mod data if != null
 	if not modData == null:
-		mod_link_text.text = modData.extras.Link
-		for req in modData.extras.Required:
+		mod_link_text.text = modData.mod.extras.Link
+		for req in modData.mod.extras.Required:
 			self._on_AddReqButton_pressed(req)
-		for inc in modData.extras.Incompatible:
+		for inc in modData.mod.extras.Incompatible:
 			self._on_AddIncButton_pressed(inc)
 	
 	#- Set focus to the first field

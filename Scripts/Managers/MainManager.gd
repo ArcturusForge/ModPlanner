@@ -188,7 +188,7 @@ func handle_save(filePath):
 	pass
 
 func add_mod(modData):
-	modData["index"] = Session.data.Mods.size()
+	#modData["index"] = Session.data.Mods.size()
 	Session.data.Mods.append(modData)
 	repaint_mods()
 	console_manager.post("Added new mod: " + modData.fields.Mods)
@@ -197,7 +197,7 @@ func add_mod(modData):
 	pass
 
 func edit_mod(modData, modIndex):
-	modData["index"] = modIndex # <-- This shit causes nightmares. Rework this please!!
+	#modData["index"] = modIndex # <-- This shit causes nightmares. Rework this please!!
 	Session.data.Mods[modIndex] = modData
 	repaint_mods()
 	console_manager.post("Edited mod: " + modData.fields.Mods)

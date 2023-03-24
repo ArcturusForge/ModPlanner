@@ -19,9 +19,9 @@ func handle_extension_menu(selection):
 func sort_l_o():
 	#- Store any errors in scanData.
 	var scanData = Globals.scanData.new()
+	
 	#- Grab the mod list from the current session.
-	#- DO NOT APPLY DIRECTLY TO SESSION MODLIST!!!!
-	var modlist = Session.data.Mods.duplicate()
+	var modlist = Session.data.Mods
 	var modLinks = {}
 	for mod in modlist:
 		modLinks[mod.extras.Link] = {
@@ -56,12 +56,8 @@ func sort_l_o():
 		var mod = weightedList[i].mod
 		mod.fields["Load Order"] = str(i)
 	
-	#- Apply changes to Session
-	var mainMan = Globals.get_manager("main")
-	for mod in modlist:
-		mainMan.edit_mod(mod, mod.index)
-	
-	scanData.add_custom("Auto Sort Completed.", 0)
+	Globals.get_manager("main").repaint_mods()
+	scanData.closing_msg = "Auto Sort Completed."
 	scanData.post_result()
 	pass
 

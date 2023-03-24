@@ -18,14 +18,11 @@
 # -/ ModTreeManager: Add open mod link tooltip option.
 # -/ Add a copy link shortcut button to mod dl hyperlink.
 # -/ Allow for mod importing to skip manual inputing of mod data.
-# - When scanning the mod list and detecting duplicated load order positions 
-#	activate a prompt that asks for which mod should be placed below the other 
-#	and then iteratively adjust proceeding placements in the load order. 
-#	The same can be done for priority order.
-# - Add an auto assign load order feature.
+# -/ URGENT!!! MainManager: Rework how mods apply edits to themselves.
+# -/ Deleting mods breaks mod refs to their modlist index.
+# -/ Add an auto assign load order feature.
 # - Track game version for session.
 # - Rework popup management system using the metadata field for items. T_T whyyyyy
-# - MainManager: Rework how mods apply edits to themselves.
 # --- Perma Delayed
 # - Display mod data in the preview panel.
 # - ModTreeManager: Add separator support.

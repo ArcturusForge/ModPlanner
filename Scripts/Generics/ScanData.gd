@@ -1,7 +1,7 @@
 extends Node
 
 var errors = []
-
+var closing_msg = "Scan Complete."
 #--- Returns the amount of errors
 func size():
 	return errors.size()
@@ -59,9 +59,9 @@ func post_result(withLinks=true):
 			elif err.Type == 0:
 				Globals.get_manager("console").post(message)
 		
-		Globals.get_manager("console").post("Scan complete.")
+		Globals.get_manager("console").post(closing_msg)
 	else:
-		Globals.get_manager("console").post("Scan complete.\nNo issues detected!")
+		Globals.get_manager("console").post(closing_msg+"\nNo issues detected!")
 	pass
 
 #--- Searches the detected errors for any with links.

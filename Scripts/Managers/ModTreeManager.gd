@@ -28,7 +28,11 @@ func handle_mod_popup(selection):
 	match selection:
 		"Edit Mod":
 			var wman = Globals.get_manager("window")
-			wman.activate_window("modAdd", selectedMod.get_metadata(0))
+			var data = {
+				"mod":selectedMod.get_metadata(0),
+				"index":Session.data.Mods.find(selectedMod.get_metadata(0))
+			}
+			wman.activate_window("modAdd", data)
 		"Open Link":
 			var data = selectedMod.get_metadata(0)
 			var link = data.extras.Link
