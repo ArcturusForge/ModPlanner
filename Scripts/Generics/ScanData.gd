@@ -58,6 +58,8 @@ func post_result(withLinks=true):
 				Globals.get_manager("console").postwrn(message)
 			elif err.Type == 0:
 				Globals.get_manager("console").post(message)
+		
+		Globals.get_manager("console").post("Scan complete.")
 	else:
 		Globals.get_manager("console").post("Scan complete.\nNo issues detected!")
 	pass

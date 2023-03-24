@@ -122,8 +122,6 @@ func scan_mods(modlist):
 				scanData.add_required_error(name, missingReq[i])
 	
 	#- Return the scan results so the system can parse them.
-	if scanData.size() > 0:
-		scanData.add_custom("Scan Complete.", 0)
 	return scanData
 
 #--- Called by the system to sort the mod tree.
