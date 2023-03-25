@@ -186,7 +186,7 @@ func handle_scan_menu(selectedOption):
 func handle_save(filePath):
 	Session.sessionName = filePath.get_file()
 	Session.save_data(filePath)
-	console_manager.post("Saved Session")
+	console_manager.generate("Saved Session", Globals.green)
 	pass
 
 func add_mod(modData):

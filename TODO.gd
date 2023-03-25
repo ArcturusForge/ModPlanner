@@ -34,6 +34,10 @@
 # - Add a feature for mod link cleaning that detects link/name similarities and pings user.
 # - Add alternative link text-fields to all mod fields.
 # - If conflict patch link is empty then take my mod link instead.
+# - Add an "open folder location" menu option.
+# - Add soft requirement toggle in mod edit required fields.
+# - Create a one-line mod exporter/importer that compresses a mod entry into a copy&paste line
+# - Add mod import feature that detects already included mods.
 # --- Perma Delayed
 # - Rework popup management system using the metadata field for items. T_T whyyyyy
 # - Display mod data in the preview panel.
