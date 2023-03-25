@@ -6,12 +6,12 @@ const my_id = "skyrimExtension"
 func extension_loaded():
 	var extensionMenu = Globals.get_manager("popups").get_popup_data("ExtenMenu")
 	extensionMenu.register_entity(my_id, self, "handle_extension_menu")
-	extensionMenu.add_option(my_id, "Auto Assign Load Order")
+	extensionMenu.add_option(my_id, "Auto Assign Order")
 	pass
 
 func handle_extension_menu(selection):
 	match selection:
-		"Auto Assign Load Order":
+		"Auto Assign Order":
 			Globals.get_manager("console").generate("Assigning load orders...", Globals.green)
 			sort_l_o()
 	pass
@@ -23,21 +23,30 @@ func sort_l_o():
 	#- Grab the mod list from the current session.
 	var modlist = Session.data.Mods
 	var modLinks = {}
+	var plugFreeTotal = 0
+	var enginePlugTotal = 0
 	for mod in modlist:
+		if mod.fields.Type == "Plugin-free":
+			plugFreeTotal += 1
+		elif mod.fields.Type == "Engine Plugin":
+			enginePlugTotal += 1
+		
+		var startingVal = 1 if not mod.fields.Type == "Overwrite-able Fix" else 1000
 		modLinks[mod.extras.Link] = {
 			"mod":mod,
-			"weight":1
+			"pass1":startingVal,
+			"pass2":1
 		}
 	
-	# Idea:
-	# Sort through all mods by how many requirements they have.
-	# After that, start with the mod with most requirements and work down to least,
-	# adding weight to each required mod.
-	modlist.sort_custom(self, "required_sort")
+	#- First Pass: 
+	#- Sort through all mods by how many requirements they have.
+	#- After that, start with the mod with most requirements and work down to least,
+	#- adding weight to each required mod.
+	modlist.sort_custom(self, "required_sort_pass1")
 	for sorted in modlist:
 		for req in sorted.extras.Required:
 			if modLinks.has(req.Link):
-				modLinks[req.Link].weight += modLinks[sorted.extras.Link].weight
+				modLinks[req.Link].pass1 += modLinks[sorted.extras.Link].pass1
 			else:
 				scanData.add_custom("Missing Masters Detected! Run a modlist scan!", 2)
 		
@@ -49,29 +58,66 @@ func sort_l_o():
 					if not modLinks.has(inc.Patch):
 						scanData.add_custom("Unpatched Mods Detected! Run a modlist scan!", 1)
 	
+	#- Second Pass:
+	#- Invert the order and run through the list again.
+	modlist.sort_custom(self, "required_sort_pass2")
+	for sorted in modlist:
+		for req in sorted.extras.Required:
+			if modLinks.has(req.Link):
+				modLinks[req.Link].pass2 += modLinks[sorted.extras.Link].pass1
+	
 	#- Loop through the weighted mods and order them from 0 up.
 	var weightedList = modLinks.values()
 	weightedList.sort_custom(self, "weighted_sort")
-	for i in range(weightedList.size()):
-		var mod = weightedList[i].mod
-		mod.fields["Load Order"] = str(i)
+	var loadIndex = 0
+	var prioIndex = 0
+	var enplugIndex = 0
+	for weight in weightedList:
+		var mod = weight.mod
+		if mod.fields["Type"] == "Engine Extender":
+			mod.fields["Load Order"] = str(-1)
+			mod.fields["Priority Order"] = str(-1)
+			
+		elif mod.fields["Type"] == "Engine Plugin":
+			mod.fields["Load Order"] = str(-1)
+			mod.fields["Priority Order"] = str(enplugIndex)
+			enplugIndex+=1
+			
+		elif mod.fields["Type"] == "Plugin-free":
+			mod.fields["Load Order"] = str(-1)
+			mod.fields["Priority Order"] = str(prioIndex + enginePlugTotal)
+			prioIndex+=1
+			
+		else:
+			mod.fields["Load Order"] = str(loadIndex)
+			mod.fields["Priority Order"] = str(prioIndex + enginePlugTotal)
+			loadIndex+=1
+			prioIndex+=1
 	
 	Globals.get_manager("main").repaint_mods()
+	Globals.repaint_app_name(true)
 	scanData.closing_msg = "Auto Sort Completed."
 	scanData.post_result()
 	pass
 
 #--- Sort by number of required mods
-func required_sort(mod_a, mod_b):
+func required_sort_pass1(mod_a, mod_b):
 	var a = mod_a.extras.Required.size()
 	var b = mod_b.extras.Required.size()
 	if a > b:
 		return true
 	return false
 
+func required_sort_pass2(mod_a, mod_b):
+	var a = mod_a.extras.Required.size()
+	var b = mod_b.extras.Required.size()
+	if a < b:
+		return true
+	return false
+
 func weighted_sort(weight_a, weight_b):
-	var a = weight_a.weight
-	var b = weight_b.weight
+	var a = weight_a.pass1 + weight_a.pass2
+	var b = weight_b.pass1 + weight_b.pass2
 	if a > b:
 		return true
 	return false
@@ -98,10 +144,25 @@ func scan_mods(modlist):
 		for req in mod.extras.Required:
 			if not modLinks.has(req.Link):
 				missingReq.append(req)
-			elif modLinks[req.Link].fields["Load Order"] >= mod.fields["Load Order"]:
-				var reqName = get_mod_name(modLinks[req.Link])
-				var msg = "ERR314: [" + name + "] requires [" + reqName + "] as a master however [" + reqName + "] has a higher load order!"
-				scanData.add_custom(msg)
+			else:
+				var reqMod = modLinks[req.Link]
+				
+				if mod.fields["Type"] == "Plugin-free":
+					if	int(reqMod.fields["Priority Order"]) >= int(mod.fields["Priority Order"]):
+						var reqName = get_mod_name(reqMod)
+						var msg = "ERR117: [" + name + "] overwrites files from [" + reqName + "] however [" + reqName + "] is overwriting its files!"
+						scanData.add_custom(msg, 2)
+				
+				elif mod.fields["Type"] == "Engine Plugin":
+					if	int(reqMod.fields["Priority Order"]) >= int(mod.fields["Priority Order"]):
+						var reqName = get_mod_name(reqMod)
+						var msg = "ERR66: ["+ name +"] relies on features from ["+ reqName +"] however ["+ reqName +"] has a higher priority order. Fix this if bugs occur in-game."
+						scanData.add_custom(msg, 1)
+				
+				elif int(reqMod.fields["Load Order"]) >= int(mod.fields["Load Order"]):
+					var reqName = get_mod_name(reqMod)
+					var msg = "ERR314: [" + name + "] requires [" + reqName + "] as a master however [" + reqName + "] has a higher load order!"
+					scanData.add_custom(msg, 2)
 		
 		for inc in mod.extras.Incompatible:
 			if modLinks.has(inc.Link):
@@ -157,16 +218,16 @@ func sort_mod_list(category, orientation, modlist:Array):
 				copy.sort_custom(self, "s_l_a")
 	return copy
 
-func sort_desc(mod_a, mod_b, field):
-	var a = mod_a.fields[field]
-	var b = mod_b.fields[field]
+func sort_desc(mod_a, mod_b, field, isString = true):
+	var a = mod_a.fields[field] if isString == true else int(mod_a.fields[field])
+	var b = mod_b.fields[field] if isString == true else int(mod_b.fields[field])
 	if a > b:
 		return true
 	return false
 
-func sort_asce(mod_a, mod_b, field):
-	var a = mod_a.fields[field]
-	var b = mod_b.fields[field]
+func sort_asce(mod_a, mod_b, field, isString = true):
+	var a = mod_a.fields[field] if isString == true else int(mod_a.fields[field])
+	var b = mod_b.fields[field] if isString == true else int(mod_b.fields[field])
 	if a < b:
 		return true
 	return false
@@ -196,13 +257,13 @@ func s_s_a(mod_a, mod_b):
 	return sort_asce(mod_a, mod_b, "Source")
 
 func s_p_d(mod_a, mod_b):
-	return sort_desc(mod_a, mod_b, "Priority Order")
+	return sort_desc(mod_a, mod_b, "Priority Order", false)
 
 func s_p_a(mod_a, mod_b):
-	return sort_asce(mod_a, mod_b, "Priority Order")
+	return sort_asce(mod_a, mod_b, "Priority Order", false)
 
 func s_l_d(mod_a, mod_b):
-	return sort_desc(mod_a, mod_b, "Load Order")
+	return sort_desc(mod_a, mod_b, "Load Order", false)
 
 func s_l_a(mod_a, mod_b):
-	return sort_asce(mod_a, mod_b, "Load Order")
+	return sort_asce(mod_a, mod_b, "Load Order", false)

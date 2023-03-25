@@ -157,7 +157,6 @@ size_flags_vertical = 3
 tab_align = 0
 
 [node name="Overview" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/RightContainer/ModDetailContainer" instance=ExtResource( 2 )]
-color = Color( 0.172549, 0.164706, 0.196078, 1 )
 
 [node name="ConsoleBGBorder" type="ColorRect" parent="Background/VBoxContainer/VSplitContainer"]
 margin_top = 430.0

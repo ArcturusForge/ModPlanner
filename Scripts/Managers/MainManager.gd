@@ -51,6 +51,7 @@ func start_new_session(extensionPath:String):
 	read_game_extension(extensionPath)
 	repaint_mods()
 	console_manager.post("Started New Session")
+	Globals.repaint_app_name()
 	
 	#TEMP:
 #	add_mod(Globals.exampleMod1)
@@ -77,6 +78,7 @@ func open_loaded_session(filePath:String):
 	repaint_mods()
 	var sessionName = filePath.get_file()
 	console_manager.post("Loaded Session: " + sessionName)
+	Globals.repaint_app_name()
 	pass
 
 #--- Resets the managers to a fresh state

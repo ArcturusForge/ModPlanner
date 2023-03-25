@@ -14,9 +14,9 @@
 			"Title":"Type",
 			"Tooltip":"The type of a mod included inside the mod-list.",
 			"Prompt":"Mod Type:",
-			"Size":100,
+			"Size":150,
 			"Field":"Select",
-			"Select":["Master", "Plugin", "Patch", "Other"]
+			"Select":["Master", "Plugin", "Patch", "Plugin-free", "Overwrite-able Fix", "Engine Extender", "Engine Plugin", "Other"]
 		},
 		{
 			"Title":"Version",

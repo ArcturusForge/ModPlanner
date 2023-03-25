@@ -1,5 +1,5 @@
 # This is purely a TODO list and has no function other than to keep notes
-
+# --- Completed
 # -/ Fix bug for cancel on the game select window directly activating the opening menu.
 # -/ Create the choice field prefab.
 # -/ Design extra's field script template.
@@ -21,8 +21,20 @@
 # -/ URGENT!!! MainManager: Rework how mods apply edits to themselves.
 # -/ Deleting mods breaks mod refs to their modlist index.
 # -/ Add an auto assign load order feature.
+# -/ Figure out a way to pin overwrite-able fix mods to the top of load orders.
+# -/ Add custom assign effects based on type of mod. Engine tweaks should always place at -1 in LO.
+# --- Uncompleted
+# - Add a reload extension option.
+# - Create a bool mod field.
+# - An "adjust load order" mod-option: Array.Inserts mod at a position in the load order.
 # - Track game version for session.
-# - Rework popup management system using the metadata field for items. T_T whyyyyy
+# - Add a compatible mods field that takes in the name & link & an option of "Do Overwrite" or "Get Overwritten".
+# - Add an option to mods extra's fields with options "Choose from list" or "Custom". For required/incom/compa fields.
+# - Add hidden fields for game extensions that can be edited but don't appear in mod tree.
+# - Add a feature for mod link cleaning that detects link/name similarities and pings user.
+# - Add alternative link text-fields to all mod fields.
+# - If conflict patch link is empty then take my mod link instead.
 # --- Perma Delayed
+# - Rework popup management system using the metadata field for items. T_T whyyyyy
 # - Display mod data in the preview panel.
 # - ModTreeManager: Add separator support.
