@@ -163,12 +163,12 @@ func scan_mods(modlist):
 			for com in mod.extras.Compatible:
 				if modLinks.has(com.Link):
 					var orderToCheck = "Load"
-					if mod.fields["Type"] == "Plugin-free" || mod.fields["Type"] == "Engine Extender" || mod.fields["Type"] == "Engine Plugin":
+					if mod.fields["Type"] == "Plugin-free" || mod.fields["Type"] == "Engine Extender" || mod.fields["Type"] == "Engine Plugin" || mod.fields["Type"] == "Overwrite-able Replacer":
 						orderToCheck = "Priority"
 					var comName = get_mod_name(modLinks[com.Link])
 					if "Do" in com.Overwrite && int(modLinks[com.Link].fields[orderToCheck+" Order"]) > int(mod.fields[orderToCheck+" Order"]):
 						scanData.add_custom("Notice: (" + name + ") is compatible with (" + comName + ") however ("+ name + ") should have a higher "+ orderToCheck +" Order. E.g. No--> 0-25 <--Yes")
-					elif "Get" in com.Overwrite && int(modLinks[com.Link].fields["Priority Order"]) < int(mod.fields["Priority Order"]):
+					elif "Get" in com.Overwrite && int(modLinks[com.Link].fields[orderToCheck+" Order"]) < int(mod.fields[orderToCheck+" Order"]):
 						scanData.add_custom("Notice: (" + name + ") is compatible with (" + comName + ") however ("+ comName + ") should have a higher "+ orderToCheck +" Order. E.g. No--> 0-25 <--Yes")
 		
 		if missingReq.size() > 0:
