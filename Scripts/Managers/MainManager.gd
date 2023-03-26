@@ -87,9 +87,11 @@ func wipe_slate(skipGames=false):
 		managedGames.clear()
 	if not activeGame.script == null:
 		activeGame.script.extension_unloaded()
+		popup_manager.get_popup_data("ExtenMenu").lock_option(my_id, "Reload Extension")
 	activeGame = {
 		"script":null,
 		"data":null,
+		"dir":"",
 		"name":""
 	}
 	scanData = null
@@ -104,9 +106,11 @@ func read_game_extension(extensionPath:String):
 	var dir = extensionPath.get_base_dir()
 	activeGame.script = load(Functions.os_path_convert(dir+"/"+data.Script)).new()
 	activeGame.data = data
+	activeGame.dir = dir
 	activeGame.name = extensionPath.get_file()
 	activeGame.script.extension_loaded()
 	Session.data["Game"] = extensionPath.get_file()
+	popup_manager.get_popup_data("ExtenMenu").unlock_option(my_id, "Reload Extension")
 	pass
 
 #--- Assigns options to all of the popups that MainManager interacts with.
@@ -124,7 +128,7 @@ func assign_options():
 	var editPData = popup_manager.get_popup_data("EditMenu")
 	editPData.register_entity(my_id, self, "handle_edit_menu")
 	editPData.add_option(my_id, "Add Mod", KEY_A, true)
-	editPData.add_option(my_id, "Import Mods", KEY_I, true)
+	editPData.add_option(my_id, "Import Mods", KEY_E, true)
 	editPData.add_separator(my_id, "")
 	editPData.add_option(my_id, "Open Mod Links")
 	
@@ -135,6 +139,11 @@ func assign_options():
 	scanPData.add_separator(my_id, "After Scan")
 	scanPData.add_option(my_id, "Post Results", null, false, true)
 	scanPData.add_option(my_id, "Open Links", null, false, true)
+	
+	var extenPData = popup_manager.get_popup_data("ExtenMenu")
+	extenPData.register_entity(my_id, self, "handle_extension_menu")
+	extenPData.add_option(my_id, "Reload Extension", null, false, true)
+	extenPData.add_separator(my_id)
 	pass
 
 func handle_file_menu(selectedOption):
@@ -183,6 +192,17 @@ func handle_scan_menu(selectedOption):
 				Functions.open_link(link)
 	pass
 
+func handle_extension_menu(selectedOption):
+	match selectedOption:
+		"Reload Extension":
+			activeGame.script.extension_unloaded()
+			Functions.wait_frame()
+			activeGame.script = load(Functions.os_path_convert(activeGame.dir+"/"+activeGame.data.Script)).new()
+			activeGame.script.extension_loaded()
+			console_manager.generate("Extension Reloaded", Globals.green)
+			
+	pass
+
 func handle_save(filePath):
 	Session.sessionName = filePath.get_file()
 	Session.save_data(filePath)
@@ -190,7 +210,8 @@ func handle_save(filePath):
 	pass
 
 func add_mod(modData):
-	#modData["index"] = Session.data.Mods.size()
+	if not modData.extras.has("Compatible"):
+		modData.extras["Compatible"] = []
 	Session.data.Mods.append(modData)
 	repaint_mods()
 	console_manager.post("Added new mod: " + modData.fields.Mods)
@@ -199,7 +220,6 @@ func add_mod(modData):
 	pass
 
 func edit_mod(modData, modIndex):
-	#modData["index"] = modIndex # <-- This shit causes nightmares. Rework this please!!
 	Session.data.Mods[modIndex] = modData
 	repaint_mods()
 	console_manager.post("Edited mod: " + modData.fields.Mods)

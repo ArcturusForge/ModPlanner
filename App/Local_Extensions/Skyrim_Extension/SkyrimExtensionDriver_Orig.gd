@@ -22,72 +22,83 @@ func sort_l_o():
 	
 	#- Grab the mod list from the current session.
 	var modlist = Session.data.Mods
-	var presentMods = {}
-	var allAdd = []
+	var modLinks = {}
+	var plugFreeTotal = 0
 	var enginePlugTotal = 0
 	for mod in modlist:
-		if mod.fields.Type == "Engine Plugin":
+		if mod.fields.Type == "Plugin-free":
+			plugFreeTotal += 1
+		elif mod.fields.Type == "Engine Plugin":
 			enginePlugTotal += 1
-		elif mod.fields.Type == "Overwrite-able Replacer" || mod.fields.Type == "Overwrite-able Fix":
-			allAdd.append(mod.extras.Link)
 		
-		presentMods[mod.extras.Link] = {
+		var startingVal = 1 if not mod.fields.Type == "Overwrite-able Fix" else 1000
+		modLinks[mod.extras.Link] = {
 			"mod":mod,
-			"influence":modlist.size(),
-			"masters":[]
+			"pass1":startingVal,
+			"pass2":1
 		}
-		continue
 	
-	for mod in modlist:
-		var requisiteMods = []
-		for req in mod.extras.Required:
-			if presentMods.has(req.Link):
-				requisiteMods.append(presentMods[req.Link])
+	#- First Pass: 
+	#- Sort through all mods by how many requirements they have.
+	#- After that, start with the mod with most requirements and work down to least,
+	#- adding weight to each required mod.
+	modlist.sort_custom(self, "required_sort_pass1")
+	for sorted in modlist:
+		for req in sorted.extras.Required:
+			if modLinks.has(req.Link):
+				modLinks[req.Link].pass1 += modLinks[sorted.extras.Link].pass1
 			else:
-				scanData.add_custom("Missing Masters Detected!! Run a scan for more details.", 2)
-			continue
+				scanData.add_custom("Missing Masters Detected! Run a modlist scan!", 2)
 		
-		if mod.extras.has("Compatible"):
-			for com in mod.extras.Compatible:
-				if presentMods.has(com.Link):
-					requisiteMods.append(presentMods[com.Link])
+		if sorted.extras.has("Compatible"):
+			for com in sorted.extras.Compatible:
+				if modLinks.has(com.Link):
+					if com.Overwrite == "Do Overwrite" && modLinks[com.Link].pass1 > modLinks[sorted.extras.Link].pass1:
+						print("Yolo")
 		
-		if not allAdd.has(mod.extras.Link):
-			for addlink in allAdd:
-				requisiteMods.append(presentMods[addlink])
-		
-		presentMods[mod.extras.Link].masters = requisiteMods
-		continue
+		for inc in sorted.extras.Incompatible:
+			if modLinks.has(inc.Link):
+				if not inc.Patchable:
+					scanData.add_custom("Incompatible Mods Detected! Run a modlist scan!", 2)
+				else:
+					if not modLinks.has(inc.Patch):
+						scanData.add_custom("Unpatched Mods Detected! Run a modlist scan!", 1)
 	
-	for mod in presentMods.keys():
-		var mData = presentMods[mod]
-		mData.influence += -1
-		increment_masters(presentMods, mData)
-		continue
+	#- Second Pass:
+	#- Invert the order and run through the list again.
+	modlist.sort_custom(self, "required_sort_pass2")
+	for sorted in modlist:
+		for req in sorted.extras.Required:
+			if modLinks.has(req.Link):
+				modLinks[req.Link].pass2 += modLinks[sorted.extras.Link].pass1
 	
-	var influnceList = presentMods.values().duplicate()
-	influnceList.sort_custom(self, "sort_by_influence")
-	var lo = 0
-	var po = 0
-	var epo = enginePlugTotal + 1
-	for sorted in influnceList:
-		if sorted.mod.fields["Type"] == "Engine Extender":
-			sorted.mod.fields["Load Order"] = str(-1)
-			sorted.mod.fields["Priority Order"] = str(-1)
-		elif sorted.mod.fields["Type"] == "Engine Plugin" || sorted.mod.fields["Type"] == "Plugin-free":
-			sorted.mod.fields["Load Order"] = str(-1)
-			sorted.mod.fields["Priority Order"] = str(po)
-			po += 1
-		elif sorted.mod.fields["Type"] == "Overwrite-able Replacer":
-			sorted.mod.fields["Load Order"] = str(-1)
-			sorted.mod.fields["Priority Order"] = str(epo)
-			epo += 1
+	#- Loop through the weighted mods and order them from 0 up.
+	var weightedList = modLinks.values()
+	weightedList.sort_custom(self, "weighted_sort")
+	var loadIndex = 0
+	var prioIndex = 0
+	var enplugIndex = 0
+	for weight in weightedList:
+		var mod = weight.mod
+		if mod.fields["Type"] == "Engine Extender":
+			mod.fields["Load Order"] = str(-1)
+			mod.fields["Priority Order"] = str(-1)
+			
+		elif mod.fields["Type"] == "Engine Plugin":
+			mod.fields["Load Order"] = str(-1)
+			mod.fields["Priority Order"] = str(enplugIndex)
+			enplugIndex+=1
+			
+		elif mod.fields["Type"] == "Plugin-free":
+			mod.fields["Load Order"] = str(-1)
+			mod.fields["Priority Order"] = str(prioIndex + enginePlugTotal)
+			prioIndex+=1
+			
 		else:
-			sorted.mod.fields["Load Order"] = str(lo)
-			sorted.mod.fields["Priority Order"] = str(epo)
-			lo += 1
-			epo += 1
-		continue
+			mod.fields["Load Order"] = str(loadIndex)
+			mod.fields["Priority Order"] = str(prioIndex + enginePlugTotal)
+			loadIndex+=1
+			prioIndex+=1
 	
 	Globals.get_manager("main").repaint_mods()
 	Globals.repaint_app_name(true)
@@ -95,16 +106,24 @@ func sort_l_o():
 	scanData.post_result()
 	pass
 
-func increment_masters(presentMods, mData):
-	for data in mData.masters:
-		var masterDat = presentMods[data.mod.extras.Link]
-		masterDat.influence += (mData.influence - 1)
-		increment_masters(presentMods, masterDat)
-	pass
+#--- Sort by number of required mods
+func required_sort_pass1(mod_a, mod_b):
+	var a = mod_a.extras.Required.size()
+	var b = mod_b.extras.Required.size()
+	if a > b:
+		return true
+	return false
 
-func sort_by_influence(mData1, mData2):
-	var a = mData1.influence
-	var b = mData2.influence
+func required_sort_pass2(mod_a, mod_b):
+	var a = mod_a.extras.Required.size()
+	var b = mod_b.extras.Required.size()
+	if a < b:
+		return true
+	return false
+
+func weighted_sort(weight_a, weight_b):
+	var a = weight_a.pass1 + weight_a.pass2
+	var b = weight_b.pass1 + weight_b.pass2
 	if a > b:
 		return true
 	return false
@@ -133,21 +152,22 @@ func scan_mods(modlist):
 				missingReq.append(req)
 			else:
 				var reqMod = modLinks[req.Link]
+				
 				if mod.fields["Type"] == "Plugin-free":
 					if	int(reqMod.fields["Priority Order"]) >= int(mod.fields["Priority Order"]):
 						var reqName = get_mod_name(reqMod)
-						var msg = "ERR117: (" + name + ") overwrites files from (" + reqName + ") however (" + reqName + ") is overwriting its files!"
+						var msg = "ERR117: [" + name + "] overwrites files from [" + reqName + "] however [" + reqName + "] is overwriting its files!"
 						scanData.add_custom(msg, 2)
 				
 				elif mod.fields["Type"] == "Engine Plugin":
 					if	int(reqMod.fields["Priority Order"]) >= int(mod.fields["Priority Order"]):
 						var reqName = get_mod_name(reqMod)
-						var msg = "ERR66: ("+ name +") relies on features from ("+ reqName +") however ("+ reqName +") has a higher priority order. Fix this if bugs occur in-game."
+						var msg = "ERR66: ["+ name +"] relies on features from ["+ reqName +"] however ["+ reqName +"] has a higher priority order. Fix this if bugs occur in-game."
 						scanData.add_custom(msg, 1)
 				
 				elif int(reqMod.fields["Load Order"]) >= int(mod.fields["Load Order"]):
 					var reqName = get_mod_name(reqMod)
-					var msg = "ERR314: (" + name + ") requires (" + reqName + ") as a master however (" + reqName + ") has a higher load order!"
+					var msg = "ERR314: [" + name + "] requires [" + reqName + "] as a master however [" + reqName + "] has a higher load order!"
 					scanData.add_custom(msg, 2)
 		
 		for inc in mod.extras.Incompatible:
@@ -159,17 +179,6 @@ func scan_mods(modlist):
 						scanData.add_patchable_error(name, inc)
 				else:
 					scanData.add_unpatchable_error(name, inc)
-		if mod.extras.has("Compatible"):
-			for com in mod.extras.Compatible:
-				if modLinks.has(com.Link):
-					var orderToCheck = "Load"
-					if mod.fields["Type"] == "Plugin-free" || mod.fields["Type"] == "Engine Extender" || mod.fields["Type"] == "Engine Plugin":
-						orderToCheck = "Priority"
-					var comName = get_mod_name(modLinks[com.Link])
-					if "Do" in com.Overwrite && int(modLinks[com.Link].fields[orderToCheck+" Order"]) > int(mod.fields[orderToCheck+" Order"]):
-						scanData.add_custom("Notice: (" + name + ") is compatible with (" + comName + ") however ("+ name + ") should have a higher "+ orderToCheck +" Order. E.g. No--> 0-25 <--Yes")
-					elif "Get" in com.Overwrite && int(modLinks[com.Link].fields["Priority Order"]) < int(mod.fields["Priority Order"]):
-						scanData.add_custom("Notice: (" + name + ") is compatible with (" + comName + ") however ("+ comName + ") should have a higher "+ orderToCheck +" Order. E.g. No--> 0-25 <--Yes")
 		
 		if missingReq.size() > 0:
 			for i in range(missingReq.size()):

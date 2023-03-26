@@ -9,6 +9,7 @@ var mainManager
 #-- Scene Refs
 onready var mod_config_container = $Border2/BG/ScrollContainer/ModConfigContainer
 onready var req_container = $Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequiredModsList/ReqContainer
+onready var com_container = $Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsList2/ComContainer
 onready var inc_container = $Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsList/IncompatibleContainer
 onready var mod_link_text = $Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/ModLinkText
 onready var confirm_button = $Border2/BG/ConfirmButton
@@ -19,11 +20,13 @@ var integer_field = "res://Assets/Prefabs/Fields/Modular/IntegerField.tscn"
 var selector_field = "res://Assets/Prefabs/Fields/Modular/SelectorField.tscn"
 var incom_mod = "res://Assets/Prefabs/Fields/Extras/IncompatibleMod.tscn"
 var requi_mod = "res://Assets/Prefabs/Fields/Extras/RequiredMod.tscn"
+var compat_mod = "res://Assets/Prefabs/Fields/Extras/CompatibleMod.tscn"
 
 #-- Dynamic Vars
 var modIndex
 var fields = []
 var required = []
+var compatible = []
 var incompatible = []
 
 #--- Called when the window is added to the scene.
@@ -38,14 +41,17 @@ func _enable(_data):
 
 #--- Called when the window is deactivated.
 func _disable():
-	fields.clear()
-	required.clear()
-	incompatible.clear()
 	modIndex = null
 	mod_link_text.text = ""
+	fields.clear()
+	required.clear()
+	compatible.clear()
+	incompatible.clear()
 	for child in mod_config_container.get_children():
 		child.queue_free()
 	for child in req_container.get_children():
+		child.queue_free()
+	for child in com_container.get_children():
 		child.queue_free()
 	for child in inc_container.get_children():
 		child.queue_free()
@@ -114,6 +120,9 @@ func generate_window(modData):
 		mod_link_text.text = modData.mod.extras.Link
 		for req in modData.mod.extras.Required:
 			self._on_AddReqButton_pressed(req)
+		if modData.mod.extras.has("Compatible"):
+			for com in modData.mod.extras.Compatible:
+				self._on_AddComButton_pressed(com)
 		for inc in modData.mod.extras.Incompatible:
 			self._on_AddIncButton_pressed(inc)
 	
@@ -129,6 +138,8 @@ func compile_mod():
 		modData.add_field(field.fieldData.Title, field.get_value())
 	for req in required:
 		modData.add_required(req.get_data())
+	for com in compatible:
+		modData.add_compatible(com.get_data())
 	for inc in incompatible:
 		modData.add_incompatible(inc.get_data())
 	return modData
@@ -166,6 +177,15 @@ func _on_AddReqButton_pressed(reqData = null):
 	required.append(inst)
 	pass
 
+#--- Creates a new compatible mod field
+func _on_AddComButton_pressed(comData = null):
+	var inst = Functions.get_from_prefab(compat_mod)
+	com_container.add_child(inst)
+	Functions.wait_frame()
+	inst.construct(self, compatible.size(), comData)
+	compatible.append(inst)
+	pass
+
 #--- Creates a new incompatible mod field.
 func _on_AddIncButton_pressed(incData = null):
 	var inst = Functions.get_from_prefab(incom_mod)
@@ -192,3 +212,12 @@ func remove_incompatible(listIndex):
 	for i in range(listIndex, incompatible.size()):
 		incompatible[i].drop_index()
 	pass
+
+func remove_compatible(listIndex):
+	compatible.remove(listIndex)
+	if not compatible.size() > 0:
+		return
+	for i in range(listIndex, compatible.size()):
+		compatible[i].drop_index()
+	pass
+

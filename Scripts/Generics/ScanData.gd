@@ -11,7 +11,7 @@ func add_required_error(mod, req, type=2):
 	errors.append({
 		"Type":type,
 		"Link":req.Link,
-		"Message":"ERR404: Missing a master file for [" + mod + "] mod. Missing master is: " + req.Name
+		"Message":"ERR404: Missing a master file for (" + mod + ") mod. Missing master is: (" + req.Name + ")"
 	})
 	pass
 
@@ -20,7 +20,7 @@ func add_patchable_error(mod, inc, type=1):
 	errors.append({
 		"Type":type,
 		"Link":inc.Patch,
-		"Message":"ERR420: Incompatible mods without required patch detected! [" + mod + "] and [" + inc.Name + "]"
+		"Message":"ERR420: Incompatible mods without required patch detected! (" + mod + ") and (" + inc.Name + ")"
 	})
 	pass
 
@@ -29,7 +29,7 @@ func add_unpatchable_error(mod, inc, type=2):
 	errors.append({
 		"Type":type,
 		"Link":"",
-		"Message":"ERR626: Unpatchable mod conflict detected! [" + mod + "] & [" + inc.Name + "]"
+		"Message":"ERR626: Unpatchable mod conflict detected! (" + mod + ") & (" + inc.Name + ")"
 	})
 	pass
 

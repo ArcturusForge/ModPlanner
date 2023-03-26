@@ -361,6 +361,7 @@ __meta__ = {
 }
 
 [node name="ModEditWindow" parent="Windows" instance=ExtResource( 8 )]
+visible = true
 anchor_left = 0.190938
 anchor_top = 0.107
 anchor_right = 0.809063
@@ -414,7 +415,7 @@ size_flags_vertical = 3
 
 [node name="ModExtrasField" type="VBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer"]
 margin_right = 296.0
-margin_bottom = 150.0
+margin_bottom = 195.0
 custom_constants/separation = 5
 
 [node name="HeaderLabel" type="Label" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
@@ -500,10 +501,66 @@ margin_bottom = 1.0
 rect_min_size = Vector2( 0, 1 )
 color = Color( 0.278431, 0.278431, 0.278431, 1 )
 
-[node name="IncompatibleModsMenu" type="HBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
+[node name="CompatibleModsMenu2" type="HBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
 margin_top = 110.0
 margin_right = 296.0
 margin_bottom = 130.0
+
+[node name="HeaderLabel2" type="Label" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsMenu2"]
+margin_top = 3.0
+margin_right = 116.0
+margin_bottom = 17.0
+text = "Compatible Mods:"
+valign = 1
+
+[node name="Spacer" type="Control" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsMenu2"]
+margin_left = 120.0
+margin_right = 223.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="AddComButton" type="Button" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsMenu2"]
+margin_left = 227.0
+margin_right = 296.0
+margin_bottom = 20.0
+text = "Add Mod"
+
+[node name="CompatibleModsList2" type="MarginContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
+margin_top = 135.0
+margin_right = 296.0
+margin_bottom = 135.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="BG" type="ColorRect" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsList2"]
+margin_right = 296.0
+color = Color( 0, 0, 0, 0.109804 )
+
+[node name="ComContainer" type="VBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsList2"]
+margin_right = 296.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 20
+
+[node name="Divider4" type="Control" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
+margin_top = 140.0
+margin_right = 296.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="DividerColor" type="ColorRect" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/Divider4"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -150.0
+margin_right = 150.0
+margin_bottom = 1.0
+rect_min_size = Vector2( 0, 1 )
+color = Color( 0.278431, 0.278431, 0.278431, 1 )
+
+[node name="IncompatibleModsMenu" type="HBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
+margin_top = 155.0
+margin_right = 296.0
+margin_bottom = 175.0
 
 [node name="HeaderLabel2" type="Label" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsMenu"]
 margin_top = 3.0
@@ -525,9 +582,9 @@ margin_bottom = 20.0
 text = "Add Mod"
 
 [node name="IncompatibleModsList" type="MarginContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
-margin_top = 135.0
+margin_top = 180.0
 margin_right = 296.0
-margin_bottom = 135.0
+margin_bottom = 180.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -542,9 +599,9 @@ size_flags_vertical = 3
 custom_constants/separation = 20
 
 [node name="Divider3" type="Control" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
-margin_top = 140.0
+margin_top = 185.0
 margin_right = 296.0
-margin_bottom = 150.0
+margin_bottom = 195.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="DividerColor" type="ColorRect" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/Divider3"]
@@ -582,9 +639,8 @@ __meta__ = {
 }
 
 [node name="ImportWindow" parent="Windows" instance=ExtResource( 8 )]
-visible = true
-anchor_left = 0.381367
-anchor_right = 0.618633
+anchor_left = 0.334492
+anchor_right = 0.665508
 script = ExtResource( 14 )
 
 [node name="Label" type="Label" parent="Windows/ImportWindow/Border2/BG" index="0"]
@@ -680,6 +736,7 @@ filters = PoolStringArray( "*.mplan" )
 [connection signal="pressed" from="Windows/GameSelectorWindow/Border2/BG/SelectButton" to="Windows/GameSelectorWindow" method="_on_SelectButton_pressed"]
 [connection signal="pressed" from="Windows/GameSelectorWindow/Border2/BG/CancelButton" to="Windows/GameSelectorWindow" method="_on_CancelButton_pressed"]
 [connection signal="pressed" from="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequireModsMenu/AddReqButton" to="Windows/ModEditWindow" method="_on_AddReqButton_pressed"]
+[connection signal="pressed" from="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsMenu2/AddComButton" to="Windows/ModEditWindow" method="_on_AddComButton_pressed"]
 [connection signal="pressed" from="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsMenu/AddIncButton" to="Windows/ModEditWindow" method="_on_AddIncButton_pressed"]
 [connection signal="pressed" from="Windows/ModEditWindow/Border2/BG/CancelButton" to="Windows/ModEditWindow" method="_on_CancelButton_pressed"]
 [connection signal="pressed" from="Windows/ImportWindow/Border2/BG/CancelButton" to="Windows/ImportWindow" method="_on_CancelButton_pressed"]

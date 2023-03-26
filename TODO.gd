@@ -23,21 +23,26 @@
 # -/ Add an auto assign load order feature.
 # -/ Figure out a way to pin overwrite-able fix mods to the top of load orders.
 # -/ Add custom assign effects based on type of mod. Engine tweaks should always place at -1 in LO.
+# -/ Add mod import feature that detects already included mods.
+# -/ Add a reload extension option.
+# -/ Add a compatible mods field that takes in the name & link & an option of "Do Overwrite" or "Get Overwritten".
+# -?Solved by compatibility field? Add soft requirement toggle in mod edit required fields.
 # --- Uncompleted
-# - Add a reload extension option.
 # - Create a bool mod field.
 # - An "adjust load order" mod-option: Array.Inserts mod at a position in the load order.
 # - Track game version for session.
-# - Add a compatible mods field that takes in the name & link & an option of "Do Overwrite" or "Get Overwritten".
 # - Add an option to mods extra's fields with options "Choose from list" or "Custom". For required/incom/compa fields.
 # - Add hidden fields for game extensions that can be edited but don't appear in mod tree.
 # - Add a feature for mod link cleaning that detects link/name similarities and pings user.
 # - Add alternative link text-fields to all mod fields.
 # - If conflict patch link is empty then take my mod link instead.
 # - Add an "open folder location" menu option.
-# - Add soft requirement toggle in mod edit required fields.
 # - Create a one-line mod exporter/importer that compresses a mod entry into a copy&paste line
-# - Add mod import feature that detects already included mods.
+# - Mod search bar. Add search func call to game extensions. Requires custom modlist draw feature in modtreeman.
+# - Add select/deselect all option to mod import window.
+# - Detect duplicated mods in modlist during scan.
+# - Add the recolor option to mod menu.
+# - Add the copy mod name option to mod menu.
 # --- Perma Delayed
 # - Rework popup management system using the metadata field for items. T_T whyyyyy
 # - Display mod data in the preview panel.

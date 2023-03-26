@@ -5,6 +5,7 @@ var fields = {}
 var extras = {
 	"Link":"",
 	"Required":[],
+	"Compatible":[],
 	"Incompatible":[]
 }
 
@@ -26,6 +27,10 @@ func add_link(url):
 
 func add_required(data):
 	extras.Required.append(data)
+	pass
+
+func add_compatible(data):
+	extras.Compatible.append(data)
 	pass
 
 func add_incompatible(data):
