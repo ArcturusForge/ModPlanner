@@ -60,3 +60,13 @@ func _on_ConfirmButton_pressed():
 			Globals.get_manager("main").add_mod(import.mod)
 	window_manager.disable_window()
 	pass
+
+func _on_SelectAllButton_pressed():
+	for import in imports:
+		import.check.pressed = true
+	pass
+
+func _on_DeselectAllButton_pressed():
+	for import in imports:
+		import.check.pressed = false
+	pass

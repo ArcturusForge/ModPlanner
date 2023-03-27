@@ -123,7 +123,10 @@ func scan_mods(modlist):
 	var scanData = Globals.scanData.new()
 	var modLinks = {}
 	for mod in modlist:
-		modLinks[mod.extras.Link] = mod
+		if not modLinks.has(mod.extras.Link):
+			modLinks[mod.extras.Link] = mod
+		else:
+			scanData.add_duplication_error(get_mod_name(mod))
 	
 	for mod in modlist:
 		var name = get_mod_name(mod)

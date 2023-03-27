@@ -123,6 +123,8 @@ func assign_options():
 	filePData.add_separator(my_id)
 	filePData.add_option(my_id, "Save", KEY_S)
 	filePData.add_option(my_id, "Save As", KEY_S, true)
+	filePData.add_separator(my_id)
+	filePData.add_option(my_id, "Open Save Location")
 	
 	#- Assign Options to the EditMenuButton popup.
 	var editPData = popup_manager.get_popup_data("EditMenu")
@@ -160,6 +162,10 @@ func handle_file_menu(selectedOption):
 				search_manager.search_to_save(self, "handle_save")
 		"Save As":
 			search_manager.search_to_save(self, "handle_save")
+		"Open Save Location":
+			var fullPath = Session.savePath
+			var dirPath = fullPath.get_base_dir()
+			Functions.open_directory(dirPath)
 			pass
 	pass
 

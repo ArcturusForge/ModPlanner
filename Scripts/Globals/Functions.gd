@@ -152,3 +152,7 @@ func wait(time):
 func open_link(url):
 	OS.shell_open(url)
 	pass
+
+func open_directory(path):
+	OS.shell_open(str("file://", path))
+	pass

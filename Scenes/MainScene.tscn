@@ -361,7 +361,6 @@ __meta__ = {
 }
 
 [node name="ModEditWindow" parent="Windows" instance=ExtResource( 8 )]
-visible = true
 anchor_left = 0.190938
 anchor_top = 0.107
 anchor_right = 0.809063
@@ -639,20 +638,62 @@ __meta__ = {
 }
 
 [node name="ImportWindow" parent="Windows" instance=ExtResource( 8 )]
-anchor_left = 0.334492
-anchor_right = 0.665508
+anchor_left = 0.32082
+anchor_right = 0.67918
 script = ExtResource( 14 )
 
-[node name="Label" type="Label" parent="Windows/ImportWindow/Border2/BG" index="0"]
-anchor_right = 0.999996
-anchor_bottom = 0.0726884
-margin_bottom = 0.0700016
+[node name="UpperButtons" type="HBoxContainer" parent="Windows/ImportWindow/Border2/BG" index="0"]
+anchor_top = 0.0100503
+anchor_right = 0.999998
+anchor_bottom = 0.083
+margin_bottom = -9.03399
+rect_min_size = Vector2( 0, 20 )
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Spacer" type="Control" parent="Windows/ImportWindow/Border2/BG/UpperButtons"]
+margin_right = 10.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 10, 0 )
+
+[node name="Label" type="Label" parent="Windows/ImportWindow/Border2/BG/UpperButtons"]
+margin_left = 14.0
+margin_right = 166.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Select Mods to Import:"
 align = 1
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": true
 }
+
+[node name="Spacer2" type="Control" parent="Windows/ImportWindow/Border2/BG/UpperButtons"]
+margin_left = 170.0
+margin_right = 180.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 10, 0 )
+
+[node name="SelectAllButton" type="Button" parent="Windows/ImportWindow/Border2/BG/UpperButtons"]
+margin_left = 184.0
+margin_right = 256.0
+margin_bottom = 20.0
+text = "Select All"
+
+[node name="DeselectAllButton" type="Button" parent="Windows/ImportWindow/Border2/BG/UpperButtons"]
+margin_left = 260.0
+margin_right = 350.0
+margin_bottom = 20.0
+text = "Deselect All"
+
+[node name="Spacer3" type="Control" parent="Windows/ImportWindow/Border2/BG/UpperButtons"]
+margin_left = 354.0
+margin_right = 364.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 10, 0 )
 
 [node name="ModImportContainer" type="Control" parent="Windows/ImportWindow/Border2/BG" index="1"]
 anchor_left = 0.0290415
@@ -677,29 +718,46 @@ size_flags_vertical = 3
 
 [node name="ModImportList" parent="Windows/ImportWindow/Border2/BG/ModImportContainer/ScrollContainer" instance=ExtResource( 13 )]
 
-[node name="CancelButton" type="Button" parent="Windows/ImportWindow/Border2/BG" index="2"]
-anchor_left = 0.021
+[node name="LowerButtons" type="HBoxContainer" parent="Windows/ImportWindow/Border2/BG" index="2"]
 anchor_top = 0.94
-anchor_right = 0.302
+anchor_right = 1.0
 anchor_bottom = 0.99
-margin_left = -0.0320144
-margin_top = -0.119995
-margin_right = 0.0157928
-margin_bottom = -0.019989
+margin_top = -0.119965
+margin_right = 0.000335693
+margin_bottom = -0.0199585
+
+[node name="Spacer" type="Control" parent="Windows/ImportWindow/Border2/BG/LowerButtons"]
+margin_right = 10.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 10, 0 )
+
+[node name="CancelButton" type="Button" parent="Windows/ImportWindow/Border2/BG/LowerButtons"]
+margin_left = 14.0
+margin_right = 68.0
+margin_bottom = 20.0
 text = "Cancel"
 
-[node name="ConfirmButton" type="Button" parent="Windows/ImportWindow/Border2/BG" index="3"]
-anchor_left = 0.645998
-anchor_top = 0.94
-anchor_right = 0.979205
-anchor_bottom = 0.99
-margin_left = -0.0320144
-margin_top = -0.119995
-margin_bottom = -0.019989
+[node name="Spacer2" type="Control" parent="Windows/ImportWindow/Border2/BG/LowerButtons"]
+margin_left = 72.0
+margin_right = 284.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 10, 0 )
+size_flags_horizontal = 3
+
+[node name="ConfirmButton" type="Button" parent="Windows/ImportWindow/Border2/BG/LowerButtons"]
+margin_left = 288.0
+margin_right = 350.0
+margin_bottom = 20.0
 text = "Confirm"
 __meta__ = {
 "_edit_use_anchors_": true
 }
+
+[node name="Spacer3" type="Control" parent="Windows/ImportWindow/Border2/BG/LowerButtons"]
+margin_left = 354.0
+margin_right = 364.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 10, 0 )
 
 [node name="FileSearchWindows" type="Control" parent="."]
 anchor_right = 1.0
@@ -739,8 +797,10 @@ filters = PoolStringArray( "*.mplan" )
 [connection signal="pressed" from="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsMenu2/AddComButton" to="Windows/ModEditWindow" method="_on_AddComButton_pressed"]
 [connection signal="pressed" from="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsMenu/AddIncButton" to="Windows/ModEditWindow" method="_on_AddIncButton_pressed"]
 [connection signal="pressed" from="Windows/ModEditWindow/Border2/BG/CancelButton" to="Windows/ModEditWindow" method="_on_CancelButton_pressed"]
-[connection signal="pressed" from="Windows/ImportWindow/Border2/BG/CancelButton" to="Windows/ImportWindow" method="_on_CancelButton_pressed"]
-[connection signal="pressed" from="Windows/ImportWindow/Border2/BG/ConfirmButton" to="Windows/ImportWindow" method="_on_ConfirmButton_pressed"]
+[connection signal="pressed" from="Windows/ImportWindow/Border2/BG/UpperButtons/SelectAllButton" to="Windows/ImportWindow" method="_on_SelectAllButton_pressed"]
+[connection signal="pressed" from="Windows/ImportWindow/Border2/BG/UpperButtons/DeselectAllButton" to="Windows/ImportWindow" method="_on_DeselectAllButton_pressed"]
+[connection signal="pressed" from="Windows/ImportWindow/Border2/BG/LowerButtons/CancelButton" to="Windows/ImportWindow" method="_on_CancelButton_pressed"]
+[connection signal="pressed" from="Windows/ImportWindow/Border2/BG/LowerButtons/ConfirmButton" to="Windows/ImportWindow" method="_on_ConfirmButton_pressed"]
 
 [editable path="Windows/GameSelectorWindow"]
 [editable path="Windows/ModEditWindow"]

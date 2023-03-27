@@ -18,8 +18,11 @@ func jump_start():
 	modPopData.register_entity(my_id, self, "handle_mod_popup")
 	modPopData.add_option(my_id, "Edit Mod")
 	modPopData.add_separator(my_id)
+	modPopData.add_option(my_id, "Copy Name")
 	modPopData.add_option(my_id, "Copy Link")
+	modPopData.add_separator(my_id)
 	modPopData.add_option(my_id, "Open Link")
+	modPopData.add_option(my_id, "Export Mod")
 	modPopData.add_separator(my_id)
 	modPopData.add_option(my_id, "Delete Mod")
 	pass
@@ -37,15 +40,29 @@ func handle_mod_popup(selection):
 			var data = selectedMod.get_metadata(0)
 			var link = data.extras.Link
 			Functions.open_link(link)
+		"Copy Name":
+			var data = selectedMod.get_metadata(0)
+			var name = Globals.get_manager("main").get_mod_name(data)
+			OS.set_clipboard(name)
+			Globals.get_manager("console").postwrn("Copied name to clipboard")
 		"Copy Link":
 			var data = selectedMod.get_metadata(0)
 			var link = data.extras.Link
 			OS.set_clipboard(link)
 			Globals.get_manager("console").postwrn("Copied link to clipboard")
+		"Export Mod":
+			Globals.get_manager("search").search_to_save(self, "export_mod")
 		"Delete Mod":
 			Session.data.Mods.erase(selectedMod.get_metadata(0))
 			var man = Globals.get_manager("main")
 			man.repaint_mods()
+	pass
+
+func export_mod(path:String):
+	var dataCopy = Session.get_copy_of_data()
+	dataCopy.Mods.clear()
+	dataCopy.Mods.append(selectedMod.get_metadata(0))
+	Session.export_save(path, dataCopy)
 	pass
 
 #--- Draws and populates the mod tree

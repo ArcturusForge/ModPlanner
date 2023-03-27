@@ -19,13 +19,16 @@ func quick_save():
 	save_data(savePath)
 	pass
 
-#--- Makes a copy of the session but doesn't make it the active session.
-func export_save(path:String):
+func get_copy_of_data():
+	return data.duplicate(true)
+
+#--- Makes a custom save but doesn't make it the active session.
+func export_save(path:String, customData=self.data):
 	if not Globals.saveExtension in sessionName:
 		sessionName += "." + Globals.saveExtension
 	
 	var compilation = {
-		"data" : data
+		"data" : customData
 	}
 	print (path)
 	var file = File.new()

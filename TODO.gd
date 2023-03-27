@@ -27,23 +27,28 @@
 # -/ Add a reload extension option.
 # -/ Add a compatible mods field that takes in the name & link & an option of "Do Overwrite" or "Get Overwritten".
 # -?Solved by compatibility field? Add soft requirement toggle in mod edit required fields.
+# -/ Add the copy mod name option to mod menu.
+# -/ Add export mod option to mod menu.
+# -/ Add select/deselect all option to mod import window.
+# -/ Detect duplicated mods in modlist during scan.
+# -/ Add an "open save location" menu option.
 # --- Uncompleted
-# - Create a bool mod field.
 # - An "adjust load order" mod-option: Array.Inserts mod at a position in the load order.
 # - Track game version for session.
 # - Add an option to mods extra's fields with options "Choose from list" or "Custom". For required/incom/compa fields.
 # - Add hidden fields for game extensions that can be edited but don't appear in mod tree.
 # - Add a feature for mod link cleaning that detects link/name similarities and pings user.
 # - Add alternative link text-fields to all mod fields.
-# - If conflict patch link is empty then take my mod link instead.
-# - Add an "open folder location" menu option.
-# - Create a one-line mod exporter/importer that compresses a mod entry into a copy&paste line
+# - If compatibility patch link is empty then take my mod link instead.
 # - Mod search bar. Add search func call to game extensions. Requires custom modlist draw feature in modtreeman.
-# - Add select/deselect all option to mod import window.
-# - Detect duplicated mods in modlist during scan.
-# - Add the recolor option to mod menu.
-# - Add the copy mod name option to mod menu.
+# - Display general session info in the preview panel.
+# - Have a video resources section in the preview panel.
+# - Have a general description field in the preview panel.
+# - Add open/copy vid link buttons next to vid links in the preview panel.
+# - Add alt script loading options to game extensions and to extension menu.
 # --- Perma Delayed
+# -?Is this possible? Create a one-line mod exporter/importer that compresses a mod entry into a copy&paste line
+# - Add the recolor option to mod menu.
+# - Create a bool mod field.
 # - Rework popup management system using the metadata field for items. T_T whyyyyy
-# - Display mod data in the preview panel.
 # - ModTreeManager: Add separator support.

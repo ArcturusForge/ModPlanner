@@ -33,6 +33,14 @@ func add_unpatchable_error(mod, inc, type=2):
 	})
 	pass
 
+func add_duplication_error(mod, type=2):
+	errors.append({
+		"Type":type,
+		"Link":"",
+		"Message":"ERR221: Duplicated mods detected! (" + mod + ")"
+	})
+	pass
+
 func add_custom(msg, type=1, link = ""):
 	errors.append({
 		"Type":type,
