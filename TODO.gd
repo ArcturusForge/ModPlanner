@@ -32,23 +32,25 @@
 # -/ Add select/deselect all option to mod import window.
 # -/ Detect duplicated mods in modlist during scan.
 # -/ Add an "open save location" menu option.
+# -/ Add an option to mods extra's fields with options "Choose from list" or "Custom". For required/incom/compa fields.
+# -/ Display general session info in the preview panel.
+# -/ Have a general description field in the preview panel.
+# -/ An "adjust load order" mod-option: Array.Inserts mod at a position in the load order.
+# -/ Track game version for session.
+# -/ Have the category display an up or down arrow or nothing based on the current sorting of mods
 # --- Uncompleted
-# - An "adjust load order" mod-option: Array.Inserts mod at a position in the load order.
-# - Track game version for session.
-# - Add an option to mods extra's fields with options "Choose from list" or "Custom". For required/incom/compa fields.
-# - Add hidden fields for game extensions that can be edited but don't appear in mod tree.
+# -?Can't remember why? Add hidden fields for game extensions that can be edited but don't appear in mod tree.
 # - Add a feature for mod link cleaning that detects link/name similarities and pings user.
 # - Add alternative link text-fields to all mod fields.
-# - If compatibility patch link is empty then take my mod link instead.
 # - Mod search bar. Add search func call to game extensions. Requires custom modlist draw feature in modtreeman.
-# - Display general session info in the preview panel.
 # - Have a video resources section in the preview panel.
-# - Have a general description field in the preview panel.
 # - Add open/copy vid link buttons next to vid links in the preview panel.
 # - Add alt script loading options to game extensions and to extension menu.
+# - Autosave, a session backup feature.
 # --- Perma Delayed
-# -?Is this possible? Create a one-line mod exporter/importer that compresses a mod entry into a copy&paste line
+# -?Is this possible? Create a one-line mod exporter/importer feature that compresses a mod entry into a copy&paste-able line
 # - Add the recolor option to mod menu.
-# - Create a bool mod field.
+# -?Not necessary? Create a bool mod field.
 # - Rework popup management system using the metadata field for items. T_T whyyyyy
 # - ModTreeManager: Add separator support.
+# --- Cancelled

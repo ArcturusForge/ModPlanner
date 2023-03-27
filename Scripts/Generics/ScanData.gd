@@ -69,6 +69,7 @@ func post_result(withLinks=true):
 		
 		Globals.get_manager("console").post(closing_msg)
 	else:
+		yield(Globals.get_tree().create_timer(0.25), "timeout")
 		Globals.get_manager("console").post(closing_msg+"\nNo issues detected!")
 	pass
 

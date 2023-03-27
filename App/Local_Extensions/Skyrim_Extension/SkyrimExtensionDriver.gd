@@ -4,9 +4,24 @@ const my_id = "skyrimExtension"
 
 #--- Called by the system when the script is first loaded.
 func extension_loaded():
-	var extensionMenu = Globals.get_manager("popups").get_popup_data("ExtenMenu")
+	var popMan = Globals.get_manager("popups")
+	var extensionMenu = popMan.get_popup_data("ExtenMenu")
 	extensionMenu.register_entity(my_id, self, "handle_extension_menu")
 	extensionMenu.add_option(my_id, "Auto Sort Order")
+	
+	var modMenu = popMan.get_popup_data("ModPop")
+	modMenu.register_entity(my_id, self, "handle_mod_menu")
+	modMenu.add_separator(my_id)
+	modMenu.add_option(my_id, "Adjust Load Orders")
+	modMenu.add_option(my_id, "Adjust Priority Orders")
+	modMenu.add_option(my_id, "Adjust Both Orders")
+	pass
+
+#--- Called by the system when the script is being unloaded.
+func extension_unloaded():
+	var popMan = Globals.get_manager("popups")
+	popMan.get_popup_data("ExtenMenu").unregister_entity(my_id)
+	popMan.get_popup_data("ModPop").unregister_entity(my_id)
 	pass
 
 func handle_extension_menu(selection):
@@ -14,6 +29,33 @@ func handle_extension_menu(selection):
 		"Auto Sort Order":
 			Globals.get_manager("console").generate("Assigning load orders...", Globals.green)
 			sort_l_o()
+	pass
+
+func adjust_field(field:String, selected):
+	for mod in Session.data.Mods:
+		if mod == selected:
+			continue
+		if mod.fields[field] >= selected.fields[field]:
+			var val = int(mod.fields[field])
+			val += 1
+			mod.fields[field] = str(val)
+	Globals.get_manager("main").repaint_mods()
+	Globals.get_manager("console").post(field+"s have been adjusted.")
+	pass
+
+func handle_mod_menu(selection):
+	match selection:
+		#- Pushes every mod back one in the load order to accomodate the new LO placement.
+		"Adjust Load Orders": 
+			var selected = Globals.get_manager("mtree").get_selected_mod()
+			adjust_field("Load Order", selected)
+		"Adjust Priority Orders":
+			var selected = Globals.get_manager("mtree").get_selected_mod()
+			adjust_field("Priority Order", selected)
+		"Adjust Both Orders":
+			var selected = Globals.get_manager("mtree").get_selected_mod()
+			adjust_field("Load Order", selected)
+			adjust_field("Priority Order", selected)
 	pass
 
 func sort_l_o():
@@ -69,7 +111,7 @@ func sort_l_o():
 	influnceList.sort_custom(self, "sort_by_influence")
 	var lo = 0
 	var po = 0
-	var epo = enginePlugTotal + 1
+	var epo = enginePlugTotal + 1 if enginePlugTotal > 0 else enginePlugTotal
 	for sorted in influnceList:
 		if sorted.mod.fields["Type"] == "Engine Extender":
 			sorted.mod.fields["Load Order"] = str(-1)
@@ -108,11 +150,6 @@ func sort_by_influence(mData1, mData2):
 	if a > b:
 		return true
 	return false
-
-#--- Called by the system when the script is being unloaded.
-func extension_unloaded():
-	Globals.get_manager("popups").get_popup_data("ExtenMenu").unregister_entity(my_id)
-	pass
 
 #--- Called by the system to access a mod's name.
 func get_mod_name(mod):

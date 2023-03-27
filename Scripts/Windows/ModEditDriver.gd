@@ -13,6 +13,7 @@ onready var com_container = $Border2/BG/ScrollContainer2/ModConfigContainer/ModE
 onready var inc_container = $Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsList/IncompatibleContainer
 onready var mod_link_text = $Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/ModLinkText
 onready var confirm_button = $Border2/BG/ConfirmButton
+onready var mod_quick_selection_panel = $Border2/BG/ModQuickSelectionPanel
 
 #-- Prefabs
 var one_line_field = "res://Assets/Prefabs/Fields/Modular/OneLineField.tscn"
@@ -55,6 +56,7 @@ func _disable():
 		child.queue_free()
 	for child in inc_container.get_children():
 		child.queue_free()
+	mod_quick_selection_panel.close_selector()
 	pass
 
 #--- Called when the window is removed from the scene.
@@ -221,3 +223,24 @@ func remove_compatible(listIndex):
 		compatible[i].drop_index()
 	pass
 
+func open_quick_select(function:String):
+	mod_quick_selection_panel.connect("on_selected", self, function)
+	mod_quick_selection_panel.open_selector(Session.data.Mods, [mod_link_text.text])
+	pass
+
+func _on_SelectReqButton_pressed():
+	mod_quick_selection_panel.close_selector()
+	open_quick_select("_on_AddReqButton_pressed")
+	pass
+
+
+func _on_SelectComButton_pressed():
+	mod_quick_selection_panel.close_selector()
+	open_quick_select("_on_AddComButton_pressed")
+	pass
+
+
+func _on_SelectIncButton_pressed():
+	mod_quick_selection_panel.close_selector()
+	open_quick_select("_on_AddIncButton_pressed")
+	pass

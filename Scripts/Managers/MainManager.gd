@@ -9,6 +9,7 @@ onready var popup_manager = $Managers/PopupManager
 onready var window_manager = $Managers/WindowManager
 onready var search_manager = $Managers/SearchManager
 onready var console_manager = $Managers/ConsoleManager
+onready var tab_manager = $Managers/TabManager
 
 #-- Dynamic Vals
 var scanData
@@ -36,6 +37,7 @@ func _ready():
 	search_manager.jump_start()
 	console_manager.jump_start()
 	mod_tree_manager.jump_start()
+	tab_manager.jump_start()
 	
 	#- Must always be bottom of manager execution order
 	window_manager.jump_start()
@@ -51,13 +53,8 @@ func start_new_session(extensionPath:String):
 	read_game_extension(extensionPath)
 	repaint_mods()
 	console_manager.post("Started New Session")
+	tab_manager.session_launched()
 	Globals.repaint_app_name()
-	
-	#TEMP:
-#	add_mod(Globals.exampleMod1)
-#	add_mod(Globals.exampleMod2)
-#	add_mod(Globals.exampleMod3)
-#	add_mod(Globals.exampleMod4)
 	pass
 
 #--- Loads an existing session
@@ -72,12 +69,13 @@ func open_loaded_session(filePath:String):
 			break
 	
 	if not found:
-		console_manager.posterr("ERR1001: Cannot locate game extension " + Session.data["Game"])
+		console_manager.posterr("ERR007: Cannot locate game extension " + Session.data["Game"])
 		return
 	
 	repaint_mods()
 	var sessionName = filePath.get_file()
 	console_manager.post("Loaded Session: " + sessionName)
+	tab_manager.session_launched()
 	Globals.repaint_app_name()
 	pass
 
@@ -98,6 +96,7 @@ func wipe_slate(skipGames=false):
 	Session.reset_data()
 	Session.data["Game"] = ""
 	Session.data["Mods"] = []
+	tab_manager.fresh_session()
 	pass
 
 #--- Reads the setup data from the game compatibility plugin
@@ -242,11 +241,11 @@ func reset_scan():
 
 func scan_mods():
 	if activeGame.data == null:
-		console_manager.posterr("ERR1002: No Session is active. Please start a session first!")
+		console_manager.posterr("ERR303: No Session is active. Please start a session first!")
 		return
 	
 	if activeGame.script == null:
-		console_manager.posterr("ERR1003: Game Extension does not have a script included!!")
+		console_manager.posterr("ERR501: Game Extension does not have a script included!!")
 		return
 	
 	scanData = activeGame.script.scan_mods(Session.data.Mods)
@@ -268,7 +267,7 @@ func sort_mods(category:String, orientation:int):
 func mod_import(path:String):
 	var data = Session.export_load_data(path)
 	if not data["Game"] == activeGame.name:
-		console_manager.posterr("ERR800: Cancelled attempt to import mods from a different game!")
+		console_manager.posterr("ERR911: Cancelled attempt to import mods from a different game!")
 		return
 	
 	window_manager.activate_window("importMod", data.Mods)

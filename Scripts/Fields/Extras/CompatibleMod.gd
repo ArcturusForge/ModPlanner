@@ -20,6 +20,8 @@ func construct(driver, index, extraData):
 	mod_name_text.text = extraData.Name
 	mod_link_text.text = extraData.Link
 	#- Do Overwrite = 0, Get Overwritten = 1
+	if not extraData.has("Overwrite"):
+		extraData.Overwrite = "Do"
 	var selIndex = 0 if "Do" in extraData.Overwrite else 1
 	overwrite_selector.select(selIndex)
 	pass

@@ -6,6 +6,10 @@ const my_id = "mtree"
 onready var mod_tree = $"../../Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/ModTree"
 onready var mod_popup = $"../../Popups/ModPopup"
 
+#-- Filepaths
+var ascendingIcon = preload("res://Assets/Graphics/AscendingIcon.png")
+var descendingIcon = preload("res://Assets/Graphics/DescendingIcon.png")
+
 #-- Dynamic Vars
 var sortOrientation = 1
 var sortCategory = ""
@@ -13,6 +17,7 @@ var modPopData
 var selectedMod
 
 func jump_start():
+	Globals.set_manager(my_id, self)
 	var pMan = Globals.get_manager("popups")
 	modPopData = pMan.get_popup_data("ModPop")
 	modPopData.register_entity(my_id, self, "handle_mod_popup")
@@ -117,6 +122,12 @@ func create_entry(modData, parent, gameData):
 		entry.set_tooltip(i, category.Tooltip)
 		entry.set_text_align(i, HALIGN_CENTER)
 		entry.set_custom_color(i, modData["color"])
+		
+		#- Can't say I approve of how Tree & TreeItem have almost 0 icon settings.
+		if category.Title == sortCategory:
+			var image = descendingIcon if sortOrientation == 1 else ascendingIcon
+			entry.set_icon(i, image)
+			entry.set_icon_max_width(i, 8)
 	return entry
 
 #--- Opens a menu to edit the selected mod.
@@ -124,7 +135,6 @@ func _on_ModTree_item_rmb_selected(position):
 	var mod = mod_tree.get_item_at_position(position)
 	if mod == null:
 		return
-	#TODO: open popup with options.
 	selectedMod = mod
 	if selectedMod.get_metadata(0).extras.Link == "":
 		modPopData.lock_option(my_id, "Open Link")
@@ -142,3 +152,8 @@ func _on_ModTree_column_title_pressed(column:int):
 		sortOrientation = 1
 	sortCategory = col
 	Globals.get_manager("main").repaint_mods()
+
+func get_selected_mod():
+	if not selectedMod == null:
+		return selectedMod.get_metadata(0)
+	return null
