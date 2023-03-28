@@ -130,7 +130,9 @@ func assign_options():
 	var editPData = popup_manager.get_popup_data("EditMenu")
 	editPData.register_entity(my_id, self, "handle_edit_menu")
 	editPData.add_option(my_id, "Add Mod", KEY_A, true)
-	editPData.add_option(my_id, "Import Mods", KEY_E, true)
+	editPData.add_separator(my_id, "")
+	editPData.add_option(my_id, "Import Mods", KEY_E)
+	editPData.add_option(my_id, "Decode Mod", KEY_E, true)
 	editPData.add_separator(my_id, "")
 	editPData.add_option(my_id, "Open Mod Links")
 	
@@ -181,7 +183,8 @@ func handle_edit_menu(selectedOption):
 			console_manager.post("Links opened.")
 		"Import Mods":
 			search_manager.search_for_session(self, "mod_import")
-			
+		"Decode Mod":
+			window_manager.activate_window("importEnc")
 	pass
 
 func handle_scan_menu(selectedOption):
@@ -275,3 +278,17 @@ func mod_import(path:String):
 
 func get_mod_name(mod):
 	return activeGame.script.get_mod_name(mod)
+
+func encode_mod(mod):
+	var data = {
+		"Game":activeGame.name,
+		"Mod":mod
+	}
+	var string = to_json(data)
+	var encode = string.percent_encode()
+	return encode
+
+func decode_mod(encode:String):
+	var string = encode.percent_decode()
+	var modDecode = parse_json(string)
+	return modDecode

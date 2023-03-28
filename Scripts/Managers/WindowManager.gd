@@ -14,6 +14,7 @@ onready var opening_select_window = $"../../Windows/OpeningSelectWindow"
 onready var game_selector_window = $"../../Windows/GameSelectorWindow"
 onready var mod_add_window = $"../../Windows/ModEditWindow"
 onready var import_window = $"../../Windows/ImportWindow"
+onready var encoded_mod_window = $"../../Windows/EncodedModWindow"
 
 #-- Windows
 var windows = {}
@@ -29,6 +30,7 @@ func jump_start():
 	register_window("gameSelect", game_selector_window)
 	register_window("modAdd", mod_add_window)
 	register_window("importMod", import_window)
+	register_window("importEnc", encoded_mod_window)
 	
 	#- Disable any active windows on boot.
 	for window in windows.values():

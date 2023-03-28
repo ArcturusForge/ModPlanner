@@ -29,6 +29,7 @@ func jump_start():
 	modPopData.add_separator(my_id)
 	modPopData.add_option(my_id, "Open Link")
 	modPopData.add_option(my_id, "Export Mod")
+	modPopData.add_option(my_id, "Copy Encoded Mod")
 	modPopData.add_separator(my_id)
 	modPopData.add_option(my_id, "Delete Mod")
 	pass
@@ -58,6 +59,10 @@ func handle_mod_popup(selection):
 			Globals.get_manager("console").postwrn("Copied link to clipboard")
 		"Export Mod":
 			Globals.get_manager("search").search_to_save(self, "export_mod")
+		"Copy Encoded Mod":
+			var encode = Globals.get_manager("main").encode_mod(get_selected_mod())
+			OS.clipboard = encode
+			Globals.get_manager("console").postwrn("Copied encoded mod to clipboard")
 		"Delete Mod":
 			var mana = Globals.get_manager("main")
 			Globals.get_manager("console").postwrn("Deleted mod: " + mana.get_mod_name(get_selected_mod()))

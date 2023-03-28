@@ -43,14 +43,14 @@
 # -/ Have a video resources section in the preview panel.
 # -/ Add open/copy vid link buttons next to vid links in the preview panel.
 # -/ Have the extension reload feature reload the actual extension file as well.
+# -?Is this possible:Turns out the answer is yes? Create a one-line mod exporter/importer feature that compresses a mod entry into a copy&paste-able line
 # --- Uncompleted
-# -?Can't remember why? Add hidden fields for game extensions that can be edited but don't appear in mod tree.
+# -?Can't remember why:Mod descriptions/install instructions? Add hidden fields for game extensions that can be edited but don't appear in mod tree.
 # - Add a feature for mod link cleaning that detects link/name similarities and pings user.
 # - Add alternative link text-fields to all mod fields.
 # - Add alt script loading options to game extensions and to extension menu.
 # - Autosave, a session backup feature.
 # --- Perma Delayed
-# -?Is this possible? Create a one-line mod exporter/importer feature that compresses a mod entry into a copy&paste-able line
 # - Add the recolor option to mod menu.
 # - Rework popup management system using the metadata field for items. T_T whyyyyy
 # - ModTreeManager: Add separator support.

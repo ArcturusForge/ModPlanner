@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Assets/Graphics/Backgrounds/garden forest.jpg" type="Texture" id=1]
 [ext_resource path="res://Assets/Prefabs/ModTabParent.tscn" type="PackedScene" id=2]
@@ -7,7 +7,7 @@
 [ext_resource path="res://Scripts/Managers/PopupManager.gd" type="Script" id=5]
 [ext_resource path="res://Scripts/Managers/WindowManager.gd" type="Script" id=6]
 [ext_resource path="res://Scripts/Windows/OpeningSelectDriver.gd" type="Script" id=7]
-[ext_resource path="res://Assets/Prefabs/WindowPanel.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Assets/Prefabs/BaseWindow.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scripts/Windows/GameSelectorDriver.gd" type="Script" id=9]
 [ext_resource path="res://Scripts/Managers/SearchManager.gd" type="Script" id=10]
 [ext_resource path="res://Scripts/Managers/ConsoleManager.gd" type="Script" id=11]
@@ -17,6 +17,7 @@
 [ext_resource path="res://Assets/Prefabs/Misc/ModQuickSelectionPanel.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Scripts/Tabs/GeneralTabDriver.gd" type="Script" id=16]
 [ext_resource path="res://Scripts/Managers/TabManager.gd" type="Script" id=17]
+[ext_resource path="res://Scripts/Windows/EncodedModDriver.gd" type="Script" id=18]
 
 [node name="Main" type="Control"]
 anchor_right = 1.0
@@ -62,6 +63,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 1 )
 expand = true
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Background"]
 anchor_right = 1.0
@@ -1127,6 +1131,159 @@ margin_right = 364.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 10, 0 )
 
+[node name="EncodedModWindow" parent="Windows" instance=ExtResource( 8 )]
+visible = true
+script = ExtResource( 18 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Windows/EncodedModWindow/Border2/BG" index="0"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Spacer" type="Control" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer"]
+margin_right = 320.0
+
+[node name="HeadingLabelContainer" type="HBoxContainer" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer"]
+margin_top = 4.0
+margin_right = 320.0
+margin_bottom = 18.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/HeadingLabelContainer"]
+margin_right = 320.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Import an encoded mod"
+align = 1
+valign = 1
+
+[node name="PasteLabelContainer" type="HBoxContainer" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer"]
+margin_top = 22.0
+margin_right = 320.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+
+[node name="Spacer3" type="Control" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/PasteLabelContainer"]
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/PasteLabelContainer"]
+margin_left = 4.0
+margin_top = 3.0
+margin_right = 133.0
+margin_bottom = 17.0
+text = "Paste Encoded Mod:"
+valign = 1
+
+[node name="Spacer2" type="Control" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/PasteLabelContainer"]
+margin_left = 137.0
+margin_right = 137.0
+margin_bottom = 20.0
+
+[node name="PasteButton" type="Button" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/PasteLabelContainer"]
+margin_left = 141.0
+margin_right = 224.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "1. Paste"
+
+[node name="Spacer4" type="Control" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/PasteLabelContainer"]
+margin_left = 228.0
+margin_right = 228.0
+margin_bottom = 20.0
+
+[node name="ClearButton" type="Button" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/PasteLabelContainer"]
+margin_left = 232.0
+margin_right = 316.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Clear"
+
+[node name="Spacer5" type="Control" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/PasteLabelContainer"]
+margin_left = 320.0
+margin_right = 320.0
+margin_bottom = 20.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer"]
+margin_top = 46.0
+margin_right = 320.0
+margin_bottom = 366.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Spacer4" type="Control" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/HBoxContainer"]
+margin_bottom = 320.0
+
+[node name="EncodedModTextEdit" type="TextEdit" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/HBoxContainer"]
+margin_left = 4.0
+margin_right = 316.0
+margin_bottom = 320.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+wrap_enabled = true
+
+[node name="Spacer5" type="Control" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/HBoxContainer"]
+margin_left = 320.0
+margin_right = 320.0
+margin_bottom = 320.0
+
+[node name="Spacer4" type="Control" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer"]
+margin_top = 370.0
+margin_right = 320.0
+margin_bottom = 370.0
+
+[node name="ButtonContainer" type="HBoxContainer" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer"]
+margin_top = 374.0
+margin_right = 320.0
+margin_bottom = 394.0
+size_flags_horizontal = 3
+
+[node name="Spacer2" type="Control" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/ButtonContainer"]
+margin_right = 17.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="CloseButton" type="Button" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/ButtonContainer"]
+margin_left = 21.0
+margin_right = 68.0
+margin_bottom = 20.0
+text = "Close"
+
+[node name="Spacer" type="Control" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/ButtonContainer"]
+margin_left = 72.0
+margin_right = 90.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="ScanButton" type="Button" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/ButtonContainer"]
+margin_left = 94.0
+margin_right = 201.0
+margin_bottom = 20.0
+text = "2. Scan Encode"
+
+[node name="Spacer4" type="Control" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/ButtonContainer"]
+margin_left = 205.0
+margin_right = 222.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="ImportButton" type="Button" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/ButtonContainer"]
+margin_left = 226.0
+margin_right = 298.0
+margin_bottom = 20.0
+text = "3. Import"
+
+[node name="Spacer5" type="Control" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer/ButtonContainer"]
+margin_left = 302.0
+margin_right = 320.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="Spacer3" type="Control" parent="Windows/EncodedModWindow/Border2/BG/VBoxContainer"]
+margin_top = 398.0
+margin_right = 320.0
+margin_bottom = 398.0
+
 [node name="FileSearchWindows" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1182,8 +1339,15 @@ filters = PoolStringArray( "*.mplan" )
 [connection signal="pressed" from="Windows/ImportWindow/Border2/BG/UpperButtons/DeselectAllButton" to="Windows/ImportWindow" method="_on_DeselectAllButton_pressed"]
 [connection signal="pressed" from="Windows/ImportWindow/Border2/BG/LowerButtons/CancelButton" to="Windows/ImportWindow" method="_on_CancelButton_pressed"]
 [connection signal="pressed" from="Windows/ImportWindow/Border2/BG/LowerButtons/ConfirmButton" to="Windows/ImportWindow" method="_on_ConfirmButton_pressed"]
+[connection signal="pressed" from="Windows/EncodedModWindow/Border2/BG/VBoxContainer/PasteLabelContainer/PasteButton" to="Windows/EncodedModWindow" method="_on_PasteButton_pressed"]
+[connection signal="pressed" from="Windows/EncodedModWindow/Border2/BG/VBoxContainer/PasteLabelContainer/ClearButton" to="Windows/EncodedModWindow" method="_on_ClearButton_pressed"]
+[connection signal="text_changed" from="Windows/EncodedModWindow/Border2/BG/VBoxContainer/HBoxContainer/EncodedModTextEdit" to="Windows/EncodedModWindow" method="_on_EncodedModTextEdit_text_changed"]
+[connection signal="pressed" from="Windows/EncodedModWindow/Border2/BG/VBoxContainer/ButtonContainer/CloseButton" to="Windows/EncodedModWindow" method="_on_CloseButton_pressed"]
+[connection signal="pressed" from="Windows/EncodedModWindow/Border2/BG/VBoxContainer/ButtonContainer/ScanButton" to="Windows/EncodedModWindow" method="_on_ScanButton_pressed"]
+[connection signal="pressed" from="Windows/EncodedModWindow/Border2/BG/VBoxContainer/ButtonContainer/ImportButton" to="Windows/EncodedModWindow" method="_on_ImportButton_pressed"]
 
 [editable path="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/General"]
 [editable path="Windows/GameSelectorWindow"]
 [editable path="Windows/ModEditWindow"]
 [editable path="Windows/ImportWindow"]
+[editable path="Windows/EncodedModWindow"]
