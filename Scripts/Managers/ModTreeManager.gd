@@ -3,12 +3,13 @@ extends Control
 const my_id = "mtree"
 
 #-- Scene Refs
-onready var mod_tree = $"../../Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/ModTree"
+onready var mod_tree = $"../../Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/VBoxContainer/ModTree"
 onready var mod_popup = $"../../Popups/ModPopup"
+onready var mod_filter_line_edit = $"../../Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/VBoxContainer/HBoxContainer/ModFilterLineEdit"
 
 #-- Filepaths
-var ascendingIcon = preload("res://Assets/Graphics/AscendingIcon.png")
-var descendingIcon = preload("res://Assets/Graphics/DescendingIcon.png")
+var ascendingIcon = preload("res://Assets/Graphics/64x64/AscendingIcon.png")
+var descendingIcon = preload("res://Assets/Graphics/64x64/DescendingIcon.png")
 
 #-- Dynamic Vars
 var sortOrientation = 1
@@ -37,42 +38,48 @@ func handle_mod_popup(selection):
 		"Edit Mod":
 			var wman = Globals.get_manager("window")
 			var data = {
-				"mod":selectedMod.get_metadata(0),
-				"index":Session.data.Mods.find(selectedMod.get_metadata(0))
+				"mod":get_selected_mod(),
+				"index":Session.data.Mods.find(get_selected_mod())
 			}
 			wman.activate_window("modAdd", data)
 		"Open Link":
-			var data = selectedMod.get_metadata(0)
+			var data = get_selected_mod()
 			var link = data.extras.Link
 			Functions.open_link(link)
 		"Copy Name":
-			var data = selectedMod.get_metadata(0)
+			var data = get_selected_mod()
 			var name = Globals.get_manager("main").get_mod_name(data)
 			OS.set_clipboard(name)
 			Globals.get_manager("console").postwrn("Copied name to clipboard")
 		"Copy Link":
-			var data = selectedMod.get_metadata(0)
+			var data = get_selected_mod()
 			var link = data.extras.Link
 			OS.set_clipboard(link)
 			Globals.get_manager("console").postwrn("Copied link to clipboard")
 		"Export Mod":
 			Globals.get_manager("search").search_to_save(self, "export_mod")
 		"Delete Mod":
-			Session.data.Mods.erase(selectedMod.get_metadata(0))
-			var man = Globals.get_manager("main")
-			man.repaint_mods()
+			var mana = Globals.get_manager("main")
+			Globals.get_manager("console").postwrn("Deleted mod: " + mana.get_mod_name(get_selected_mod()))
+			Session.data.Mods.erase(get_selected_mod())
+			mana.repaint_mods()
 	pass
 
 func export_mod(path:String):
 	var dataCopy = Session.get_copy_of_data()
 	dataCopy.Mods.clear()
-	dataCopy.Mods.append(selectedMod.get_metadata(0))
+	dataCopy.Mods.append(get_selected_mod())
 	Session.export_save(path, dataCopy)
 	pass
 
 #--- Draws and populates the mod tree
-func draw_tree(gameData):
+func draw_tree():
 	mod_tree.clear()
+	
+	#- Get main manager, extension data and sort modList.
+	var mana = Globals.get_manager("main")
+	var gameData = mana.activeGame.data
+	var modList = mana.sort_mods(sortCategory, sortOrientation)
 	
 	#- Create the mod tree root
 	var root = mod_tree.create_item()
@@ -84,12 +91,10 @@ func draw_tree(gameData):
 	for i in range(gameData.Categories.size()):
 		create_column(i, gameData.Categories[i].Title, gameData.Categories[i].Size, (true if i == 0 else false))
 	
-	#- Sort modList
-	var man = Globals.get_manager("main")
-	var modList = man.sort_mods(sortCategory, sortOrientation)
-	
 	#- Create mod entries for the mod tree
 	for mod in modList:
+		if not mod_filter_line_edit.text.to_lower() in mana.get_mod_name(mod).to_lower() && not mod_filter_line_edit.text == "":
+			continue
 		#TODO: Add separator support.
 		create_entry(mod, root, gameData)
 	pass
@@ -136,7 +141,7 @@ func _on_ModTree_item_rmb_selected(position):
 	if mod == null:
 		return
 	selectedMod = mod
-	if selectedMod.get_metadata(0).extras.Link == "":
+	if get_selected_mod().extras.Link == "":
 		modPopData.lock_option(my_id, "Open Link")
 	else:
 		modPopData.unlock_option(my_id, "Open Link")
@@ -153,7 +158,20 @@ func _on_ModTree_column_title_pressed(column:int):
 	sortCategory = col
 	Globals.get_manager("main").repaint_mods()
 
+func _on_ModTree_item_activated():
+	if not selectedMod == null:
+		handle_mod_popup("Edit Mod")
+	pass
+
+func _on_ModTree_item_selected():
+	selectedMod = mod_tree.get_selected()
+	pass
+
 func get_selected_mod():
 	if not selectedMod == null:
 		return selectedMod.get_metadata(0)
 	return null
+
+func _on_ModFilterLineEdit_text_changed(_new_text):
+	draw_tree()
+	pass

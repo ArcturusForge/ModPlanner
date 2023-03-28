@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Assets/Graphics/Backgrounds/garden forest.jpg" type="Texture" id=1]
 [ext_resource path="res://Assets/Prefabs/ModTabParent.tscn" type="PackedScene" id=2]
@@ -12,9 +12,10 @@
 [ext_resource path="res://Scripts/Managers/SearchManager.gd" type="Script" id=10]
 [ext_resource path="res://Scripts/Managers/ConsoleManager.gd" type="Script" id=11]
 [ext_resource path="res://Scripts/Windows/ModEditDriver.gd" type="Script" id=12]
+[ext_resource path="res://Scripts/Tabs/ResourcesTabDriver.gd" type="Script" id=13]
 [ext_resource path="res://Scripts/Windows/ImportDriver.gd" type="Script" id=14]
 [ext_resource path="res://Assets/Prefabs/Misc/ModQuickSelectionPanel.tscn" type="PackedScene" id=15]
-[ext_resource path="res://Scripts/Tabs/GeneralTab.gd" type="Script" id=16]
+[ext_resource path="res://Scripts/Tabs/GeneralTabDriver.gd" type="Script" id=16]
 [ext_resource path="res://Scripts/Managers/TabManager.gd" type="Script" id=17]
 
 [node name="Main" type="Control"]
@@ -157,7 +158,41 @@ margin_bottom = 408.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ModTree" type="Tree" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer"]
+margin_right = 706.0
+margin_bottom = 408.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/VBoxContainer"]
+margin_right = 706.0
+margin_bottom = 26.0
+
+[node name="Spacer" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/VBoxContainer/HBoxContainer"]
+margin_bottom = 26.0
+
+[node name="Label" type="Label" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/VBoxContainer/HBoxContainer"]
+margin_left = 4.0
+margin_top = 6.0
+margin_right = 82.0
+margin_bottom = 20.0
+text = "Mod Search:"
+
+[node name="ModFilterLineEdit" type="LineEdit" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/VBoxContainer/HBoxContainer"]
+margin_left = 86.0
+margin_right = 702.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+clear_button_enabled = true
+placeholder_text = "Filter..."
+
+[node name="Spacer2" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/VBoxContainer/HBoxContainer"]
+margin_left = 706.0
+margin_right = 706.0
+margin_bottom = 26.0
+
+[node name="ModTree" type="Tree" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/VBoxContainer"]
+margin_top = 30.0
 margin_right = 706.0
 margin_bottom = 408.0
 size_flags_horizontal = 3
@@ -314,13 +349,157 @@ margin_bottom = 372.0
 
 [node name="Resources" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab" instance=ExtResource( 2 )]
 visible = false
+script = ExtResource( 13 )
 
-[node name="Label" type="Label" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources"]
-margin_left = 126.0
-margin_top = 120.0
-margin_right = 166.0
-margin_bottom = 134.0
-text = "TODO"
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Spacer" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer"]
+margin_right = 298.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer"]
+margin_top = 4.0
+margin_right = 298.0
+margin_bottom = 24.0
+
+[node name="Spacer" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/HBoxContainer"]
+margin_bottom = 20.0
+
+[node name="AddButton" type="Button" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/HBoxContainer"]
+margin_left = 4.0
+margin_right = 104.0
+margin_bottom = 20.0
+text = "Add Resource"
+
+[node name="Spacer2" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/HBoxContainer"]
+margin_left = 108.0
+margin_right = 108.0
+margin_bottom = 20.0
+
+[node name="NewResourcePanel" type="VBoxContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer"]
+margin_top = 28.0
+margin_right = 298.0
+margin_bottom = 108.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel"]
+margin_right = 298.0
+margin_bottom = 26.0
+
+[node name="Spacer" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer"]
+margin_bottom = 26.0
+
+[node name="Label" type="Label" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer"]
+margin_left = 4.0
+margin_top = 6.0
+margin_right = 46.0
+margin_bottom = 20.0
+text = "Name:"
+
+[node name="ResourceNameLineEdit" type="LineEdit" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer"]
+margin_left = 50.0
+margin_right = 294.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+clear_button_enabled = true
+placeholder_text = "Resource Name..."
+
+[node name="Spacer2" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer"]
+margin_left = 298.0
+margin_right = 298.0
+margin_bottom = 26.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel"]
+margin_top = 30.0
+margin_right = 298.0
+margin_bottom = 56.0
+
+[node name="Spacer3" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer2"]
+margin_bottom = 26.0
+
+[node name="Label" type="Label" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer2"]
+margin_left = 4.0
+margin_top = 6.0
+margin_right = 34.0
+margin_bottom = 20.0
+text = "Link:"
+
+[node name="ResourceLinkLineEdit" type="LineEdit" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer2"]
+margin_left = 38.0
+margin_right = 294.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+clear_button_enabled = true
+placeholder_text = "Resource Link..."
+
+[node name="Spacer4" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer2"]
+margin_left = 298.0
+margin_right = 298.0
+margin_bottom = 26.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel"]
+margin_top = 60.0
+margin_right = 298.0
+margin_bottom = 80.0
+
+[node name="Spacer" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer3"]
+margin_bottom = 20.0
+
+[node name="CancelButton" type="Button" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer3"]
+margin_left = 4.0
+margin_right = 58.0
+margin_bottom = 20.0
+text = "Cancel"
+
+[node name="Spacer2" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer3"]
+margin_left = 62.0
+margin_right = 62.0
+margin_bottom = 20.0
+
+[node name="ConfirmButton" type="Button" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer3"]
+margin_left = 66.0
+margin_right = 128.0
+margin_bottom = 20.0
+text = "Confirm"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer"]
+margin_top = 112.0
+margin_right = 298.0
+margin_bottom = 368.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Spacer5" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/HBoxContainer2"]
+margin_bottom = 256.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/HBoxContainer2"]
+margin_left = 4.0
+margin_right = 294.0
+margin_bottom = 256.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ResourceTree" type="Tree" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/HBoxContainer2/ScrollContainer"]
+margin_right = 290.0
+margin_bottom = 256.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 4
+allow_rmb_select = true
+hide_folding = true
+hide_root = true
+
+[node name="Spacer6" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/HBoxContainer2"]
+margin_left = 298.0
+margin_right = 298.0
+margin_bottom = 256.0
+
+[node name="Spacer2" type="Control" parent="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer"]
+margin_top = 372.0
+margin_right = 298.0
+margin_bottom = 372.0
 
 [node name="ConsoleBGBorder" type="ColorRect" parent="Background/VBoxContainer/VSplitContainer"]
 margin_top = 420.0
@@ -525,9 +704,9 @@ __meta__ = {
 }
 
 [node name="ModEditWindow" parent="Windows" instance=ExtResource( 8 )]
-anchor_left = 0.190938
+anchor_left = 0.159688
 anchor_top = 0.107
-anchor_right = 0.809063
+anchor_right = 0.840313
 anchor_bottom = 0.893
 script = ExtResource( 12 )
 
@@ -552,7 +731,7 @@ __meta__ = {
 }
 
 [node name="ModConfigContainer" type="VBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer"]
-margin_right = 292.0
+margin_right = 322.656
 margin_bottom = 407.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -571,31 +750,31 @@ __meta__ = {
 }
 
 [node name="ModConfigContainer" type="VBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2"]
-margin_right = 296.994
+margin_right = 328.162
 margin_bottom = 407.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ModExtrasField" type="VBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer"]
-margin_right = 296.0
+margin_right = 328.0
 margin_bottom = 195.0
 custom_constants/separation = 5
 
 [node name="HeaderLabel" type="Label" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
-margin_right = 296.0
+margin_right = 328.0
 margin_bottom = 14.0
 text = "Mod Link:"
 valign = 1
 
 [node name="ModLinkText" type="LineEdit" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
 margin_top = 19.0
-margin_right = 296.0
+margin_right = 328.0
 margin_bottom = 45.0
 clear_button_enabled = true
 
 [node name="Divider" type="Control" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
 margin_top = 50.0
-margin_right = 296.0
+margin_right = 328.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 0, 10 )
 
@@ -610,7 +789,7 @@ color = Color( 0.278431, 0.278431, 0.278431, 1 )
 
 [node name="RequireModsMenu" type="HBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
 margin_top = 65.0
-margin_right = 296.0
+margin_right = 328.0
 margin_bottom = 85.0
 
 [node name="HeaderLabel2" type="Label" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequireModsMenu"]
@@ -622,42 +801,42 @@ valign = 1
 
 [node name="Spacer" type="Control" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequireModsMenu"]
 margin_left = 104.0
-margin_right = 136.0
+margin_right = 168.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 
 [node name="AddReqButton" type="Button" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequireModsMenu"]
-margin_left = 140.0
-margin_right = 209.0
+margin_left = 172.0
+margin_right = 241.0
 margin_bottom = 20.0
 text = "Add Mod"
 
 [node name="SelectReqButton" type="Button" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequireModsMenu"]
-margin_left = 213.0
-margin_right = 296.0
+margin_left = 245.0
+margin_right = 328.0
 margin_bottom = 20.0
 text = "Select Mod"
 
 [node name="RequiredModsList" type="MarginContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
 margin_top = 90.0
-margin_right = 296.0
+margin_right = 328.0
 margin_bottom = 90.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="BG" type="ColorRect" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequiredModsList"]
-margin_right = 296.0
+margin_right = 328.0
 color = Color( 0, 0, 0, 0.109804 )
 
 [node name="ReqContainer" type="VBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/RequiredModsList"]
-margin_right = 296.0
+margin_right = 328.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 20
 
 [node name="Divider2" type="Control" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
 margin_top = 95.0
-margin_right = 296.0
+margin_right = 328.0
 margin_bottom = 105.0
 rect_min_size = Vector2( 0, 10 )
 
@@ -672,7 +851,7 @@ color = Color( 0.278431, 0.278431, 0.278431, 1 )
 
 [node name="CompatibleModsMenu2" type="HBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
 margin_top = 110.0
-margin_right = 296.0
+margin_right = 328.0
 margin_bottom = 130.0
 
 [node name="HeaderLabel2" type="Label" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsMenu2"]
@@ -684,42 +863,42 @@ valign = 1
 
 [node name="Spacer" type="Control" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsMenu2"]
 margin_left = 120.0
-margin_right = 136.0
+margin_right = 168.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 
 [node name="AddComButton" type="Button" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsMenu2"]
-margin_left = 140.0
-margin_right = 209.0
+margin_left = 172.0
+margin_right = 241.0
 margin_bottom = 20.0
 text = "Add Mod"
 
 [node name="SelectComButton" type="Button" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsMenu2"]
-margin_left = 213.0
-margin_right = 296.0
+margin_left = 245.0
+margin_right = 328.0
 margin_bottom = 20.0
 text = "Select Mod"
 
 [node name="CompatibleModsList2" type="MarginContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
 margin_top = 135.0
-margin_right = 296.0
+margin_right = 328.0
 margin_bottom = 135.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="BG" type="ColorRect" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsList2"]
-margin_right = 296.0
+margin_right = 328.0
 color = Color( 0, 0, 0, 0.109804 )
 
 [node name="ComContainer" type="VBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/CompatibleModsList2"]
-margin_right = 296.0
+margin_right = 328.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 20
 
 [node name="Divider4" type="Control" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
 margin_top = 140.0
-margin_right = 296.0
+margin_right = 328.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 0, 10 )
 
@@ -734,7 +913,7 @@ color = Color( 0.278431, 0.278431, 0.278431, 1 )
 
 [node name="IncompatibleModsMenu" type="HBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
 margin_top = 155.0
-margin_right = 296.0
+margin_right = 328.0
 margin_bottom = 175.0
 
 [node name="HeaderLabel2" type="Label" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsMenu"]
@@ -746,42 +925,42 @@ valign = 1
 
 [node name="Spacer" type="Control" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsMenu"]
 margin_left = 132.0
-margin_right = 136.0
+margin_right = 168.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 
 [node name="AddIncButton" type="Button" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsMenu"]
-margin_left = 140.0
-margin_right = 209.0
+margin_left = 172.0
+margin_right = 241.0
 margin_bottom = 20.0
 text = "Add Mod"
 
 [node name="SelectIncButton" type="Button" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsMenu"]
-margin_left = 213.0
-margin_right = 296.0
+margin_left = 245.0
+margin_right = 328.0
 margin_bottom = 20.0
 text = "Select Mod"
 
 [node name="IncompatibleModsList" type="MarginContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
 margin_top = 180.0
-margin_right = 296.0
+margin_right = 328.0
 margin_bottom = 180.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="BG" type="ColorRect" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsList"]
-margin_right = 296.0
+margin_right = 328.0
 color = Color( 0, 0, 0, 0.109804 )
 
 [node name="IncompatibleContainer" type="VBoxContainer" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField/IncompatibleModsList"]
-margin_right = 296.0
+margin_right = 328.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 20
 
 [node name="Divider3" type="Control" parent="Windows/ModEditWindow/Border2/BG/ScrollContainer2/ModConfigContainer/ModExtrasField"]
 margin_top = 185.0
-margin_right = 296.0
+margin_right = 328.0
 margin_bottom = 195.0
 rect_min_size = Vector2( 0, 10 )
 
@@ -798,9 +977,9 @@ color = Color( 0.278431, 0.278431, 0.278431, 1 )
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = 15.9989
+margin_left = 7.99927
 margin_top = 9.00002
-margin_right = 163.999
+margin_right = 155.999
 margin_bottom = 219.0
 
 [node name="ConfirmButton" type="Button" parent="Windows/ModEditWindow/Border2/BG" index="4"]
@@ -973,10 +1152,17 @@ access = 2
 filters = PoolStringArray( "*.mplan" )
 
 [connection signal="toggled" from="Background/VBoxContainer/Topbar Container/CheckButton" to="Managers/TabManager" method="_on_CheckButton_toggled"]
-[connection signal="column_title_pressed" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/ModTree" to="Managers/ModTreeManager" method="_on_ModTree_column_title_pressed"]
-[connection signal="item_rmb_selected" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/ModTree" to="Managers/ModTreeManager" method="_on_ModTree_item_rmb_selected"]
+[connection signal="text_changed" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/VBoxContainer/HBoxContainer/ModFilterLineEdit" to="Managers/ModTreeManager" method="_on_ModFilterLineEdit_text_changed"]
+[connection signal="column_title_pressed" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/VBoxContainer/ModTree" to="Managers/ModTreeManager" method="_on_ModTree_column_title_pressed"]
+[connection signal="item_activated" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/VBoxContainer/ModTree" to="Managers/ModTreeManager" method="_on_ModTree_item_activated"]
+[connection signal="item_rmb_selected" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/VBoxContainer/ModTree" to="Managers/ModTreeManager" method="_on_ModTree_item_rmb_selected"]
+[connection signal="item_selected" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/LeftContainer/VBoxContainer/ModTree" to="Managers/ModTreeManager" method="_on_ModTree_item_selected"]
 [connection signal="text_changed" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/General/ScrollContainer/VBoxContainer/HBoxContainer2/VersionLineEdit" to="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/General" method="_on_VersionLineEdit_text_changed"]
 [connection signal="text_changed" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/General/ScrollContainer/VBoxContainer/HBoxContainer5/DescriptionLineEdit" to="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/General" method="_on_DescriptionLineEdit_text_changed"]
+[connection signal="pressed" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/HBoxContainer/AddButton" to="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources" method="_on_AddButton_pressed"]
+[connection signal="pressed" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer3/CancelButton" to="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources" method="_on_CancelButton_pressed"]
+[connection signal="pressed" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/NewResourcePanel/HBoxContainer3/ConfirmButton" to="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources" method="_on_ConfirmButton_pressed"]
+[connection signal="button_pressed" from="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources/VBoxContainer/HBoxContainer2/ScrollContainer/ResourceTree" to="Background/VBoxContainer/VSplitContainer/HSplitContainer/DetailsContainer/Tab/Resources" method="_on_ResourceTree_button_pressed"]
 [connection signal="pressed" from="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/ClearButton" to="Managers/ConsoleManager" method="_on_ClearButton_pressed"]
 [connection signal="meta_clicked" from="Background/VBoxContainer/VSplitContainer/ConsoleBGBorder/ConsoleBG/TextBG/RichTextLabel" to="Managers/ConsoleManager" method="_on_RichTextLabel_meta_clicked"]
 [connection signal="pressed" from="Windows/OpeningSelectWindow/Border/BG/VBoxContainer/NewSessionButton" to="Windows/OpeningSelectWindow" method="_on_NewSessionButton_pressed"]

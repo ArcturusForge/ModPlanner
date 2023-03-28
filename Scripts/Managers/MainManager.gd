@@ -100,7 +100,7 @@ func wipe_slate(skipGames=false):
 	pass
 
 #--- Reads the setup data from the game compatibility plugin
-func read_game_extension(extensionPath:String):
+func read_game_extension(extensionPath:String, writeToSession = true):
 	var data = Functions.read_file(extensionPath)
 	var dir = extensionPath.get_base_dir()
 	activeGame.script = load(Functions.os_path_convert(dir+"/"+data.Script)).new()
@@ -108,7 +108,8 @@ func read_game_extension(extensionPath:String):
 	activeGame.dir = dir
 	activeGame.name = extensionPath.get_file()
 	activeGame.script.extension_loaded()
-	Session.data["Game"] = extensionPath.get_file()
+	if writeToSession:
+		Session.data["Game"] = extensionPath.get_file()
 	popup_manager.get_popup_data("ExtenMenu").unlock_option(my_id, "Reload Extension")
 	pass
 
@@ -202,10 +203,9 @@ func handle_extension_menu(selectedOption):
 		"Reload Extension":
 			activeGame.script.extension_unloaded()
 			Functions.wait_frame()
-			activeGame.script = load(Functions.os_path_convert(activeGame.dir+"/"+activeGame.data.Script)).new()
-			activeGame.script.extension_loaded()
+			read_game_extension(activeGame.dir+"/"+activeGame.name, false)
 			console_manager.generate("Extension Reloaded", Globals.green)
-			
+			repaint_mods()
 	pass
 
 func handle_save(filePath):
@@ -258,7 +258,7 @@ func scan_mods():
 	pass
 
 func repaint_mods():
-	mod_tree_manager.draw_tree(activeGame.data)
+	mod_tree_manager.draw_tree()
 	pass
 
 func sort_mods(category:String, orientation:int):

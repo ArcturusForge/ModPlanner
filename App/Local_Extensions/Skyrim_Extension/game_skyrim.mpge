@@ -16,7 +16,7 @@
 			"Prompt":"Mod Type:",
 			"Size":170,
 			"Field":"Select",
-			"Select":["Master", "Plugin", "Patch", "Plugin-free", "Overwrite-able Replacer", "Overwrite-able Fix", "Engine Extender", "Engine Plugin", "Other"]
+			"Select":["Master", "Plugin", "Patch", "Animation", "Plugin-free", "Overwrite-able Replacer", "Overwrite-able Fix", "Engine Extender", "Engine Plugin", "Other"]
 		},
 		{
 			"Title":"Version",
@@ -31,7 +31,7 @@
 			"Prompt":"Mod Origin:",
 			"Size":80,
 			"Field":"Select",
-			"Select":["Nexus", "LoversLab", "Mod DB", "Patreon", "Discord", "Other"]
+			"Select":["Nexus", "AFK Mods", "LoversLab", "Mod DB", "Patreon", "Discord", "Other"]
 		},
 		{
 			"Title":"Priority Order",

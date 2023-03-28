@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/DescendingIcon.png-0b8df16faac8ffc55cd7927cc30cbed4.stex"
+path="res://.import/DescendingIcon.png-209d59ce847f3d25feda0cab63b31f66.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Graphics/DescendingIcon.png"
-dest_files=[ "res://.import/DescendingIcon.png-0b8df16faac8ffc55cd7927cc30cbed4.stex" ]
+source_file="res://Assets/Graphics/64x64/DescendingIcon.png"
+dest_files=[ "res://.import/DescendingIcon.png-209d59ce847f3d25feda0cab63b31f66.stex" ]
 
 [params]
 

@@ -11,7 +11,7 @@ var tab_manager
 func jump_start():
 	pass
 
-func get_fresh_general():
+func get_fresh():
 	var data = {
 		"Version":"",
 		"Description":""
@@ -24,7 +24,7 @@ func session_launched():
 	extension_label.text = mana.activeGame.name
 	
 	if not Session.data.has("General"):
-		Session.data["General"] = get_fresh_general()
+		Session.data["General"] = get_fresh()
 	
 	version_line_edit.text = Session.data.General.Version
 	description_line_edit.text = Session.data.General.Description

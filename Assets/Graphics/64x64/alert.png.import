@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/AscendingIcon.png-69c35403e498baef5ee568726c359bbc.stex"
+path="res://.import/alert.png-3dd41a1847dd33e7bbdb597ca0a3f383.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Graphics/AscendingIcon.png"
-dest_files=[ "res://.import/AscendingIcon.png-69c35403e498baef5ee568726c359bbc.stex" ]
+source_file="res://Assets/Graphics/64x64/alert.png"
+dest_files=[ "res://.import/alert.png-3dd41a1847dd33e7bbdb597ca0a3f383.stex" ]
 
 [params]
 

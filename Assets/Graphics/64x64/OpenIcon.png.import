@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/alert.png-370963ed731b56151fa20d91aee387ef.stex"
+path="res://.import/OpenIcon.png-04848747b1b6a59ee46925aa2a239aff.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Graphics/alert.png"
-dest_files=[ "res://.import/alert.png-370963ed731b56151fa20d91aee387ef.stex" ]
+source_file="res://Assets/Graphics/64x64/OpenIcon.png"
+dest_files=[ "res://.import/OpenIcon.png-04848747b1b6a59ee46925aa2a239aff.stex" ]
 
 [params]
 

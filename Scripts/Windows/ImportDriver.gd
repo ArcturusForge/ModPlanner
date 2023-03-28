@@ -6,7 +6,7 @@ var window_manager
 #-- Prefabs
 const checkboxList = "res://Assets/Prefabs/Misc/ModImportList.tscn"
 const importCheckbox = "res://Assets/Prefabs/Misc/ModImportCheckBox.tscn"
-const alertImg = "res://Assets/Graphics/alert.png"
+const alertImg = "res://Assets/Graphics/64x64/alert.png"
 #-- Scene Refs
 onready var scroll_container = $Border2/BG/ModImportContainer/ScrollContainer
 
