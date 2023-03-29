@@ -75,6 +75,7 @@ func export_mod(path:String):
 	dataCopy.Mods.clear()
 	dataCopy.Mods.append(get_selected_mod())
 	Session.export_save(path, dataCopy)
+	Globals.get_manager("console").generate("Successfully exported " + path.get_file() + " to " + path)
 	pass
 
 #--- Draws and populates the mod tree
