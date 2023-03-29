@@ -21,8 +21,11 @@ func construct(driver, index, extraData):
 	# Assign existing data
 	mod_name_text.text = extraData.Name
 	mod_link_text.text = extraData.Link
-	patchable_check_box.pressed = extraData.Patchable
-	patch_link_text.text = extraData.Patch
+	if extraData.has("Patchable"):
+		patchable_check_box.pressed = extraData.Patchable
+		patch_link_text.text = extraData.Patch
+	else:
+		patchable_check_box.pressed = true
 	pass
 
 func get_data():

@@ -50,9 +50,17 @@
 # - Add alternative link text-fields to all mod fields.
 # - Add alt script loading options to game extensions and to extension menu.
 # - Autosave, a session backup feature.
+# - Add support for multi-mod incompatibility patches.
+# - Add unpatched incompatiblity description field with instructions on how to resolve.
+# - Add an auto detect feature for mod patches that fills in the required mods section on its own.
+# - For capatibility mods check for existing link before assigning them in auto sort feature.
+# - Investigate portability to Godot 4.
+# - File Association with .mplan
+# - Add a not saved check before closing.
 # --- Perma Delayed
 # - Add the recolor option to mod menu.
 # - Rework popup management system using the metadata field for items. T_T whyyyyy
 # - ModTreeManager: Add separator support.
+# - Add an edit feature to resources.
 # --- Cancelled
 # -?Not necessary? Create a bool mod field.
