@@ -3,7 +3,7 @@ extends Node
 #--- Returns all detected files of a defined type.
 func get_all_files(path: String, file_ext := "", use_full_path:= true, files := []):
 	if is_app():
-		path = os_path_convert(path)
+		path = os_path_convert(path, false)
 	
 	var dir = Directory.new()
 	if dir.open(path) == OK:
@@ -78,9 +78,12 @@ func load_image_from_encode(extension:String, encodedImage:String):
 	return texture
 
 #--- Use when creating directories/files at runtime
-func os_path_convert(path: String):
-	if "res://" in path || "user://" in path:
+func os_path_convert(path:String, ignoreArgs = true):
+	if "user://" in path || (ignoreArgs && "res://" in path) || (not self.has_cmd_args() && "res://" in path):
 		return ProjectSettings.globalize_path(path)
+	elif "res://" in path:
+		var dir = OS.get_executable_path().get_base_dir()
+		return dir + "/" + ProjectSettings.globalize_path(path)
 	return path
 
 #--- Returns a bool for if the project is an exported app or not.
@@ -155,4 +158,25 @@ func open_link(url):
 
 func open_directory(path):
 	OS.shell_open(str("file://", path))
+	pass
+
+#--- Checks if the app was opened by means other than the exe directly.
+func has_cmd_args():
+	var args = OS.get_cmdline_args()
+	if args.size() > 0:
+		return true
+	return false
+
+#--- Bypasses standard procedure if a .mplan file was opened.
+func open_with_cmd(target, function:String):
+	var args = OS.get_cmdline_args()
+	if args.size() == 1:
+		funcref(target, function).call_func(args[0])
+		return true
+	return false
+
+func associate_extension(associatorPath:String, args:PoolStringArray):
+	associatorPath = os_path_convert(associatorPath)
+	if OS.get_name() == "Windows":
+		OS.execute(associatorPath, args)
 	pass

@@ -10,6 +10,10 @@ func jump_start():
 	Globals.set_manager(my_id, self)
 	pass
 
+func set_default_path(path:String):
+	file_dialog.current_dir = path
+	pass
+
 func search_for_session(target, method:String):
 	reset_connections()
 	file_dialog.connect("file_selected", target, method)

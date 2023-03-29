@@ -1,7 +1,7 @@
 extends Node
 
 #-- Control
-const versionId = "3.3.1"
+const versionId = "3.4.2"
 const appName = "Mod Planner"
 const sessionNameDefault = "Untitled_Session"
 const saveExtension = "mplan"

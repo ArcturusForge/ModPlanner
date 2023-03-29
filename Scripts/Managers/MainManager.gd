@@ -20,6 +20,10 @@ var activeGame = {
 }
 
 func _ready():
+	
+	#- Configures the user's pc to associate .mplan files with ModPlanner.
+	Functions.associate_extension("res://Assets/Associators/associator_windows.bat", [OS.get_executable_path(), ".mplan"])
+	
 	wipe_slate()
 	Globals.repaint_app_name()
 	Globals.set_manager(my_id, self)
@@ -42,9 +46,12 @@ func _ready():
 	#- Must always be bottom of manager execution order
 	window_manager.jump_start()
 	
-	#- Activate the starter selector
-	window_manager.activate_window("openSelect")
 	assign_options()
+	
+	#- Check if a .mplan file was opened through cmdline.
+	if not Functions.open_with_cmd(self, "open_loaded_session"):
+		#- Activate the starter selector
+		window_manager.activate_window("openSelect")
 	pass
 
 #--- Starts a fresh session
@@ -61,6 +68,7 @@ func start_new_session(extensionPath:String):
 func open_loaded_session(filePath:String):
 	wipe_slate(true)
 	Session.load_data(filePath)
+	search_manager.set_default_path(filePath.get_base_dir())
 	var found = false
 	for game in managedGames:
 		if game.gameName == Session.data["Game"]:

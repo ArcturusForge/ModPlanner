@@ -57,6 +57,9 @@
 # - Investigate portability to Godot 4.
 # - File Association with .mplan
 # - Add a not saved check before closing.
+# - Check why openwith blocks local extensions from working.
+# - Bug: When using openwith, script extension loading seems to bug out. Proof: Reload Extension is locked & ext. script custom option is first in menu.
+# - Have file explorer path start at session location.
 # --- Perma Delayed
 # - Add the recolor option to mod menu.
 # - Rework popup management system using the metadata field for items. T_T whyyyyy
