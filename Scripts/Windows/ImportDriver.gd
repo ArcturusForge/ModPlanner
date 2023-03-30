@@ -6,7 +6,7 @@ var window_manager
 #-- Prefabs
 const checkboxList = "res://Assets/Prefabs/Misc/ModImportList.tscn"
 const importCheckbox = "res://Assets/Prefabs/Misc/ModImportCheckBox.tscn"
-const alertImg = "res://Assets/Graphics/64x64/alert.png"
+const alertImg = preload("res://Assets/Graphics/64x64/alert.png")
 #-- Scene Refs
 onready var scroll_container = $Border2/BG/ModImportContainer/ScrollContainer
 
@@ -30,7 +30,7 @@ func _enable(_data):
 		inst.text = Globals.get_manager("main").get_mod_name(impMod)
 		for mod in Session.data.Mods:
 			if impMod.extras.Link in mod.extras.Link || mod.extras.Link in impMod.extras.Link:
-				inst.icon = Functions.load_image(alertImg)
+				inst.icon = alertImg
 				inst.hint_tooltip = "Notice: A mod referencing a similar link already exists in your modlist."
 		
 		imports.append({

@@ -1012,6 +1012,7 @@ __meta__ = {
 }
 
 [node name="ImportWindow" parent="Windows" instance=ExtResource( 8 )]
+visible = true
 anchor_left = 0.32082
 anchor_right = 0.67918
 script = ExtResource( 14 )
@@ -1034,7 +1035,7 @@ rect_min_size = Vector2( 10, 0 )
 
 [node name="Label" type="Label" parent="Windows/ImportWindow/Border2/BG/UpperButtons"]
 margin_left = 14.0
-margin_right = 166.0
+margin_right = 161.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1046,22 +1047,26 @@ __meta__ = {
 }
 
 [node name="Spacer2" type="Control" parent="Windows/ImportWindow/Border2/BG/UpperButtons"]
-margin_left = 170.0
-margin_right = 180.0
+margin_left = 165.0
+margin_right = 175.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 10, 0 )
 
 [node name="SelectAllButton" type="Button" parent="Windows/ImportWindow/Border2/BG/UpperButtons"]
-margin_left = 184.0
-margin_right = 256.0
+margin_left = 179.0
+margin_right = 262.0
 margin_bottom = 20.0
+size_flags_horizontal = 3
 text = "Select All"
+clip_text = true
 
 [node name="DeselectAllButton" type="Button" parent="Windows/ImportWindow/Border2/BG/UpperButtons"]
-margin_left = 260.0
+margin_left = 266.0
 margin_right = 350.0
 margin_bottom = 20.0
+size_flags_horizontal = 3
 text = "Deselect All"
+clip_text = true
 
 [node name="Spacer3" type="Control" parent="Windows/ImportWindow/Border2/BG/UpperButtons"]
 margin_left = 354.0

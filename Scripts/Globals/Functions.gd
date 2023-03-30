@@ -25,7 +25,7 @@ func get_all_files(path: String, file_ext := "", use_full_path:= true, files := 
 		print("An error occurred when trying to access %s." % path)
 	return files
 
-#--- Loads and returns an image.
+#--- Loads and returns an image. Only works for images not built into the app.
 func load_image(path:String):
 	if is_app():
 		path = os_path_convert(path)

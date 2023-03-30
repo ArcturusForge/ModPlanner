@@ -21,7 +21,7 @@ func get_fresh():
 #- Called by the system when a session has been started.
 func session_launched():
 	var mana = Globals.get_manager("main")
-	extension_label.text = mana.activeGame.name
+	extension_label.text = mana.activeGame.data.Name + " " + mana.activeGame.data.Version
 	
 	if not Session.data.has("General"):
 		Session.data["General"] = get_fresh()

@@ -44,6 +44,14 @@
 # -/ Add open/copy vid link buttons next to vid links in the preview panel.
 # -/ Have the extension reload feature reload the actual extension file as well.
 # -?Is this possible:Turns out the answer is yes? Create a one-line mod exporter/importer feature that compresses a mod entry into a copy&paste-able line
+# -/ Bug: When using openwith, script extension loading seems to bug out. Proof: Reload Extension is locked & ext. script custom option is first in menu.
+# -/ Check why openwith blocks local extensions from working.
+# -/ Have file explorer path start at session location.
+# -/ Bug: Fix save notice for after deleting a mod.
+# -/ Bug: Priority order is starting at 2 if only 1 plugin-free type variant exists in the ML.
+# -/ Bug: Extension reload not reloading extenison when app opened through openwith.
+# -/ Bug: Fix import window scaling for buttons.
+# -/ Bug: Individual mod import text & icons are not appearing.
 # --- Uncompleted
 # -?Can't remember why:Mod descriptions/install instructions? Add hidden fields for game extensions that can be edited but don't appear in mod tree.
 # - Add a feature for mod link cleaning that detects link/name similarities and pings user.
@@ -53,13 +61,14 @@
 # - Add support for multi-mod incompatibility patches.
 # - Add unpatched incompatiblity description field with instructions on how to resolve.
 # - Add an auto detect feature for mod patches that fills in the required mods section on its own.
-# - For capatibility mods check for existing link before assigning them in auto sort feature.
+# - For compatibility mods check for existing link before assigning them in auto sort feature.
 # - Investigate portability to Godot 4.
-# - File Association with .mplan
-# - Add a not saved check before closing.
-# - Check why openwith blocks local extensions from working.
-# - Bug: When using openwith, script extension loading seems to bug out. Proof: Reload Extension is locked & ext. script custom option is first in menu.
-# - Have file explorer path start at session location.
+# -?Need alt device to test? Auto File Association with .mplan
+# - Add a requirements detection to mod import window.
+# - Add support for priority-files type.
+# - Rework auto sort for plugin to file priority differences.
+# - Add lock feature for mod LO/POs in the auto sort.
+# - Add a follow up step to auto sort that places patches next to the lowest req. mod in the LO. (Low LO = higher LO value). Start at 0 LO and work upwards checking reqs. and compats. Use the adjust feature to do it.
 # --- Perma Delayed
 # - Add the recolor option to mod menu.
 # - Rework popup management system using the metadata field for items. T_T whyyyyy

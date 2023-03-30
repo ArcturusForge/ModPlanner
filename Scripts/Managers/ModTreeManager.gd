@@ -68,6 +68,7 @@ func handle_mod_popup(selection):
 			Globals.get_manager("console").postwrn("Deleted mod: " + mana.get_mod_name(get_selected_mod()))
 			Session.data.Mods.erase(get_selected_mod())
 			mana.repaint_mods()
+			Globals.repaint_app_name(true)
 	pass
 
 func export_mod(path:String):

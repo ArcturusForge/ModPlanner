@@ -111,16 +111,16 @@ func sort_l_o():
 	influnceList.sort_custom(self, "sort_by_influence")
 	var lo = 0
 	var po = 0
-	var epo = enginePlugTotal + 1 if enginePlugTotal > 0 else enginePlugTotal
+	var epo = enginePlugTotal
 	for sorted in influnceList:
 		if sorted.mod.fields["Type"] == "Engine Extender":
 			sorted.mod.fields["Load Order"] = str(-1)
 			sorted.mod.fields["Priority Order"] = str(-1)
-		elif sorted.mod.fields["Type"] == "Engine Plugin" || sorted.mod.fields["Type"] == "Plugin-free":
+		elif sorted.mod.fields["Type"] == "Engine Plugin":
 			sorted.mod.fields["Load Order"] = str(-1)
 			sorted.mod.fields["Priority Order"] = str(po)
 			po += 1
-		elif sorted.mod.fields["Type"] == "Overwrite-able Replacer":
+		elif sorted.mod.fields["Type"] == "Overwrite-able Replacer"|| sorted.mod.fields["Type"] == "Plugin-free":
 			sorted.mod.fields["Load Order"] = str(-1)
 			sorted.mod.fields["Priority Order"] = str(epo)
 			epo += 1

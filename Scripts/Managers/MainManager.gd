@@ -111,7 +111,7 @@ func wipe_slate(skipGames=false):
 func read_game_extension(extensionPath:String, writeToSession = true):
 	var data = Functions.read_file(extensionPath)
 	var dir = extensionPath.get_base_dir()
-	activeGame.script = load(Functions.os_path_convert(dir+"/"+data.Script)).new()
+	activeGame.script = ResourceLoader.load(Functions.os_path_convert(dir+"/"+data.Script), "", true).new()
 	activeGame.data = data
 	activeGame.dir = dir
 	activeGame.name = extensionPath.get_file()
@@ -213,8 +213,14 @@ func handle_extension_menu(selectedOption):
 	match selectedOption:
 		"Reload Extension":
 			activeGame.script.extension_unloaded()
-			Functions.wait_frame()
-			read_game_extension(activeGame.dir+"/"+activeGame.name, false)
+			var path = activeGame.dir+"/"+activeGame.name
+			activeGame = {
+				"script":null,
+				"data":null,
+				"dir":"",
+				"name":""
+			}
+			read_game_extension(path, false)
 			console_manager.generate("Extension Reloaded", Globals.green)
 			repaint_mods()
 	pass
