@@ -69,6 +69,10 @@
 # - Rework auto sort for plugin to file priority differences.
 # - Add lock feature for mod LO/POs in the auto sort.
 # - Add a follow up step to auto sort that places patches next to the lowest req. mod in the LO. (Low LO = higher LO value). Start at 0 LO and work upwards checking reqs. and compats. Use the adjust feature to do it.
+# - Mod adjust should re-write the order after insert pos to mesh together with no gaps.
+# - Rework the Type category in game extension. "Feature Addition", "Content Addition", "File Replacer", "Feature Framework", "Engine Extender"
+# - Remove links between Type and LO. Add a bool field for "Has Plugin?"
+# - Read through Mo2's installed mods and create a modlist.
 # --- Perma Delayed
 # - Add the recolor option to mod menu.
 # - Rework popup management system using the metadata field for items. T_T whyyyyy

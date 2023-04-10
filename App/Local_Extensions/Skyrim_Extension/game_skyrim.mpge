@@ -1,6 +1,6 @@
 {
 	"Name":"Skyrim",
-	"Version":"1.0.0",
+	"Version":"1.1.0",
 	"Script":"SkyrimExtensionDriver.gd",
 	"Categories":
 	[
@@ -17,7 +17,7 @@
 			"Prompt":"Mod Type:",
 			"Size":170,
 			"Field":"Select",
-			"Select":["Master", "Plugin", "Patch", "Animation", "Plugin-free", "Overwrite-able Replacer", "Overwrite-able Fix", "Engine Extender", "Engine Plugin", "Other"]
+			"Select":["Esp & Archives", "Esp Only", "Archives Only", "Patch", ".DLL Only", ".DLL & Archives", ".DLL & ESP", ".DLL & ESP & Archives", "Other"]
 		},
 		{
 			"Title":"Version",

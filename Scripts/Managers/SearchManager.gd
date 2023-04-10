@@ -36,8 +36,19 @@ func search_to_save(target, method:String):
 	file_dialog.popup()
 	pass
 
-func reset_connections():
-	var connected = file_dialog.get_signal_connection_list("file_selected")
+func search_custom(filterArray:Array, access:int, mode:int, dialogue:String, title:String, event:String, target:Node, method:String):
+	reset_connections(event)
+	file_dialog.connect(event, target, method)
+	file_dialog.filters = filterArray
+	file_dialog.access = access
+	file_dialog.mode = mode
+	file_dialog.dialog_text = dialogue
+	file_dialog.window_title = title
+	file_dialog.popup()
+	pass
+
+func reset_connections(event:String = "file_selected"):
+	var connected = file_dialog.get_signal_connection_list(event)
 	for conn in connected:
 		file_dialog.disconnect(conn.signal, conn.target, conn.method)
 	pass

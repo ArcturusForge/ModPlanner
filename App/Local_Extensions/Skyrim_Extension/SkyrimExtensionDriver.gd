@@ -9,6 +9,10 @@ func extension_loaded():
 	extensionMenu.register_entity(my_id, self, "handle_extension_menu")
 	extensionMenu.add_option(my_id, "Auto Sort Order")
 	
+	var editMenu = popMan.get_popup_data("EditMenu")
+	editMenu.register_entity(my_id, self, "handle_edit_menu")
+	editMenu.add_option(my_id, "Build list from Mo2")
+	
 	var modMenu = popMan.get_popup_data("ModPop")
 	modMenu.register_entity(my_id, self, "handle_mod_menu")
 	modMenu.add_separator(my_id)
@@ -21,6 +25,7 @@ func extension_loaded():
 func extension_unloaded():
 	var popMan = Globals.get_manager("popups")
 	popMan.get_popup_data("ExtenMenu").unregister_entity(my_id)
+	popMan.get_popup_data("EditMenu").unregister_entity(my_id)
 	popMan.get_popup_data("ModPop").unregister_entity(my_id)
 	pass
 
@@ -30,6 +35,93 @@ func handle_extension_menu(selection):
 			Globals.get_manager("console").generate("Assigning load orders...", Globals.green)
 			sort_l_o()
 	pass
+
+func handle_edit_menu(selection):
+	match selection:
+		"Build list from Mo2":
+			var searcher = Globals.get_manager("search")
+			searcher.search_custom(["*.ini"], FileDialog.ACCESS_FILESYSTEM, FileDialog.MODE_OPEN_FILE, "Find the ModOrganizer.ini file", "Select the Mo2 ini file", "file_selected", self, "construct_from_mo2")
+	pass
+
+func construct_from_mo2(iniPath:String):
+	var file:File = File.new()
+	file.open(iniPath, File.READ)
+	var textArray = file.get_as_text().split("\n", false)
+	file.close()
+
+	#- Get data from the ini script to locate the actual info.
+	var profileName = ""
+	var folderPath = iniPath.get_base_dir()
+	for line in textArray:
+		#- Make sure the correct ini was selected.
+		if "gameName=" in line:
+			var gameName = line.split("=")[1]
+			if not "Skyrim" in gameName:
+				Globals.get_manager("console").posterr("Selected an ini file for the wrong game. Please select the ini from within a Skyrim related folder.")
+				return
+		if "selected_profile=@ByteArray" in line:
+			profileName = line.replace("selected_profile=@ByteArray(", "").replace(")", "")
+			break
+	
+	#- Get the installed mods from the profile.
+	var profilePath = folderPath + "/profiles/" + profileName + "/"
+	var modlistPath = profilePath + "modlist.txt"
+	file.open(modlistPath, File.READ)
+	var modlist = file.get_as_text().split("\n", false)
+	file.close()
+	var modsToGenerate = []
+	for mod in modlist:
+		if not "#" in mod && mod[0] != "-":
+			mod.erase(0, 1)
+			modsToGenerate.append(mod)
+	
+	#- Read each mod's ini file and generate a mod entry.
+	var modPath = folderPath + "/" + "mods/"
+	for mod in modsToGenerate:
+		var currentModPath = modPath + mod + "/meta.ini"
+		if not file.file_exists(currentModPath):
+			continue
+		file.open(currentModPath, File.READ)
+		var metaData = file.get_as_text().split("\n", false)
+		file.close()
+		
+		# - Cache relevant data to construct the mod data.
+		var modId:String = ""
+		var modVersion:String = ""
+		var modRepository:String = ""
+		var modUrl:String = ""
+		var isCustomUrl:bool = false
+		for line in metaData:
+			if "modid=" in line:
+				modId = line.replace("modid=", "")
+			elif "version=" in line:
+				modVersion = line.replace("version=", "")
+			elif "repository=" in line:
+				modRepository = line.replace("repository=", "")
+			elif "url=":
+				modUrl = line.replace("url=", "")
+			elif "hasCustomURL=" in line:
+				isCustomUrl = bool(line.replace("hasCustomURL=", ""))
+		
+		#- Detect custom made mod folders and ignore them.
+		if modId == "0":
+			continue
+
+		#- Construct the new mod's data.
+		var mData = Globals.modData.new()
+		if not isCustomUrl:
+			mData.extras.Link = "https://www.nexusmods.com/skyrimspecialedition/" + modId
+		else:
+			mData.extras.Link = modUrl
+		mData.fields["Mods"] = mod
+		mData.fields["Type"] = "NEEDS EDIT"
+		mData.fields["Version"] = modVersion
+		mData.fields["Source"] = modRepository
+		mData.fields["Priority Order"] = "0"
+		mData.fields["Load Order"] = "0"
+		Globals.get_manager("main").add_mod(mData)
+	pass
+
 
 func adjust_field(field:String, selected):
 	for mod in Session.data.Mods:
