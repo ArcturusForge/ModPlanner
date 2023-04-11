@@ -96,7 +96,9 @@ func draw_tree():
 	if sortCategory == "":
 		sortCategory =  gameData.Categories[0].Title
 	for i in range(gameData.Categories.size()):
-		create_column(i, gameData.Categories[i].Title, gameData.Categories[i].Size, (true if i == 0 else false))
+		var cat = gameData.Categories[i]
+		if not gameData.Categories[i].Hidden:
+			create_column(i, gameData.Categories[i].Title, gameData.Categories[i].Size, (true if i == 0 else false))
 	
 	#- Create mod entries for the mod tree
 	for mod in modList:
@@ -128,7 +130,7 @@ func create_entry(modData, parent, gameData):
 	entry.set_metadata(0, modData)
 	for i in range(gameData.Categories.size()):
 		var category = gameData.Categories[i]
-		if not modData["fields"].has(category.Title):
+		if not modData["fields"].has(category.Title) || category.Hidden:
 			continue
 		entry.set_text(i, modData["fields"][category.Title])
 		entry.set_tooltip(i, category.Tooltip)

@@ -52,8 +52,9 @@
 # -/ Bug: Extension reload not reloading extenison when app opened through openwith.
 # -/ Bug: Fix import window scaling for buttons.
 # -/ Bug: Individual mod import text & icons are not appearing.
+# -/ Read through Mo2's installed mods and create a modlist.
+# -/ Add hidden fields for game extensions that can be edited but don't appear in mod tree.
 # --- Uncompleted
-# -?Can't remember why:Mod descriptions/install instructions? Add hidden fields for game extensions that can be edited but don't appear in mod tree.
 # - Add a feature for mod link cleaning that detects link/name similarities and pings user.
 # - Add alternative link text-fields to all mod fields.
 # - Add alt script loading options to game extensions and to extension menu.
@@ -70,13 +71,13 @@
 # - Add lock feature for mod LO/POs in the auto sort.
 # - Add a follow up step to auto sort that places patches next to the lowest req. mod in the LO. (Low LO = higher LO value). Start at 0 LO and work upwards checking reqs. and compats. Use the adjust feature to do it.
 # - Mod adjust should re-write the order after insert pos to mesh together with no gaps.
-# - Rework the Type category in game extension. "Feature Addition", "Content Addition", "File Replacer", "Feature Framework", "Engine Extender"
-# - Remove links between Type and LO. Add a bool field for "Has Plugin?"
-# - Read through Mo2's installed mods and create a modlist.
+# - Remove links between Type and LO.
+# - Have tooltips appear in the add-mod window.
 # --- Perma Delayed
 # - Add the recolor option to mod menu.
 # - Rework popup management system using the metadata field for items. T_T whyyyyy
 # - ModTreeManager: Add separator support.
 # - Add an edit feature to resources.
 # --- Cancelled
+# -?Types reworked? Rework the Type category in game extension. "Feature Addition", "Content Addition", "File Replacer", "Feature Framework", "Engine Extender"
 # -?Not necessary? Create a bool mod field.

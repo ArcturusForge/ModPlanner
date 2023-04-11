@@ -92,16 +92,22 @@ func construct_from_mo2(iniPath:String):
 		var modUrl:String = ""
 		var isCustomUrl:bool = false
 		for line in metaData:
-			if "modid=" in line:
+			if "modid=" in line && modId == "":
 				modId = line.replace("modid=", "")
-			elif "version=" in line:
+			elif "version=" in line && modVersion == "":
 				modVersion = line.replace("version=", "")
-			elif "repository=" in line:
+			elif "repository=" in line && modRepository == "":
 				modRepository = line.replace("repository=", "")
-			elif "url=":
+			elif "url=" in line:
 				modUrl = line.replace("url=", "")
 			elif "hasCustomURL=" in line:
-				isCustomUrl = bool(line.replace("hasCustomURL=", ""))
+				var val:String = line.replace("hasCustomURL=", "")
+				val = val.to_lower()
+				match val:
+					"false":
+						isCustomUrl = false
+					"true":
+						isCustomUrl = true
 		
 		#- Detect custom made mod folders and ignore them.
 		if modId == "0":
@@ -110,7 +116,7 @@ func construct_from_mo2(iniPath:String):
 		#- Construct the new mod's data.
 		var mData = Globals.modData.new()
 		if not isCustomUrl:
-			mData.extras.Link = "https://www.nexusmods.com/skyrimspecialedition/" + modId
+			mData.extras.Link = "https://www.nexusmods.com/skyrimspecialedition/mods/" + modId
 		else:
 			mData.extras.Link = modUrl
 		mData.fields["Mods"] = mod
@@ -157,13 +163,14 @@ func sort_l_o():
 	#- Grab the mod list from the current session.
 	var modlist = Session.data.Mods
 	var presentMods = {}
-	var allAdd = []
-	var enginePlugTotal = 0
+	var requiredByAll = []
+	var requiresAll = []
 	for mod in modlist:
-		if mod.fields.Type == "Engine Plugin":
-			enginePlugTotal += 1
-		elif mod.fields.Type == "Overwrite-able Replacer" || mod.fields.Type == "Overwrite-able Fix":
-			allAdd.append(mod.extras.Link)
+		# "Esp & Archives", "Esp Only", "Archives Only", "Patch", ".DLL Only", ".DLL & Archives", ".DLL & ESP", ".DLL & ESP & Archives", "Other"
+		if mod.fields.Trend == "Get Overwritten":
+			requiredByAll.append(mod.extras.Link)
+		elif mod.fields.Trend == "Overwrite Others":
+			requiresAll.append(mod.extras.Link)
 		
 		presentMods[mod.extras.Link] = {
 			"mod":mod,
@@ -186,15 +193,58 @@ func sort_l_o():
 				if presentMods.has(com.Link):
 					requisiteMods.append(presentMods[com.Link])
 		
-		if not allAdd.has(mod.extras.Link):
-			for addlink in allAdd:
-				requisiteMods.append(presentMods[addlink])
-		
 		presentMods[mod.extras.Link].masters = requisiteMods
 		continue
+
+	#- Start: Get overwritten logic.
+	var connectedOverwrittenMods = []
+	for mLink in requiredByAll:
+		connectedOverwrittenMods.append(mLink)
 	
+	var doContinue = true
+	while (doContinue):
+		doContinue = false
+		for mLink in presentMods.keys():
+			var mod = presentMods[mLink]
+			for reqMod in mod.masters:
+				if presentMods.has(reqMod.mod.extras.Link) && connectedOverwrittenMods.has(reqMod.mod.extras.Link) && not connectedOverwrittenMods.has(mLink):
+					connectedOverwrittenMods.append(mLink)
+					doContinue = true
+					break
+
+	for mLink in presentMods.keys():
+		if connectedOverwrittenMods.has(mLink):
+			continue
+			for cLink in connectedOverwrittenMods:
+				presentMods[mLink].masters.append(presentMods[cLink])
+	#- End: Get overwritten logic.
+
+	#- Start: Overwrites others logic.
+	var connectedWriterMods = []
+	for mLink in requiresAll:
+		connectedWriterMods.append(mLink)
+
+	doContinue = true
+	while (doContinue):
+		doContinue = false
+		for mLink in presentMods.keys():
+			var mod = presentMods[mLink]
+			for reqMod in mod.masters:
+				if presentMods.has(reqMod.mod.extras.Link) && connectedWriterMods.has(reqMod.mod.extras.Link) && not connectedWriterMods.has(mLink):
+					connectedWriterMods.append(mLink)
+					doContinue = true
+					break
+	
+	for mLink in presentMods.keys():
+		if connectedWriterMods.has(mLink):
+			continue
+		for cLink in connectedWriterMods:
+			presentMods[cLink].masters.append(presentMods[mLink])
+	#- End: Overwrites others logic.
+
 	for mod in presentMods.keys():
 		var mData = presentMods[mod]
+		#- The lower the influence, the lower the resulting load/priority order.
 		mData.influence += -1
 		increment_masters(presentMods, mData)
 		continue
@@ -203,24 +253,24 @@ func sort_l_o():
 	influnceList.sort_custom(self, "sort_by_influence")
 	var lo = 0
 	var po = 0
-	var epo = enginePlugTotal
 	for sorted in influnceList:
-		if sorted.mod.fields["Type"] == "Engine Extender":
+		# "Esp & Archives", "Esp Only", "Archives Only", "Patch", ".DLL Only", ".DLL & Archives", ".DLL & ESP", ".DLL & ESP & Archives", "Other"
+		if sorted.mod.fields["Type"] == ".DLL Only":
 			sorted.mod.fields["Load Order"] = str(-1)
 			sorted.mod.fields["Priority Order"] = str(-1)
-		elif sorted.mod.fields["Type"] == "Engine Plugin":
+		elif sorted.mod.fields["Type"] == "Archives Only" || sorted.mod.fields["Type"] == ".DLL & Archives":
 			sorted.mod.fields["Load Order"] = str(-1)
 			sorted.mod.fields["Priority Order"] = str(po)
 			po += 1
-		elif sorted.mod.fields["Type"] == "Overwrite-able Replacer"|| sorted.mod.fields["Type"] == "Plugin-free":
-			sorted.mod.fields["Load Order"] = str(-1)
-			sorted.mod.fields["Priority Order"] = str(epo)
-			epo += 1
-		else:
+		elif sorted.mod.fields["Type"] == ".DLL & ESP" || sorted.mod.fields["Type"] == "Esp Only":
 			sorted.mod.fields["Load Order"] = str(lo)
-			sorted.mod.fields["Priority Order"] = str(epo)
+			sorted.mod.fields["Priority Order"] = str(-1)
 			lo += 1
-			epo += 1
+		else: #"Esp & Archives" || ".DLL & ESP & Archives" || "Patch" || "Other"
+			sorted.mod.fields["Load Order"] = str(lo)
+			sorted.mod.fields["Priority Order"] = str(po)
+			lo += 1
+			po += 1
 		continue
 	
 	Globals.get_manager("main").repaint_mods()
@@ -265,22 +315,27 @@ func scan_mods(modlist):
 				missingReq.append(req)
 			else:
 				var reqMod = modLinks[req.Link]
-				if mod.fields["Type"] == "Plugin-free":
+				# "Esp & Archives", "Esp Only", "Archives Only", "Patch", ".DLL Only", ".DLL & Archives", ".DLL & ESP", ".DLL & ESP & Archives", "Other"
+				#- Hard overwriting Warning. Is an immediate error. For only Archives and Patches.
+				if mod.fields["Type"] == "Archives Only" || mod.fields["Type"] == "Patch":
 					if	int(reqMod.fields["Priority Order"]) >= int(mod.fields["Priority Order"]):
 						var reqName = get_mod_name(reqMod)
 						var msg = "ERR117: (" + name + ") overwrites files from (" + reqName + ") however (" + reqName + ") is overwriting its files!"
 						scanData.add_custom(msg, 2)
 				
-				elif mod.fields["Type"] == "Engine Plugin":
+				#- Light overwriting Warning. Not an immediate error. For Archives w/ additions.
+				if mod.fields["Type"] == "Esp & Archives" || mod.fields["Type"] == ".DLL & Archives" || mod.fields["Type"] == ".DLL & ESP & Archives" || mod.fields["Type"] == "Other":
 					if	int(reqMod.fields["Priority Order"]) >= int(mod.fields["Priority Order"]):
 						var reqName = get_mod_name(reqMod)
 						var msg = "ERR66: ("+ name +") relies on features from ("+ reqName +") however ("+ reqName +") has a higher priority order. Fix this if bugs occur in-game."
 						scanData.add_custom(msg, 1)
 				
-				elif int(reqMod.fields["Load Order"]) >= int(mod.fields["Load Order"]):
-					var reqName = get_mod_name(reqMod)
-					var msg = "ERR314: (" + name + ") requires (" + reqName + ") as a master however (" + reqName + ") has a higher load order!"
-					scanData.add_custom(msg, 2)
+				#- Hard overwriting Warning. Is an immediate error. For all Esp's.
+				if mod.fields["Type"] == "Esp & Archives" || mod.fields["Type"] == "Esp Only" || mod.fields["Type"] == "Patch" || mod.fields["Type"] == ".DLL & ESP" || mod.fields["Type"] == ".DLL & ESP & Archives" || mod.fields["Type"] == "Other":
+					if int(reqMod.fields["Load Order"]) >= int(mod.fields["Load Order"]):
+						var reqName = get_mod_name(reqMod)
+						var msg = "ERR314: (" + name + ") requires (" + reqName + ") as a master however (" + reqName + ") has a higher load order!"
+						scanData.add_custom(msg, 2)
 		
 		for inc in mod.extras.Incompatible:
 			if modLinks.has(inc.Link):

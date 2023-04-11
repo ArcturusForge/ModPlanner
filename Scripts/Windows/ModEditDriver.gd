@@ -82,6 +82,8 @@ func generate_window(modData):
 		var dynamicData = {}
 		if not modData == null:
 			modIndex = modData.index
+			if not modData.mod.fields.has(category.Title):
+				modData.mod.fields[category.Title] = ""
 			dynamicData["info"] = modData.mod.fields[category.Title]
 		
 		match category.Field.to_lower():
