@@ -223,6 +223,7 @@ func handle_extension_menu(selectedOption):
 			read_game_extension(path, false)
 			console_manager.generate("Extension Reloaded", Globals.green)
 			repaint_mods()
+			tab_manager.session_launched()
 	pass
 
 func handle_save(filePath):

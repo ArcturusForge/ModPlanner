@@ -73,6 +73,8 @@
 # - Mod adjust should re-write the order after insert pos to mesh together with no gaps.
 # - Remove links between Type and LO.
 # - Have tooltips appear in the add-mod window.
+# - Have changes made to mods self perpetuate the changes to all mods referencing it. e.g. changing link/name.
+# - Have imported mods overwrite the original as an option.
 # --- Perma Delayed
 # - Add the recolor option to mod menu.
 # - Rework popup management system using the metadata field for items. T_T whyyyyy
